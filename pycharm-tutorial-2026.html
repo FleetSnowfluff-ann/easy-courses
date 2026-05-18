@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyCharm 完全学习指南 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #1e1f22;
+  --bg2:     #2b2d30;
+  --bg3:     #313438;
+  --bg4:     #393c42;
+  --border:  #43454a;
+  --border2: #555860;
+  --text:    #bcbec4;
+  --text2:   #7f8187;
+  --text3:   #4e5157;
+  --bright:  #dde0e6;
+  --accent:  #6b57ff;
+  --accent2: #8b78ff;
+  --acl:     rgba(107,87,255,.15);
+  --acl2:    rgba(107,87,255,.08);
+  --green:   #6aab73;
+  --green2:  #4caf50;
+  --yellow:  #e8bf6a;
+  --yellow2: #ffc66d;
+  --red:     #ff7b7b;
+  --orange:  #f28b50;
+  --blue:    #6fb3e8;
+  --teal:    #50b8c8;
+  --pink:    #cf8ef4;
+  --cyan:    #2fc5e2;
+  --r:       8px;
+  --r-sm:    5px;
+  --sh:      0 4px 20px rgba(0,0,0,.4);
+  --sh-sm:   0 1px 4px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-serif;font-size:15px;line-height:1.75;display:flex;}
+
+/* ─── Sidebar ─── */
+.sidebar{width:252px;min-height:100vh;background:var(--bg2);border-right:1px solid var(--border);position:fixed;top:0;left:0;overflow-y:auto;z-index:100;padding-bottom:60px;}
+.sb-top{padding:20px 16px 16px;border-bottom:1px solid var(--border);}
+.sb-brand{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.sb-logo{width:36px;height:36px;background:linear-gradient(135deg,#6b57ff,#cf8ef4);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:white;}
+.sb-name{font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:var(--bright);letter-spacing:-.01em;}
+.sb-sub{font-size:11px;color:var(--text3);letter-spacing:.04em;margin-top:1px;}
+.version-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(107,87,255,.2);border:1px solid rgba(107,87,255,.35);color:var(--accent2);font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;letter-spacing:.04em;}
+.vdot{width:5px;height:5px;background:#6aab73;border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.nav-grp{padding:10px 8px 2px;}
+.nav-gl{font-size:9.5px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.14em;padding:4px 8px;}
+.nav-btn{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:var(--r-sm);color:var(--text2);font-size:12.5px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all .12s;font-family:'Noto Sans SC',sans-serif;}
+.nav-btn:hover{background:var(--bg3);color:var(--bright);}
+.nav-btn.active{background:var(--acl);color:var(--accent2);font-weight:500;}
+.ni{font-size:13px;width:18px;text-align:center;flex-shrink:0;}
+.tag{margin-left:auto;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:600;flex-shrink:0;letter-spacing:.03em;}
+.t-free{background:rgba(106,171,115,.18);color:var(--green);}
+.t-pro{background:rgba(207,142,244,.18);color:var(--pink);}
+.t-new{background:rgba(80,184,200,.18);color:var(--teal);}
+.t-ai{background:rgba(232,191,106,.18);color:var(--yellow);}
+
+/* ─── Main ─── */
+.main{margin-left:252px;flex:1;}
+.content{max-width:820px;padding:56px 56px 120px;}
+.sec{display:none;animation:fi .22s ease;}
+.sec.active{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* ─── Headings ─── */
+.ey{font-size:10.5px;text-transform:uppercase;letter-spacing:.14em;font-weight:600;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+h2{font-family:'Inter',sans-serif;font-size:26px;font-weight:700;color:var(--bright);line-height:1.25;margin-bottom:6px;letter-spacing:-.03em;}
+.lead{font-size:14.5px;color:var(--text2);line-height:1.75;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+h3{font-family:'Inter',sans-serif;font-size:16.5px;font-weight:600;color:var(--bright);margin:32px 0 11px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;}
+h3::before{content:'';display:block;width:3px;height:14px;background:var(--accent);border-radius:2px;flex-shrink:0;}
+h4{font-size:11.5px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.1em;margin:18px 0 7px;}
+p{margin-bottom:12px;line-height:1.82;color:var(--text);}
+strong{color:var(--bright);font-weight:600;}
+
+/* ─── Cards ─── */
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px;margin:13px 0;}
+.cc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;transition:border-color .15s,box-shadow .15s;}
+.cc:hover{border-color:var(--border2);box-shadow:var(--sh);}
+.cc .ci{font-size:20px;margin-bottom:7px;}
+.cc .ct{font-size:13px;font-weight:600;color:var(--bright);margin-bottom:3px;}
+.cc .cd{font-size:12px;color:var(--text2);line-height:1.55;}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px 20px;margin:12px 0;}
+
+/* ─── Code ─── */
+pre,code{font-family:'JetBrains Mono',monospace;}
+code{background:var(--bg3);color:var(--yellow2);padding:1px 5px;border-radius:3px;font-size:12.5px;border:1px solid var(--border);}
+pre{background:#1a1b1e;border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;overflow-x:auto;margin:12px 0;font-size:12.5px;line-height:1.78;position:relative;}
+pre code{background:none;color:var(--text);border:none;padding:0;font-size:inherit;}
+.kw{color:#cf8ef4;}.fn{color:#6eb1e3;}.st{color:#6aab73;}.cm{color:#4e5157;font-style:italic;}
+.nu{color:#6897bb;}.cl{color:#ffc66d;}.kw2{color:#ff7b7b;}.dec{color:#50b8c8;}
+.pre-label{position:absolute;top:10px;right:12px;font-size:9.5px;color:var(--text3);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+
+/* ─── Callouts ─── */
+.call{border-radius:var(--r);padding:12px 16px;margin:14px 0;font-size:13.5px;display:flex;gap:11px;align-items:flex-start;}
+.call-ico{font-size:16px;flex-shrink:0;line-height:1.5;}
+.call-b{flex:1;}
+.call-t{font-weight:600;margin-bottom:3px;font-size:12px;letter-spacing:.03em;}
+.c-tip{background:rgba(106,171,115,.08);border:1px solid rgba(106,171,115,.25);}
+.c-tip .call-t{color:var(--green);}
+.c-info{background:rgba(107,179,232,.08);border:1px solid rgba(107,179,232,.25);}
+.c-info .call-t{color:var(--blue);}
+.c-warn{background:rgba(232,191,106,.08);border:1px solid rgba(232,191,106,.25);}
+.c-warn .call-t{color:var(--yellow);}
+.c-new{background:rgba(80,184,200,.08);border:1px solid rgba(80,184,200,.25);}
+.c-new .call-t{color:var(--teal);}
+.c-ai{background:rgba(207,142,244,.08);border:1px solid rgba(207,142,244,.25);}
+.c-ai .call-t{color:var(--pink);}
+
+/* ─── Steps ─── */
+.steps{margin:12px 0;}
+.step{display:flex;gap:13px;margin-bottom:16px;position:relative;}
+.step:not(:last-child)::after{content:'';position:absolute;left:13px;top:28px;width:1px;height:calc(100% - 11px);background:var(--border);}
+.sn{width:27px;height:27px;border-radius:50%;background:var(--acl);border:1px solid var(--accent);color:var(--accent2);display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;flex-shrink:0;z-index:1;font-family:'Inter',sans-serif;}
+.sb-s{flex:1;padding-top:3px;}
+.st-t{font-weight:600;color:var(--bright);font-size:13.5px;margin-bottom:3px;}
+.st-d{color:var(--text2);font-size:13px;line-height:1.65;}
+
+/* ─── Table ─── */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px;}
+th{background:var(--bg3);color:var(--text2);font-weight:600;text-align:left;padding:8px 13px;border-bottom:1px solid var(--border2);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;}
+td{padding:7px 13px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+
+/* ─── KBD ─── */
+kbd{background:var(--bg3);border:1px solid var(--border2);border-bottom-width:2px;border-radius:4px;padding:1px 6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--yellow2);box-shadow:var(--sh-sm);}
+.hkg{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:12px 0;}
+.hki{display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);padding:7px 11px;font-size:12px;gap:8px;}
+.hkd{color:var(--text2);}
+.hkk{display:flex;gap:3px;flex-shrink:0;}
+
+/* ─── Diagram ─── */
+.dg{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px 16px 12px;margin:14px 0;overflow-x:auto;}
+.dgc{font-size:11px;color:var(--text3);text-align:center;margin-top:6px;margin-bottom:14px;}
+
+/* ─── New badge ─── */
+.nb{display:inline-flex;align-items:center;gap:3px;background:rgba(80,184,200,.15);border:1px solid rgba(80,184,200,.3);color:var(--teal);font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:3px;margin-left:6px;letter-spacing:.04em;vertical-align:middle;}
+.nb-ai{background:rgba(207,142,244,.15);border-color:rgba(207,142,244,.3);color:var(--pink);}
+.nb-free{background:rgba(106,171,115,.15);border-color:rgba(106,171,115,.3);color:var(--green);}
+
+/* ─── Diff view ─── */
+.diff{background:#1a1b1e;border:1px solid var(--border);border-radius:var(--r);padding:0;overflow:hidden;margin:12px 0;font-family:'JetBrains Mono',monospace;font-size:12.5px;}
+.diff-head{background:var(--bg3);padding:6px 16px;font-size:10px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;}
+.diff-line{padding:2px 16px;line-height:1.7;}
+.dl-del{background:rgba(255,123,123,.07);color:#ff7b7b;}
+.dl-add{background:rgba(106,171,115,.07);color:#6aab73;}
+.dl-ctx{color:var(--text2);}
+
+/* ─── Feature highlight ─── */
+.feat-hl{background:linear-gradient(135deg,var(--acl2),rgba(207,142,244,.05));border:1px solid rgba(107,87,255,.25);border-radius:var(--r);padding:16px 20px;margin:14px 0;}
+.feat-hl-t{font-size:13px;font-weight:600;color:var(--accent2);margin-bottom:6px;display:flex;align-items:center;gap:7px;}
+
+/* ─── Nav ─── */
+.nav-b{display:flex;justify-content:space-between;margin-top:50px;padding-top:20px;border-top:1px solid var(--border);}
+.nbb{display:flex;align-items:center;gap:7px;padding:8px 15px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--text2);cursor:pointer;font-size:12.5px;font-family:'Noto Sans SC',sans-serif;transition:all .12s;}
+.nbb:hover{border-color:var(--border2);color:var(--bright);}
+.nbb.p{background:var(--acl);border-color:var(--accent);color:var(--accent2);}
+.nbb.p:hover{background:rgba(107,87,255,.25);}
+
+/* ─── Plugin card ─── */
+.plug{display:flex;gap:14px;align-items:flex-start;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;margin:9px 0;transition:border-color .15s;}
+.plug:hover{border-color:var(--border2);}
+.plug-ico{width:38px;height:38px;border-radius:7px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.plug-n{font-size:13.5px;font-weight:600;color:var(--bright);margin-bottom:3px;}
+.plug-d{font-size:12.5px;color:var(--text2);line-height:1.6;}
+.plug-tags{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap;}
+.plug-tag{font-size:10px;padding:1px 6px;border-radius:3px;background:var(--bg4);color:var(--text3);border:1px solid var(--border);}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+
+@media(max-width:860px){
+  .sidebar{display:none;} .main{margin-left:0;}
+  .content{padding:24px 16px 80px;}
+  .hkg{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<nav class="sidebar">
+  <div class="sb-top">
+    <div class="sb-brand">
+      <div class="sb-logo">Py</div>
+      <div>
+        <div class="sb-name">PyCharm 学习指南</div>
+        <div class="sb-sub">JetBrains 官方 Python IDE</div>
+      </div>
+    </div>
+    <div class="version-pill"><span class="vdot"></span>最新版 2026.1 · 2026年</div>
+  </div>
+
+  <div class="nav-grp">
+    <div class="nav-gl">起步入门</div>
+    <button class="nav-btn active" onclick="go('intro')"><span class="ni">🐍</span>PyCharm 是什么？<span class="tag t-free">免费</span></button>
+    <button class="nav-btn" onclick="go('install')"><span class="ni">⚙️</span>安装与版本选择<span class="tag t-free">免费</span></button>
+    <button class="nav-btn" onclick="go('ui')"><span class="ni">🖥️</span>界面全面解析<span class="tag t-free">免费</span></button>
+    <button class="nav-btn" onclick="go('project')"><span class="ni">📂</span>项目与解释器</button>
+  </div>
+  <div class="nav-grp">
+    <div class="nav-gl">核心开发</div>
+    <button class="nav-btn" onclick="go('editor')"><span class="ni">✏️</span>代码编辑智能化</button>
+    <button class="nav-btn" onclick="go('debug')"><span class="ni">🐛</span>调试器精通<span class="tag t-new">debugpy</span></button>
+    <button class="nav-btn" onclick="go('test')"><span class="ni">🧪</span>测试与覆盖率</button>
+    <button class="nav-btn" onclick="go('vcs')"><span class="ni">🌿</span>Git 版本控制</button>
+  </div>
+  <div class="nav-grp">
+    <div class="nav-gl">高阶功能</div>
+    <button class="nav-btn" onclick="go('ai')"><span class="ni">🤖</span>AI 功能全解<span class="tag t-ai">2026新</span></button>
+    <button class="nav-btn" onclick="go('jupyter')"><span class="ni">📓</span>Jupyter & 数据科学<span class="tag t-free">免费</span></button>
+    <button class="nav-btn" onclick="go('remote')"><span class="ni">☁️</span>远程开发</button>
+    <button class="nav-btn" onclick="go('new2026')"><span class="ni">🆕</span>2026 最新特性<span class="tag t-new">2026.1</span></button>
+    <button class="nav-btn" onclick="go('tips')"><span class="ni">⚡</span>效率技巧与工作流</button>
+  </div>
+</nav>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<main class="main"><div class="content">
+
+<!-- ══ 1. INTRO ══ -->
+<div id="sec-intro" class="sec active">
+  <div class="ey"><span>第一章</span><span class="tag t-free" style="margin-left:0">免费核心</span></div>
+  <h2>PyCharm 是什么？</h2>
+  <p class="lead">PyCharm 是 JetBrains 出品的 Python 专属 IDE，集代码智能补全、调试、测试、版本控制、数据科学工具于一体。2026 年版本已演进为一款 <strong>AI 原生的统一开发平台</strong>，是全球最受专业 Python 开发者信赖的 IDE。</p>
+
+  <h3>PyCharm 能做什么？</h3>
+  <div class="cg">
+    <div class="cc"><div class="ci">🧠</div><div class="ct">深度代码智能</div><div class="cd">类型推断、自动补全、重构，比任何编辑器都懂 Python</div></div>
+    <div class="cc"><div class="ci">🐛</div><div class="ct">专业级调试</div><div class="cd">断点、表达式求值、远程调试，2026 起采用 debugpy 新引擎</div></div>
+    <div class="cc"><div class="ci">🤖</div><div class="ct">AI 编程助手</div><div class="cd">Junie Agent、Claude Agent、Next Edit Suggestions，AI 原生体验</div></div>
+    <div class="cc"><div class="ci">📓</div><div class="ct">Jupyter 支持</div><div class="cd">2025.1 起免费内置，Google Colab 直连，DAP 调试</div></div>
+    <div class="cc"><div class="ci">🌿</div><div class="ct">Git 深度集成</div><div class="cd">差异视图、合并冲突、分支管理全在 IDE 内完成</div></div>
+    <div class="cc"><div class="ci">☁️</div><div class="ct">远程开发</div><div class="cd">SSH、Docker、WSL 无缝远程开发，uv 包管理支持</div></div>
+  </div>
+
+  <h3>版本定价（2026 最新）</h3>
+  <div class="call c-tip">
+    <div class="call-ico">🎉</div>
+    <div class="call-b">
+      <div class="call-t">重大变化：从 2025.1 起 PyCharm 合并为统一版本</div>
+      Community Edition 与 Professional Edition 正式合并为单一产品。<strong>核心功能永久免费</strong>（含 Jupyter Notebook），安装后自动享受 30 天 Pro 试用。
+    </div>
+  </div>
+  <table>
+    <thead><tr><th>层级</th><th>价格</th><th>包含功能</th></tr></thead>
+    <tbody>
+      <tr><td><strong style="color:var(--green)">免费核心</strong></td><td>永久免费</td><td>Python 开发全套、Jupyter Notebook、JS/TS/CSS（2026.1 新加）、Git、调试、测试</td></tr>
+      <tr><td><strong style="color:var(--pink)">Pro 订阅</strong></td><td>$99/年 或 $9.9/月</td><td>Web 框架（Django/FastAPI）、数据库工具、远程开发、高级分析器、SSH/Docker</td></tr>
+      <tr><td><strong style="color:var(--yellow)">教育免费</strong></td><td>免费</td><td>完整 Pro 功能，凭学生/教师身份申请</td></tr>
+      <tr><td><strong style="color:var(--blue)">开源项目</strong></td><td>免费</td><td>完整 Pro 功能，符合条件的开源项目申请</td></tr>
+    </tbody>
+  </table>
+
+  <h3>PyCharm vs 主流编辑器 2026 横评</h3>
+  <table>
+    <thead><tr><th>特性</th><th>PyCharm 2026</th><th>VS Code</th><th>Cursor</th><th>Vim/Neovim</th></tr></thead>
+    <tbody>
+      <tr><td>Python 代码智能</td><td>⭐⭐⭐⭐⭐ 业界最强</td><td>⭐⭐⭐⭐ 需插件</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐ 需配置</td></tr>
+      <tr><td>调试体验</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐</td></tr>
+      <tr><td>AI 辅助</td><td>⭐⭐⭐⭐⭐ Junie+Claude</td><td>⭐⭐⭐⭐ Copilot</td><td>⭐⭐⭐⭐⭐ 原生</td><td>⭐⭐ 需插件</td></tr>
+      <tr><td>Jupyter 支持</td><td>⭐⭐⭐⭐⭐ 内置免费</td><td>⭐⭐⭐⭐ 插件</td><td>⭐⭐⭐⭐</td><td>⭐⭐</td></tr>
+      <tr><td>资源占用</td><td>较重（需 8GB+ RAM）</td><td>较轻</td><td>中等</td><td>极轻</td></tr>
+      <tr><td>上手难度</td><td>⭐⭐⭐ 功能多需学习</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐⭐⭐⭐</td></tr>
+    </tbody>
+  </table>
+
+  <div class="nav-b">
+    <div></div>
+    <button class="nbb p" onclick="go('install')">下一章：安装配置 →</button>
+  </div>
+</div>
+
+<!-- ══ 2. INSTALL ══ -->
+<div id="sec-install" class="sec">
+  <div class="ey"><span>第二章</span><span class="tag t-free" style="margin-left:0">免费核心</span></div>
+  <h2>安装与版本选择</h2>
+  <p class="lead">PyCharm 2026.1 是当前最新稳定版（发布于 2026年3月）。推荐通过 <strong>JetBrains Toolbox App</strong> 安装，方便多版本管理和自动更新。</p>
+
+  <h3>系统要求</h3>
+  <div class="cg">
+    <div class="cc"><div class="ci">🪟</div><div class="ct">Windows</div><div class="cd">Windows 10/11 64位，RAM 8GB（推荐 16GB），SSD 强烈推荐</div></div>
+    <div class="cc"><div class="ci">🍎</div><div class="ct">macOS</div><div class="cd">macOS 12+，原生 Apple Silicon（M1/M2/M3/M4）支持，ARM 优化</div></div>
+    <div class="cc"><div class="ci">🐧</div><div class="ct">Linux</div><div class="cd">GNOME/KDE/其他，glibc 2.17+，推荐 Ubuntu 20.04+</div></div>
+  </div>
+
+  <h3>推荐安装方式：JetBrains Toolbox</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="sn">1</div>
+      <div class="sb-s">
+        <div class="st-t">下载 JetBrains Toolbox App</div>
+        <div class="st-d">访问 <code>jetbrains.com/toolbox-app</code>，下载并安装 Toolbox。它是管理所有 JetBrains 产品的统一入口</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">2</div>
+      <div class="sb-s">
+        <div class="st-t">在 Toolbox 中找到 PyCharm，点击 Install</div>
+        <div class="st-d">可以选择安装频道：Stable（稳定版，推荐）/ EAP（早期访问预览）</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">3</div>
+      <div class="sb-s">
+        <div class="st-t">首次启动自动激活 30 天 Pro 试用</div>
+        <div class="st-d">需要 JetBrains 账号（免费注册）。30 天内可体验所有 Pro 功能，无需信用卡</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">4</div>
+      <div class="sb-s">
+        <div class="st-t">选择初始配置：主题、插件、快捷键方案</div>
+        <div class="st-d">推荐：深色主题（Darcula / New Dark）、VS Code 快捷键方案（如果从 VS Code 迁移）</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>首次启动配置向导</h3>
+  <div class="dg">
+    <svg width="100%" viewBox="0 0 700 240" role="img">
+      <title>PyCharm 首次启动欢迎界面流程图</title>
+      <defs>
+        <marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Step boxes -->
+      <rect x="20" y="80" width="110" height="80" rx="8" fill="#2b2d30" stroke="#43454a" stroke-width="1"/>
+      <text x="75" y="108" text-anchor="middle" font-size="20" fill="#fff">🎨</text>
+      <text x="75" y="130" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#bcbec4" font-weight="500">选择主题</text>
+      <text x="75" y="148" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#7f8187">Light / Dark</text>
+
+      <path d="M130 120 L158 120" fill="none" stroke="#43454a" stroke-width="1.5" marker-end="url(#a1)"/>
+
+      <rect x="163" y="80" width="110" height="80" rx="8" fill="#2b2d30" stroke="#43454a" stroke-width="1"/>
+      <text x="218" y="108" text-anchor="middle" font-size="20" fill="#fff">⌨️</text>
+      <text x="218" y="130" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#bcbec4" font-weight="500">快捷键方案</text>
+      <text x="218" y="148" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#7f8187">IntelliJ / VS Code</text>
+
+      <path d="M273 120 L301 120" fill="none" stroke="#43454a" stroke-width="1.5" marker-end="url(#a1)"/>
+
+      <rect x="306" y="80" width="110" height="80" rx="8" fill="#2b2d30" stroke="#43454a" stroke-width="1"/>
+      <text x="361" y="108" text-anchor="middle" font-size="20" fill="#fff">🔌</text>
+      <text x="361" y="130" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#bcbec4" font-weight="500">推荐插件</text>
+      <text x="361" y="148" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#7f8187">AI / Git / 数据库</text>
+
+      <path d="M416 120 L444 120" fill="none" stroke="#43454a" stroke-width="1.5" marker-end="url(#a1)"/>
+
+      <rect x="449" y="80" width="110" height="80" rx="8" fill="rgba(107,87,255,.15)" stroke="rgba(107,87,255,.4)" stroke-width="1"/>
+      <text x="504" y="108" text-anchor="middle" font-size="20" fill="#fff">🚀</text>
+      <text x="504" y="130" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#8b78ff" font-weight="600">开始使用</text>
+      <text x="504" y="148" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#6b57ff">30天Pro试用激活</text>
+
+      <path d="M559 120 L587 120" fill="none" stroke="#6b57ff" stroke-width="1.5" marker-end="url(#a1)" stroke-dasharray="4 3"/>
+
+      <rect x="592" y="95" width="90" height="50" rx="8" fill="#2b2d30" stroke="#43454a" stroke-width="1"/>
+      <text x="637" y="118" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#7f8187">新建或打开</text>
+      <text x="637" y="135" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#7f8187">Python 项目</text>
+    </svg>
+  </div>
+
+  <h3>Python 解释器安装</h3>
+  <p>PyCharm 不自带 Python——你需要先单独安装 Python 解释器。推荐方案：</p>
+  <table>
+    <thead><tr><th>方案</th><th>推荐场景</th><th>安装命令</th></tr></thead>
+    <tbody>
+      <tr><td><strong style="color:var(--yellow2)">官方 Python</strong></td><td>通用开发，简单直接</td><td>从 python.org 下载安装包</td></tr>
+      <tr><td><strong style="color:var(--teal)">uv（2026 推荐）</strong></td><td>速度极快的包管理器，PyCharm 2026 默认支持</td><td><code>pip install uv</code> 或官网安装脚本</td></tr>
+      <tr><td><strong style="color:var(--orange)">Conda/Miniconda</strong></td><td>数据科学，需要非 Python 依赖</td><td>从 conda.io 下载</td></tr>
+      <tr><td><strong style="color:var(--blue)">pyenv</strong></td><td>需要多版本 Python 共存</td><td><code>brew install pyenv</code>（Mac）</td></tr>
+    </tbody>
+  </table>
+
+  <div class="nav-b">
+    <button class="nbb" onclick="go('intro')">← 上一章</button>
+    <button class="nbb p" onclick="go('ui')">下一章：界面解析 →</button>
+  </div>
+</div>
+
+<!-- ══ 3. UI ══ -->
+<div id="sec-ui" class="sec">
+  <div class="ey"><span>第三章</span><span class="tag t-free" style="margin-left:0">免费核心</span></div>
+  <h2>界面全面解析</h2>
+  <p class="lead">PyCharm 的界面信息密度很高，初次上手容易迷失。掌握各个区域的功能定位，是高效使用 PyCharm 的第一步。</p>
+
+  <h3>整体布局图</h3>
+  <div class="dg">
+    <svg width="100%" viewBox="0 0 720 420" role="img">
+      <title>PyCharm 2026 界面布局详解</title>
+      <!-- Window -->
+      <rect x="8" y="8" width="704" height="404" rx="10" fill="#1e1f22" stroke="#43454a" stroke-width="1"/>
+      <!-- Title bar -->
+      <rect x="8" y="8" width="704" height="30" rx="10" fill="#2b2d30"/>
+      <rect x="8" y="26" width="704" height="12" fill="#2b2d30"/>
+      <circle cx="28" cy="23" r="5" fill="#ff7b7b" opacity=".7"/>
+      <circle cx="44" cy="23" r="5" fill="#ffc66d" opacity=".7"/>
+      <circle cx="60" cy="23" r="5" fill="#6aab73" opacity=".7"/>
+      <text x="360" y="27" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#7f8187">PyCharm 2026.1</text>
+
+      <!-- Menu bar -->
+      <rect x="8" y="38" width="704" height="24" fill="#2b2d30" stroke-bottom="none"/>
+      <rect x="8" y="62" width="704" height="1" fill="#43454a"/>
+      <text x="24" y="54" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#7f8187">文件</text>
+      <text x="56" y="54" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#7f8187">编辑</text>
+      <text x="88" y="54" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#7f8187">视图</text>
+      <text x="120" y="54" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#7f8187">导航</text>
+      <text x="154" y="54" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#7f8187">代码</text>
+      <text x="186" y="54" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#7f8187">重构</text>
+      <text x="218" y="54" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#7f8187">运行</text>
+      <text x="620" y="54" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#7f8187">🔍 搜索</text>
+      <text x="670" y="54" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#7f8187">⚙️</text>
+
+      <!-- Toolbar (Run buttons etc) -->
+      <rect x="8" y="63" width="704" height="30" fill="#2b2d30"/>
+      <rect x="8" y="93" width="704" height="1" fill="#43454a"/>
+      <rect x="20" y="70" width="80" height="16" rx="4" fill="#313438" stroke="#43454a" stroke-width="0.5"/>
+      <text x="60" y="81.5" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#bcbec4">main.py ▾</text>
+      <rect x="108" y="70" width="22" height="16" rx="4" fill="#6aab73"/>
+      <text x="119" y="81.5" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="white">▶</text>
+      <rect x="134" y="70" width="22" height="16" rx="4" fill="#313438" stroke="#43454a" stroke-width="0.5"/>
+      <text x="145" y="81.5" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#ff7b7b">🐛</text>
+      <text x="250" y="82" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#7f8187">🐍 Python 3.12 (venv)</text>
+
+      <!-- Left nav (tool window buttons) -->
+      <rect x="8" y="94" width="32" height="306" fill="#1e1f22" stroke="#43454a" stroke-width="0.5"/>
+      <text x="24" y="118" text-anchor="middle" font-size="13">📁</text>
+      <text x="24" y="146" text-anchor="middle" font-size="13">🔍</text>
+      <text x="24" y="174" text-anchor="middle" font-size="13">🌿</text>
+      <text x="24" y="202" text-anchor="middle" font-size="13">🤖</text>
+      <text x="24" y="230" text-anchor="middle" font-size="13">🐛</text>
+      <text x="24" y="372" text-anchor="middle" font-size="13">⚙️</text>
+
+      <!-- Project panel -->
+      <rect x="40" y="94" width="170" height="306" fill="#2b2d30" stroke="#43454a" stroke-width="0.5"/>
+      <text x="125" y="114" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#7f8187" font-weight="600">项目面板</text>
+      <text x="54" y="132" font-family="Noto Sans SC,sans-serif" font-size="10.5" fill="#bcbec4">📁 my_project</text>
+      <rect x="48" y="138" width="154" height="18" rx="3" fill="rgba(107,87,255,.15)"/>
+      <text x="66" y="151" font-family="JetBrains Mono,monospace" font-size="10" fill="#8b78ff">  📄 main.py</text>
+      <text x="66" y="170" font-family="JetBrains Mono,monospace" font-size="10" fill="#7f8187">  📄 utils.py</text>
+      <text x="66" y="189" font-family="JetBrains Mono,monospace" font-size="10" fill="#7f8187">  📁 tests/</text>
+      <text x="82" y="208" font-family="JetBrains Mono,monospace" font-size="10" fill="#7f8187">  📄 test_main.py</text>
+      <text x="66" y="227" font-family="JetBrains Mono,monospace" font-size="10" fill="#7f8187">  📄 requirements.txt</text>
+      <text x="54" y="246" font-family="Noto Sans SC,sans-serif" font-size="10.5" fill="#7f8187">📁 External Libraries</text>
+      <!-- Label -->
+      <text x="125" y="390" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#6b57ff" font-weight="600">① 项目树面板</text>
+
+      <!-- Editor area -->
+      <rect x="210" y="94" width="352" height="306" fill="#1e1f22"/>
+      <!-- Editor tabs -->
+      <rect x="210" y="94" width="352" height="24" fill="#2b2d30"/>
+      <rect x="214" y="98" width="80" height="16" rx="3" fill="#1e1f22"/>
+      <text x="254" y="109.5" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#bcbec4">main.py</text>
+      <text x="310" y="109.5" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#7f8187">utils.py</text>
+
+      <!-- Code content -->
+      <text x="222" y="138" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#cf8ef4">def</text>
+      <text x="245" y="138" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#6eb1e3">train_model</text>
+      <text x="320" y="138" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">(</text>
+      <text x="329" y="138" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">data</text>
+      <text x="353" y="138" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#6b57ff">:</text>
+      <text x="360" y="138" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#ffc66d">pd.DataFrame</text>
+      <text x="436" y="138" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">):</text>
+      <text x="222" y="158" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#4e5157" font-style="italic">    # 训练模型主流程</text>
+      <text x="222" y="178" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">    model</text>
+      <text x="265" y="178" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#6b57ff"> =</text>
+      <text x="278" y="178" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#ffc66d">LinearRegression</text>
+      <text x="380" y="178" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">()</text>
+      <!-- Autocomplete popup -->
+      <rect x="222" y="185" width="200" height="70" rx="5" fill="#313438" stroke="#555860" stroke-width="1"/>
+      <rect x="222" y="185" width="200" height="18" rx="5" fill="#393c42"/>
+      <rect x="222" y="196" width="200" height="7" fill="#393c42"/>
+      <text x="234" y="198" font-family="JetBrains Mono,monospace" font-size="10" fill="#8b78ff">▶ fit(X, y)</text>
+      <rect x="222" y="203" width="200" height="18" rx="0" fill="#2b2d30"/>
+      <text x="234" y="216" font-family="JetBrains Mono,monospace" font-size="10" fill="#bcbec4">  predict(X)</text>
+      <text x="234" y="234" font-family="JetBrains Mono,monospace" font-size="10" fill="#bcbec4">  score(X, y)</text>
+      <text x="234" y="252" font-family="JetBrains Mono,monospace" font-size="10" fill="#bcbec4">  get_params()</text>
+
+      <!-- Gutter -->
+      <rect x="210" y="118" width="12" height="282" fill="#1e1f22"/>
+      <text x="216" y="139" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#4e5157">1</text>
+      <text x="216" y="159" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#4e5157">2</text>
+      <text x="216" y="179" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#4e5157">3</text>
+      <!-- Label -->
+      <text x="386" y="390" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#6b57ff" font-weight="600">② 代码编辑器（核心工作区）</text>
+
+      <!-- Right panel: AI chat -->
+      <rect x="562" y="94" width="150" height="306" fill="#2b2d30" stroke="#43454a" stroke-width="0.5"/>
+      <text x="637" y="114" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#7f8187" font-weight="600">🤖 AI 对话面板</text>
+      <rect x="572" y="124" width="130" height="36" rx="5" fill="#313438"/>
+      <text x="582" y="138" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#bcbec4">给 train_model 写单</text>
+      <text x="582" y="152" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#bcbec4">元测试</text>
+      <rect x="572" y="166" width="130" height="60" rx="5" fill="rgba(107,87,255,.1)" stroke="rgba(107,87,255,.2)" stroke-width="0.5"/>
+      <text x="582" y="180" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#8b78ff">Junie: 好的，我来为</text>
+      <text x="582" y="194" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#8b78ff">train_model 创建完整</text>
+      <text x="582" y="208" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#8b78ff">的单元测试...</text>
+      <text x="637" y="390" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#6b57ff" font-weight="600">③ AI 对话/工具面板</text>
+
+      <!-- Bottom status bar -->
+      <rect x="8" y="400" width="704" height="12" rx="0" fill="#2b2d30"/>
+      <rect x="8" y="399" width="704" height="1" fill="#43454a"/>
+      <text x="24" y="408.5" font-family="Noto Sans SC,sans-serif" font-size="8" fill="#7f8187">行 10  列 1  UTF-8  LF  Python 3.12</text>
+      <text x="620" y="408.5" font-family="Noto Sans SC,sans-serif" font-size="8" fill="#7f8187">🤖 AI Pro  主分支</text>
+    </svg>
+  </div>
+  <p class="dgc">图：PyCharm 2026.1 界面布局——项目树 · 编辑器（含自动补全） · AI 面板 · 状态栏</p>
+
+  <h3>关键工具窗口速查</h3>
+  <div class="hkg">
+    <div class="hki"><span class="hkd">项目树</span><div class="hkk"><kbd>Alt</kbd><kbd>1</kbd></div></div>
+    <div class="hki"><span class="hkd">终端</span><div class="hkk"><kbd>Alt</kbd><kbd>F12</kbd></div></div>
+    <div class="hki"><span class="hkd">Python 控制台</span><div class="hkk"><kbd>Alt</kbd><kbd>F8</kbd></div></div>
+    <div class="hki"><span class="hkd">Git 面板</span><div class="hkk"><kbd>Alt</kbd><kbd>9</kbd></div></div>
+    <div class="hki"><span class="hkd">运行/调试输出</span><div class="hkk"><kbd>Alt</kbd><kbd>4</kbd></div></div>
+    <div class="hki"><span class="hkd">AI 对话</span><div class="hkk"><kbd>Alt</kbd><kbd>J</kbd></div></div>
+    <div class="hki"><span class="hkd">搜索一切</span><div class="hkk"><kbd>Shift</kbd><kbd>Shift</kbd></div></div>
+    <div class="hki"><span class="hkd">全局搜索文件</span><div class="hkk"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>N</kbd></div></div>
+  </div>
+
+  <div class="nav-b">
+    <button class="nbb" onclick="go('install')">← 上一章</button>
+    <button class="nbb p" onclick="go('project')">下一章：项目管理 →</button>
+  </div>
+</div>
+
+<!-- ══ 4. PROJECT ══ -->
+<div id="sec-project" class="sec">
+  <div class="ey"><span>第四章</span></div>
+  <h2>项目与 Python 解释器</h2>
+  <p class="lead">在 PyCharm 中，每个「Project」绑定一个 Python 解释器（通常是独立的虚拟环境）。正确配置解释器是避免依赖问题的关键。</p>
+
+  <h3>创建新项目</h3>
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div class="sb-s"><div class="st-t">File → New Project</div><div class="st-d">选择项目类型：Pure Python（通用）/ Django / FastAPI（Pro）/ 数据科学</div></div></div>
+    <div class="step"><div class="sn">2</div><div class="sb-s"><div class="st-t">配置 Python 解释器</div><div class="st-d">推荐选「New Virtualenv」，自动创建隔离的虚拟环境。也可选择 Conda/uv/Poetry 管理的环境</div></div></div>
+    <div class="step"><div class="sn">3</div><div class="sb-s"><div class="st-t">PyCharm 自动初始化项目结构</div><div class="st-d">创建 .idea/ 配置目录、venv/ 虚拟环境，以及 main.py 入口文件</div></div></div>
+  </div>
+
+  <h3>uv — 2026 年最推荐的包管理器<span class="nb">2026 默认</span></h3>
+  <p>PyCharm 2026.1 将 <code>uv</code> 作为新项目的默认包管理器。uv 由 Astral 开发，速度比 pip 快 10-100 倍：</p>
+  <pre><code><span class="pre-label">terminal</span><span class="cm"># 安装 uv</span>
+<span class="kw">pip</span> install uv
+
+<span class="cm"># 用 uv 创建虚拟环境</span>
+<span class="kw">uv</span> venv .venv
+
+<span class="cm"># 用 uv 安装依赖（比 pip 快10-100倍）</span>
+<span class="kw">uv</span> pip install numpy pandas scikit-learn
+
+<span class="cm"># 用 uv 从 requirements.txt 安装</span>
+<span class="kw">uv</span> pip install -r requirements.txt</code></pre>
+  <p style="font-size:13px;color:var(--text2);">在 PyCharm 中：Settings → Project → Python Interpreter → 选择 uv 作为包管理器</p>
+
+  <h3>解释器管理</h3>
+  <div class="card">
+    <h4>Settings → Project → Python Interpreter 中可以：</h4>
+    <table>
+      <tr><td>查看当前安装包</td><td>列表显示所有已安装库及版本</td></tr>
+      <tr><td>添加包</td><td>点击「+」→ 搜索 PyPI 包名 → Install</td></tr>
+      <tr><td>切换解释器</td><td>点击齿轮 → Add Interpreter → 选择已有环境</td></tr>
+      <tr><td>Conda 环境</td><td>需先安装 Miniconda，PyCharm 自动检测</td></tr>
+    </table>
+  </div>
+
+  <div class="call c-warn">
+    <div class="call-ico">⚠️</div>
+    <div class="call-b">
+      <div class="call-t">常见坑：不要用全局 Python</div>
+      永远为每个项目创建独立虚拟环境，避免不同项目的依赖冲突。如果看到 <code>import error</code>，第一步检查当前项目解释器是否正确。
+    </div>
+  </div>
+
+  <div class="nav-b">
+    <button class="nbb" onclick="go('ui')">← 上一章</button>
+    <button class="nbb p" onclick="go('editor')">下一章：代码编辑 →</button>
+  </div>
+</div>
+
+<!-- ══ 5. EDITOR ══ -->
+<div id="sec-editor" class="sec">
+  <div class="ey"><span>第五章</span></div>
+  <h2>代码编辑智能化</h2>
+  <p class="lead">PyCharm 的编辑器不只是「写字」——它深度理解 Python 语义，提供类型推断、智能重构、实时错误检测等专业级能力。</p>
+
+  <h3>智能自动补全</h3>
+  <p>PyCharm 有三个层次的补全：</p>
+  <div class="cg">
+    <div class="cc"><div class="ci">⚡</div><div class="ct">基础补全</div><div class="cd"><kbd>Ctrl</kbd>+<kbd>Space</kbd> 触发，补全变量、方法、关键词</div></div>
+    <div class="cc"><div class="ci">🧠</div><div class="ct">类型感知补全</div><div class="cd">根据类型注解精确推断，只显示当前类型可用的方法</div></div>
+    <div class="cc"><div class="ci">🤖</div><div class="ct">AI 补全（2026）</div><div class="cd">Next Edit Suggestions：预测下一个编辑位置，<kbd>Tab</kbd> 接受</div></div>
+  </div>
+
+  <h3>Next Edit Suggestions（NES）<span class="nb">2026.1 全新</span></h3>
+  <p>这是 2026.1 最重要的 AI 功能之一。当你修改代码时，PyCharm 自动预测级联的后续改动并内联显示建议：</p>
+  <div class="dg">
+    <svg width="100%" viewBox="0 0 700 200" role="img">
+      <title>Next Edit Suggestions 工作原理演示</title>
+      <!-- Before -->
+      <rect x="20" y="20" width="300" height="160" rx="8" fill="#1a1b1e" stroke="#43454a" stroke-width="1"/>
+      <text x="170" y="42" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10.5" fill="#7f8187" font-weight="600">你修改了函数签名</text>
+      <text x="34" y="66" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#cf8ef4">def</text>
+      <text x="58" y="66" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#6eb1e3">process</text>
+      <text x="105" y="66" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">(data</text>
+      <text x="138" y="66" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">,</text>
+      <rect x="144" y="53" width="56" height="18" rx="2" fill="rgba(107,87,255,.3)" stroke="rgba(107,87,255,.6)" stroke-width="1"/>
+      <text x="148" y="66" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#8b78ff"> batch=1</text>
+      <text x="200" y="66" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">):</text>
+      <text x="34" y="86" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#4e5157" font-style="italic">    ...</text>
+      <!-- Call site 1 (needs update) -->
+      <rect x="26" y="100" width="280" height="18" rx="3" fill="rgba(232,191,106,.08)" stroke="rgba(232,191,106,.2)" stroke-width="0.8"/>
+      <text x="34" y="113" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">result = </text>
+      <text x="92" y="113" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#6eb1e3">process</text>
+      <text x="140" y="113" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">(df)</text>
+      <text x="186" y="113" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#7f8187" font-style="italic">  ← Tab补全</text>
+      <rect x="26" y="124" width="280" height="18" rx="3" fill="rgba(232,191,106,.08)" stroke="rgba(232,191,106,.2)" stroke-width="0.8"/>
+      <text x="34" y="137" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">res2 = </text>
+      <text x="86" y="137" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#6eb1e3">process</text>
+      <text x="134" y="137" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">(df2)</text>
+      <text x="178" y="137" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#7f8187" font-style="italic">  ← Tab补全</text>
+      <!-- Arrow -->
+      <path d="M325 100 L370 100" fill="none" stroke="#43454a" stroke-width="1.5" marker-end="url(#a1)"/>
+      <text x="347" y="93" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#7f8187">Tab 接受</text>
+      <!-- After -->
+      <rect x="375" y="20" width="300" height="160" rx="8" fill="#1a1b1e" stroke="#6aab73" stroke-width="1"/>
+      <text x="525" y="42" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10.5" fill="#6aab73" font-weight="600">NES 自动补全所有调用处</text>
+      <text x="389" y="66" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#cf8ef4">def</text>
+      <text x="413" y="66" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#6eb1e3">process</text>
+      <text x="460" y="66" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">(data, batch=1):</text>
+      <text x="389" y="86" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#4e5157" font-style="italic">    ...</text>
+      <text x="389" y="113" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">result = </text>
+      <text x="447" y="113" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#6eb1e3">process</text>
+      <text x="495" y="113" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">(df, </text>
+      <text x="523" y="113" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#6aab73">batch=1</text>
+      <text x="576" y="113" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">)</text>
+      <text x="389" y="137" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">res2 = </text>
+      <text x="441" y="137" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#6eb1e3">process</text>
+      <text x="489" y="137" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">(df2, </text>
+      <text x="520" y="137" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#6aab73">batch=1</text>
+      <text x="573" y="137" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#bcbec4">)</text>
+    </svg>
+  </div>
+  <p class="dgc">图：修改函数签名后，NES 自动预测所有调用处的修改，按 Tab 逐个接受</p>
+
+  <h3>强大的重构功能</h3>
+  <table>
+    <thead><tr><th>重构操作</th><th>快捷键</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>重命名</td><td><kbd>Shift</kbd>+<kbd>F6</kbd></td><td>全局重命名变量/函数/类，自动更新所有引用</td></tr>
+      <tr><td>提取方法</td><td><kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>M</kbd></td><td>选中代码段，提取为独立函数</td></tr>
+      <tr><td>提取变量</td><td><kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>V</kbd></td><td>将表达式提取为变量</td></tr>
+      <tr><td>内联变量</td><td><kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>N</kbd></td><td>将变量替换回其表达式</td></tr>
+      <tr><td>移动文件</td><td>Refactor → Move</td><td>移动模块并自动修复所有 import</td></tr>
+      <tr><td>修改签名</td><td><kbd>Ctrl</kbd>+<kbd>F6</kbd></td><td>增删函数参数，自动更新所有调用处</td></tr>
+    </tbody>
+  </table>
+
+  <h3>代码检查（Inspections）</h3>
+  <p>PyCharm 在编辑时实时检查代码，不同颜色下划线代表不同级别：</p>
+  <pre><code><span class="pre-label">python</span><span class="cm"># 红色波浪线：错误（代码无法运行）</span>
+<span class="kw2">import</span> <span class="cl">nonexistent_module</span>  <span class="cm"># ~~~ 模块不存在</span>
+
+<span class="cm"># 黄色波浪线：警告（可能有问题）</span>
+<span class="kw">x</span> = <span class="nu">42</span>  <span class="cm"># ~~~ 变量已定义但未使用</span>
+
+<span class="cm"># 灰色：建议（代码风格）</span>
+<span class="kw">def</span> <span class="fn">foo</span>(x, y):  <span class="cm"># 缺少类型注解（可选建议）</span>
+    <span class="kw">return</span> x + y
+
+<span class="cm"># 绿色：正确，无问题 ✓</span>
+<span class="kw">def</span> <span class="fn">add</span>(x: <span class="dec">int</span>, y: <span class="dec">int</span>) -> <span class="dec">int</span>:
+    <span class="kw">return</span> x + y</code></pre>
+
+  <h3>常用编辑快捷键</h3>
+  <div class="hkg">
+    <div class="hki"><span class="hkd">查找用法</span><div class="hkk"><kbd>Alt</kbd><kbd>F7</kbd></div></div>
+    <div class="hki"><span class="hkd">跳转到定义</span><div class="hkk"><kbd>Ctrl</kbd><kbd>B</kbd></div></div>
+    <div class="hki"><span class="hkd">查看文档</span><div class="hkk"><kbd>Ctrl</kbd><kbd>Q</kbd></div></div>
+    <div class="hki"><span class="hkd">快速修复</span><div class="hkk"><kbd>Alt</kbd><kbd>Enter</kbd></div></div>
+    <div class="hki"><span class="hkd">格式化代码</span><div class="hkk"><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>L</kbd></div></div>
+    <div class="hki"><span class="hkd">整理 import</span><div class="hkk"><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>O</kbd></div></div>
+    <div class="hki"><span class="hkd">多光标选择</span><div class="hkk"><kbd>Alt</kbd>+点击</div></div>
+    <div class="hki"><span class="hkd">选择相同内容</span><div class="hkk"><kbd>Alt</kbd><kbd>J</kbd></div></div>
+  </div>
+
+  <div class="nav-b">
+    <button class="nbb" onclick="go('project')">← 上一章</button>
+    <button class="nbb p" onclick="go('debug')">下一章：调试器 →</button>
+  </div>
+</div>
+
+<!-- ══ 6. DEBUG ══ -->
+<div id="sec-debug" class="sec">
+  <div class="ey"><span>第六章</span><span class="tag t-new" style="margin-left:0">debugpy 新引擎</span></div>
+  <h2>调试器精通</h2>
+  <p class="lead">PyCharm 2026.1 将默认调试引擎升级为 <strong>debugpy</strong>（Debug Adapter Protocol），解决了旧版 socket 连接的竞态条件问题，调试更稳定，与整个 Python 生态对齐。</p>
+
+  <h3>断点类型详解</h3>
+  <div class="cg">
+    <div class="cc"><div class="ci">🔴</div><div class="ct">普通断点</div><div class="cd">代码行左侧点击，程序执行到此暂停</div></div>
+    <div class="cc"><div class="ci">🟡</div><div class="ct">条件断点</div><div class="cd">右键断点 → 添加条件，如 <code>i > 100</code>，仅满足条件时暂停</div></div>
+    <div class="cc"><div class="ci">🔵</div><div class="ct">日志断点</div><div class="cd">不暂停执行，仅打印变量值到控制台</div></div>
+    <div class="cc"><div class="ci">⚡</div><div class="ct">异常断点</div><div class="cd">在特定异常（如 ValueError）抛出时自动暂停</div></div>
+  </div>
+
+  <h3>调试界面与操作</h3>
+  <div class="dg">
+    <svg width="100%" viewBox="0 0 700 300" role="img">
+      <title>PyCharm 调试器界面布局</title>
+      <!-- Debug window -->
+      <rect x="10" y="10" width="680" height="280" rx="8" fill="#1a1b1e" stroke="#43454a" stroke-width="1"/>
+      <!-- Code area with debugger -->
+      <rect x="10" y="10" width="380" height="185" fill="#1a1b1e"/>
+      <text x="26" y="36" font-family="JetBrains Mono,monospace" font-size="10" fill="#4e5157">12</text>
+      <text x="46" y="36" font-family="JetBrains Mono,monospace" font-size="10" fill="#4e5157" font-style="italic">    # 遍历数据集</text>
+      <text x="26" y="54" font-family="JetBrains Mono,monospace" font-size="10" fill="#4e5157">13</text>
+      <text x="46" y="54" font-family="JetBrains Mono,monospace" font-size="10" fill="#cf8ef4">    for</text>
+      <text x="74" y="54" font-family="JetBrains Mono,monospace" font-size="10" fill="#bcbec4"> i, batch </font></text>
+      <text x="145" y="54" font-family="JetBrains Mono,monospace" font-size="10" fill="#cf8ef4">in</text>
+      <text x="158" y="54" font-family="JetBrains Mono,monospace" font-size="10" fill="#6eb1e3"> enumerate</text>
+      <text x="230" y="54" font-family="JetBrains Mono,monospace" font-size="10" fill="#bcbec4">(loader):</text>
+      <!-- Breakpoint line (highlighted) -->
+      <rect x="10" y="61" width="380" height="20" fill="rgba(232,191,106,.07)"/>
+      <circle cx="20" cy="71" r="5" fill="#ff7b7b"/>
+      <text x="26" y="75" font-family="JetBrains Mono,monospace" font-size="10" fill="#4e5157">14</text>
+      <text x="46" y="75" font-family="JetBrains Mono,monospace" font-size="10" fill="#bcbec4">        loss = </font></text>
+      <text x="112" y="75" font-family="JetBrains Mono,monospace" font-size="10" fill="#6eb1e3">model</font></text>
+      <text x="145" y="75" font-family="JetBrains Mono,monospace" font-size="10" fill="#bcbec4">(batch)</font></text>
+      <!-- Current line indicator -->
+      <text x="32" y="75" font-family="JetBrains Mono,monospace" font-size="10" fill="#ffc66d">→</text>
+      <!-- Inline values display -->
+      <text x="186" y="75" font-family="JetBrains Mono,monospace" font-size="9" fill="#6aab73" opacity=".7"> loss = tensor(0.342)</text>
+      <text x="26" y="93" font-family="JetBrains Mono,monospace" font-size="10" fill="#4e5157">15</text>
+      <text x="46" y="93" font-family="JetBrains Mono,monospace" font-size="10" fill="#bcbec4">        loss.backward()</font></text>
+      <!-- Debug toolbar -->
+      <rect x="10" y="185" width="380" height="28" fill="#2b2d30" stroke="#43454a" stroke-width="0.5"/>
+      <text x="26" y="203" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#7f8187">▶ 继续</text>
+      <text x="66" y="203" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#7f8187">⬇ 步过</text>
+      <text x="106" y="203" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#7f8187">⤵ 步入</text>
+      <text x="148" y="203" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#7f8187">⤴ 步出</text>
+      <text x="192" y="203" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#7f8187">↩ 重新运行</text>
+      <text x="248" y="203" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#7f8187">⏹ 停止</text>
+      <!-- Variables panel -->
+      <rect x="390" y="10" width="300" height="185" fill="#2b2d30" stroke="#43454a" stroke-width="0.5"/>
+      <text x="540" y="30" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#7f8187" font-weight="600">变量面板</text>
+      <text x="402" y="50" font-family="JetBrains Mono,monospace" font-size="10" fill="#cf8ef4">▶</text>
+      <text x="414" y="50" font-family="JetBrains Mono,monospace" font-size="10" fill="#bcbec4"> model</text>
+      <text x="490" y="50" font-family="JetBrains Mono,monospace" font-size="10" fill="#7f8187"> = LinearRegression</text>
+      <text x="402" y="68" font-family="JetBrains Mono,monospace" font-size="10" fill="#6aab73">  i</text>
+      <text x="490" y="68" font-family="JetBrains Mono,monospace" font-size="10" fill="#6897bb"> = 42</text>
+      <text x="402" y="86" font-family="JetBrains Mono,monospace" font-size="10" fill="#6aab73">  loss</text>
+      <text x="490" y="86" font-family="JetBrains Mono,monospace" font-size="10" fill="#6897bb"> = tensor(0.342)</text>
+      <text x="402" y="104" font-family="JetBrains Mono,monospace" font-size="10" fill="#cf8ef4">▶</text>
+      <text x="414" y="104" font-family="JetBrains Mono,monospace" font-size="10" fill="#bcbec4"> batch</text>
+      <text x="490" y="104" font-family="JetBrains Mono,monospace" font-size="10" fill="#7f8187"> = Tensor[32,128]</text>
+      <!-- Evaluate expression -->
+      <rect x="400" y="120" width="280" height="55" rx="5" fill="#313438" stroke="#555860" stroke-width="0.8"/>
+      <text x="414" y="134" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#7f8187">表达式求值：</text>
+      <text x="414" y="150" font-family="JetBrains Mono,monospace" font-size="10" fill="#ffc66d">loss.item() * 100</text>
+      <text x="414" y="168" font-family="JetBrains Mono,monospace" font-size="10" fill="#6aab73">→ 34.2</text>
+      <!-- Call stack -->
+      <rect x="10" y="213" width="680" height="77" fill="#2b2d30" stroke="#43454a" stroke-width="0.5"/>
+      <text x="26" y="232" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#7f8187" font-weight="600">调用栈：</text>
+      <text x="100" y="232" font-family="JetBrains Mono,monospace" font-size="10" fill="#8b78ff">train_epoch</text>
+      <text x="190" y="232" font-family="JetBrains Mono,monospace" font-size="10" fill="#7f8187"> main.py:14</text>
+      <text x="280" y="232" font-family="JetBrains Mono,monospace" font-size="10" fill="#bcbec4">→</text>
+      <text x="298" y="232" font-family="JetBrains Mono,monospace" font-size="10" fill="#6eb1e3">train</text>
+      <text x="330" y="232" font-family="JetBrains Mono,monospace" font-size="10" fill="#7f8187"> main.py:45</text>
+      <text x="420" y="232" font-family="JetBrains Mono,monospace" font-size="10" fill="#bcbec4">→</text>
+      <text x="438" y="232" font-family="JetBrains Mono,monospace" font-size="10" fill="#6eb1e3">main</text>
+      <text x="462" y="232" font-family="JetBrains Mono,monospace" font-size="10" fill="#7f8187"> main.py:82</text>
+    </svg>
+  </div>
+  <p class="dgc">图：调试器界面——断点高亮行、内联变量值、变量面板、调用栈</p>
+
+  <h3>debugpy 新架构优势<span class="nb">2026.1</span></h3>
+  <div class="feat-hl">
+    <div class="feat-hl-t">🚀 debugpy（Debug Adapter Protocol）</div>
+    <p style="margin:0;font-size:13.5px;color:var(--text2);line-height:1.7;">PyCharm 2026.1 将默认调试后端切换为 <strong>debugpy</strong>，这是 VS Code、PyCharm、Jupyter 等工具通用的行业标准协议（DAP）。优势：① 消除旧版 socket 等待的竞态条件；② 与 Jupyter 单元调试统一；③ 更稳定的 Docker/SSH 远程调试。可在 Settings → Build → Python Debugger 中配置。</p>
+  </div>
+
+  <h3>调试技巧</h3>
+  <div class="card">
+    <table>
+      <tr><td><strong>在调试时修改变量值</strong></td><td>变量面板中双击变量值 → 直接修改，测试不同输入不需要重启</td></tr>
+      <tr><td><strong>回到上一帧（Drop Frame）</strong></td><td>调用栈面板中右键 → Drop Frame，重新执行当前函数</td></tr>
+      <tr><td><strong>调试时运行代码片段</strong></td><td><kbd>Alt</kbd>+<kbd>F8</kbd> 打开表达式求值，可执行任意 Python 表达式</td></tr>
+      <tr><td><strong>调试 Django/Flask 应用</strong></td><td>Run → Edit Configurations → Debug 模式，自动配置框架调试</td></tr>
+    </table>
+  </div>
+
+  <div class="nav-b">
+    <button class="nbb" onclick="go('editor')">← 上一章</button>
+    <button class="nbb p" onclick="go('test')">下一章：测试框架 →</button>
+  </div>
+</div>
+
+<!-- ══ 7. TEST ══ -->
+<div id="sec-test" class="sec">
+  <div class="ey"><span>第七章</span></div>
+  <h2>测试与覆盖率</h2>
+  <p class="lead">PyCharm 深度集成 pytest / unittest，支持可视化测试运行、覆盖率高亮显示、参数化测试展开，是 Python 测试的最佳 IDE 体验。</p>
+
+  <h3>编写 pytest 测试</h3>
+  <pre><code><span class="pre-label">test_calculator.py</span><span class="kw2">import</span> <span class="cl">pytest</span>
+<span class="kw2">from</span> <span class="cl">calculator</span> <span class="kw2">import</span> <span class="cl">add</span>, <span class="cl">divide</span>
+
+<span class="cm"># 基础测试</span>
+<span class="kw">def</span> <span class="fn">test_add_positive</span>():
+    <span class="kw">assert</span> <span class="fn">add</span>(<span class="nu">2</span>, <span class="nu">3</span>) == <span class="nu">5</span>
+
+<span class="cm"># 参数化测试 - PyCharm 会展开为多个测试节点</span>
+<span class="dec">@pytest.mark.parametrize</span>(<span class="st">"a,b,expected"</span>, [
+    (<span class="nu">1</span>, <span class="nu">2</span>, <span class="nu">3</span>),
+    (<span class="nu">-1</span>, <span class="nu">1</span>, <span class="nu">0</span>),
+    (<span class="nu">0</span>, <span class="nu">0</span>, <span class="nu">0</span>),
+])
+<span class="kw">def</span> <span class="fn">test_add_parametrized</span>(a, b, expected):
+    <span class="kw">assert</span> <span class="fn">add</span>(a, b) == expected
+
+<span class="cm"># 异常测试</span>
+<span class="kw">def</span> <span class="fn">test_divide_by_zero</span>():
+    <span class="kw">with</span> pytest.raises(<span class="cl">ZeroDivisionError</span>):
+        <span class="fn">divide</span>(<span class="nu">10</span>, <span class="nu">0</span>)</code></pre>
+
+  <h3>运行测试的方式</h3>
+  <div class="cg">
+    <div class="cc"><div class="ci">▶️</div><div class="ct">绿色箭头运行</div><div class="cd">代码行左侧出现绿色三角，点击运行单个测试或测试类</div></div>
+    <div class="cc"><div class="ci">🖱️</div><div class="ct">右键菜单</div><div class="cd">右键文件/目录 → Run tests，批量运行一个模块或整个测试套件</div></div>
+    <div class="cc"><div class="ci">⚙️</div><div class="ct">Run Configuration</div><div class="cd">可配置测试参数、环境变量、工作目录，保存为可复用配置</div></div>
+    <div class="cc"><div class="ci">📊</div><div class="ct">覆盖率运行</div><div class="cd">右键 → Run with Coverage，自动高亮哪些行被测试覆盖（绿色），哪些未覆盖（红色）</div></div>
+  </div>
+
+  <h3>覆盖率可视化</h3>
+  <div class="diff">
+    <div class="diff-head">coverage.py 覆盖率结果（代码行高亮）</div>
+    <div class="diff-line dl-add">  def add(a, b):           # ✓ 已覆盖（绿色）</div>
+    <div class="diff-line dl-add">      return a + b         # ✓ 已覆盖</div>
+    <div class="diff-line dl-ctx"></div>
+    <div class="diff-line dl-del">  def complex_func(x):    # ✗ 未覆盖（红色）</div>
+    <div class="diff-line dl-del">      if x &gt; 100:          # ✗ 未覆盖</div>
+    <div class="diff-line dl-del">          return x * 2    # ✗ 未覆盖</div>
+    <div class="diff-line dl-ctx">      return x             # （部分覆盖）</div>
+  </div>
+  <p style="font-size:13px;color:var(--text2);">覆盖率报告在右侧「Coverage」面板显示总体百分比，点击行直接跳转到未覆盖代码。</p>
+
+  <div class="nav-b">
+    <button class="nbb" onclick="go('debug')">← 上一章</button>
+    <button class="nbb p" onclick="go('vcs')">下一章：Git 版本控制 →</button>
+  </div>
+</div>
+
+<!-- ══ 8. VCS ══ -->
+<div id="sec-vcs" class="sec">
+  <div class="ey"><span>第八章</span></div>
+  <h2>Git 版本控制</h2>
+  <p class="lead">PyCharm 内置完整的 Git 客户端，95% 的 Git 操作都可以在 IDE 内完成，无需切换到命令行。</p>
+
+  <h3>核心 Git 操作</h3>
+  <table>
+    <thead><tr><th>操作</th><th>界面入口</th><th>快捷键</th></tr></thead>
+    <tbody>
+      <tr><td>提交（Commit）</td><td>左侧 Git 图标 → Commit</td><td><kbd>Ctrl</kbd>+<kbd>K</kbd></td></tr>
+      <tr><td>推送（Push）</td><td>Git → Push</td><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd></td></tr>
+      <tr><td>拉取（Pull）</td><td>Git → Pull</td><td><kbd>Ctrl</kbd>+<kbd>T</kbd></td></tr>
+      <tr><td>创建分支</td><td>右下角分支名 → New Branch</td><td></td></tr>
+      <tr><td>切换分支</td><td>右下角分支名 → 选择分支</td><td></td></tr>
+      <tr><td>查看历史</td><td>Git → Show Git Log</td><td><kbd>Alt</kbd>+<kbd>9</kbd></td></tr>
+      <tr><td>差异对比</td><td>右键文件 → Git → Compare</td><td><kbd>Ctrl</kbd>+<kbd>D</kbd></td></tr>
+    </tbody>
+  </table>
+
+  <h3>内置合并冲突解决</h3>
+  <pre><code><span class="pre-label">merge conflict</span><span class="cm"><<<<<<< HEAD (你的改动)</span>
+<span class="kw">learning_rate</span> = <span class="nu">0.001</span>
+<span class="cm">=======</span>
+<span class="kw">learning_rate</span> = <span class="nu">0.01</span>
+<span class="cm">>>>>>>> feature-branch (对方的改动)</span></code></pre>
+  <p style="font-size:13.5px;color:var(--text2);">PyCharm 提供三列合并工具：<strong>左（本地）→ 中间（合并结果）← 右（远程）</strong>，点击箭头选择采用哪一侧，或手动编辑合并结果。</p>
+
+  <div class="call c-tip">
+    <div class="call-ico">💡</div>
+    <div class="call-b">
+      <div class="call-t">提交前检查</div>
+      PyCharm 的提交面板支持提交前自动运行代码检查、格式化、单元测试。在提交对话框底部启用「Before Commit」选项。
+    </div>
+  </div>
+
+  <div class="nav-b">
+    <button class="nbb" onclick="go('test')">← 上一章</button>
+    <button class="nbb p" onclick="go('ai')">下一章：AI 功能 →</button>
+  </div>
+</div>
+
+<!-- ══ 9. AI ══ -->
+<div id="sec-ai" class="sec">
+  <div class="ey"><span>第九章</span><span class="tag t-ai" style="margin-left:0">2026 AI 全解</span></div>
+  <h2>AI 功能全解</h2>
+  <p class="lead">PyCharm 2026 是真正的 AI 原生 IDE——不只是「补全增强」，而是多个 AI Agent 协同工作的完整生态，从代码生成到架构设计全覆盖。</p>
+
+  <h3>AI 生态总览（2026）</h3>
+  <div class="dg">
+    <svg width="100%" viewBox="0 0 700 240" role="img">
+      <title>PyCharm 2026 AI 生态图</title>
+      <defs>
+        <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Center: PyCharm -->
+      <circle cx="350" cy="120" r="42" fill="rgba(107,87,255,.2)" stroke="rgba(107,87,255,.5)" stroke-width="1.5"/>
+      <text x="350" y="115" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" fill="#8b78ff" font-weight="700">PyCharm</text>
+      <text x="350" y="133" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#6b57ff">AI 核心</text>
+
+      <!-- Junie -->
+      <rect x="30" y="30" width="130" height="60" rx="8" fill="#2b2d30" stroke="#cf8ef4" stroke-width="1"/>
+      <text x="95" y="58" text-anchor="middle" font-size="18">🤖</text>
+      <text x="95" y="78" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#cf8ef4" font-weight="600">Junie Agent</text>
+      <path d="M160 60 L306 100" fill="none" stroke="#cf8ef4" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#a2)"/>
+
+      <!-- Claude Agent -->
+      <rect x="30" y="150" width="130" height="60" rx="8" fill="#2b2d30" stroke="#e8bf6a" stroke-width="1"/>
+      <text x="95" y="178" text-anchor="middle" font-size="18">✦</text>
+      <text x="95" y="198" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#e8bf6a" font-weight="600">Claude Agent</text>
+      <path d="M160 175 L306 135" fill="none" stroke="#e8bf6a" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#a2)"/>
+
+      <!-- NES -->
+      <rect x="260" y="15" width="180" height="50" rx="8" fill="#2b2d30" stroke="#6aab73" stroke-width="1"/>
+      <text x="350" y="38" text-anchor="middle" font-size="16">⚡</text>
+      <text x="350" y="56" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#6aab73" font-weight="600">Next Edit Suggestions</text>
+      <path d="M350 65 L350 78" fill="none" stroke="#6aab73" stroke-width="1" marker-end="url(#a2)"/>
+
+      <!-- BYOK -->
+      <rect x="540" y="30" width="140" height="60" rx="8" fill="#2b2d30" stroke="#50b8c8" stroke-width="1"/>
+      <text x="610" y="58" text-anchor="middle" font-size="18">🔑</text>
+      <text x="610" y="76" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#50b8c8" font-weight="600">BYOK 自带密钥</text>
+      <path d="M540 60 L394 100" fill="none" stroke="#50b8c8" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#a2)"/>
+
+      <!-- ACP Registry -->
+      <rect x="540" y="150" width="140" height="60" rx="8" fill="#2b2d30" stroke="#f28b50" stroke-width="1"/>
+      <text x="610" y="178" text-anchor="middle" font-size="18">🗂️</text>
+      <text x="610" y="196" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#f28b50" font-weight="600">ACP 注册表</text>
+      <path d="M540 175 L394 138" fill="none" stroke="#f28b50" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#a2)"/>
+
+      <!-- MCP -->
+      <rect x="260" y="175" width="180" height="50" rx="8" fill="#2b2d30" stroke="#6eb1e3" stroke-width="1"/>
+      <text x="350" y="198" text-anchor="middle" font-size="16">🔗</text>
+      <text x="350" y="216" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#6eb1e3" font-weight="600">MCP 服务器集成</text>
+      <path d="M350 175 L350 162" fill="none" stroke="#6eb1e3" stroke-width="1" marker-end="url(#a2)"/>
+    </svg>
+  </div>
+  <p class="dgc">图：PyCharm 2026 AI 生态——多 Agent 协同，可接入任意 AI 模型</p>
+
+  <h3>Junie — JetBrains 官方 AI 编码 Agent</h3>
+  <div class="call c-ai">
+    <div class="call-ico">🤖</div>
+    <div class="call-b">
+      <div class="call-t">Junie 可以做什么</div>
+      自主<strong>规划、编写、优化、测试</strong>代码。对话示例：「帮我把这个数据处理脚本重构为支持批处理的类」「为 auth 模块生成完整的 pytest 测试套件」「分析这个函数的性能瓶颈并提出优化方案」。Junie 会自动读取上下文、修改文件、运行测试验证结果。
+    </div>
+  </div>
+  <p style="font-size:13.5px;color:var(--text2);">2026 版 Junie 更新：速度提升 30%，支持 MCP 服务器扩展，支持远程开发（macOS/Linux），GitHub PR 集成 EAP 阶段。</p>
+
+  <h3>Claude Agent — 第一个原生集成的第三方 Agent<span class="nb nb-ai">2025.3 新增</span></h3>
+  <p>Anthropic 的 Claude 成为第一个原生集成到 JetBrains IDE 的第三方 AI Agent，可直接在 AI 对话面板中切换使用 Claude 或 Junie，两者协同解决复杂任务。</p>
+
+  <h3>BYOK（Bring Your Own Key）<span class="nb">2026.1</span></h3>
+  <p>Settings → Tools → AI Assistant → 添加自己的 API Key（OpenAI / Anthropic / 本地模型），在 PyCharm 内使用自己订阅的 AI 模型：</p>
+  <pre><code><span class="pre-label">settings</span><span class="cm"># 支持的 AI 提供商（2026.1）</span>
+<span class="kw">OpenAI</span>:     GPT-4o, o3, o4-mini
+<span class="kw">Anthropic</span>:  Claude 3.5 Sonnet, Claude 3 Opus
+<span class="kw">本地模型</span>:    Ollama, llama.cpp, LiteLLM (OpenAI 兼容)
+<span class="kw">Google</span>:     Gemini 2.0 Flash, Gemini Pro</code></pre>
+
+  <h3>AI Playground — 多模型对比<span class="nb">2025.2</span></h3>
+  <p>More Tool Windows → AI Playground：同时向多个 AI 模型发送同一个 Prompt，横向对比响应质量。可配置 Temperature、Top P 等参数，非常适合 Prompt 工程师和 AI 应用开发者。</p>
+
+  <h3>AI Agents Debugger<span class="nb">2025.2</span></h3>
+  <p>专为 LangChain、AutoGen 等 Agent 框架设计的调试插件，可可视化 Agent 的推理链、工具调用、决策过程，解决 AI Agent 系统的「黑盒」问题。</p>
+
+  <div class="nav-b">
+    <button class="nbb" onclick="go('vcs')">← 上一章</button>
+    <button class="nbb p" onclick="go('jupyter')">下一章：Jupyter →</button>
+  </div>
+</div>
+
+<!-- ══ 10. JUPYTER ══ -->
+<div id="sec-jupyter" class="sec">
+  <div class="ey"><span>第十章</span><span class="tag t-free" style="margin-left:0">2025.1 起免费</span></div>
+  <h2>Jupyter Notebook 与数据科学</h2>
+  <p class="lead">PyCharm 2025.1 起将 Jupyter Notebook 支持纳入免费核心。2025.3.2 起更支持直连 Google Colab。在 IDE 内获得远超浏览器的 Notebook 体验。</p>
+
+  <h3>PyCharm Notebook 相比浏览器的优势</h3>
+  <div class="cg">
+    <div class="cc"><div class="ci">🧠</div><div class="ct">智能补全</div><div class="cd">DataFrame 列名、numpy 函数、sklearn 参数全部有类型感知补全</div></div>
+    <div class="cc"><div class="ci">🐛</div><div class="ct">单元格调试</div><div class="cd">可在 Notebook 单元格内设断点，用 debugpy 逐行调试！</div></div>
+    <div class="cc"><div class="ci">🔍</div><div class="ct">变量浏览器</div><div class="cd">运行后自动显示所有变量及其形状、类型、预览</div></div>
+    <div class="cc"><div class="ci">📊</div><div class="ct">DataFrame 视图</div><div class="cd">DataFrame 渲染为可排序、可过滤的交互式表格</div></div>
+    <div class="cc"><div class="ci">☁️</div><div class="ct">Google Colab</div><div class="cd">直连 Colab GPU，在 IDE 内使用云端算力</div></div>
+    <div class="cc"><div class="ci">🔢</div><div class="ct">SQL 单元格</div><div class="cd">在 Notebook 中直接写 SQL 查询数据库或 DataFrame</div></div>
+  </div>
+
+  <h3>连接 Google Colab<span class="nb">2025.3.2 免费</span></h3>
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div class="sb-s"><div class="st-t">打开 .ipynb 文件</div><div class="st-d">任意 Jupyter Notebook 文件</div></div></div>
+    <div class="step"><div class="sn">2</div><div class="sb-s"><div class="st-t">点击右上角 Kernel 下拉菜单 → 选择「Google Colab」</div><div class="st-d">首次使用需登录 Google 账号授权</div></div></div>
+    <div class="step"><div class="sn">3</div><div class="sb-s"><div class="st-t">PyCharm 自动创建 Colab 支持的服务器</div><div class="st-d">Notebook 在 Colab 云端运行，输出直接显示在 PyCharm 中</div></div></div>
+    <div class="step"><div class="sn">4</div><div class="sb-s"><div class="st-t">本地缺失文件可直接上传到 Colab</div><div class="st-d">PyCharm 自动检测依赖的本地文件，提示上传</div></div></div>
+  </div>
+
+  <h3>SQL 单元格<span class="nb">2025.1</span></h3>
+  <pre><code><span class="pre-label">notebook cell</span><span class="cm">%%sql</span>
+<span class="kw">SELECT</span> category, <span class="fn">AVG</span>(price) <span class="kw">as</span> avg_price, <span class="fn">COUNT</span>(*) <span class="kw">as</span> count
+<span class="kw">FROM</span> products
+<span class="kw">WHERE</span> price > <span class="nu">100</span>
+<span class="kw">GROUP BY</span> category
+<span class="kw">ORDER BY</span> avg_price <span class="kw">DESC</span>
+<span class="cm">-- 结果自动保存为 pandas DataFrame</span></code></pre>
+  <p style="font-size:13.5px;color:var(--text2);">支持查询数据库、pandas DataFrame、附加的 CSV 文件，结果自动存为 <code>_df_result</code> 变量可供后续单元格使用。</p>
+
+  <div class="nav-b">
+    <button class="nbb" onclick="go('ai')">← 上一章</button>
+    <button class="nbb p" onclick="go('remote')">下一章：远程开发 →</button>
+  </div>
+</div>
+
+<!-- ══ 11. REMOTE ══ -->
+<div id="sec-remote" class="sec">
+  <div class="ey"><span>第十一章</span><span class="tag t-pro" style="margin-left:0">Pro 功能</span></div>
+  <h2>远程开发（SSH / Docker / WSL）</h2>
+  <p class="lead">PyCharm Pro 支持在远程服务器上运行完整的 IDE 功能——代码补全、调试、测试全部在远端执行，本地只负责显示，彻底解决「本地跑得动，服务器跑不动」的问题。</p>
+
+  <h3>三种远程开发方式</h3>
+  <div class="cg">
+    <div class="cc"><div class="ci">🔐</div><div class="ct">SSH 远程开发</div><div class="cd">连接任意 Linux 服务器（云服务器/实验室集群），完整 IDE 功能在远端运行</div></div>
+    <div class="cc"><div class="ci">🐳</div><div class="ct">Docker 容器</div><div class="cd">在 Docker 容器内开发，保证环境一致性，无需在本地安装依赖</div></div>
+    <div class="cc"><div class="ci">🐧</div><div class="ct">WSL（Windows）</div><div class="cd">Windows 上通过 WSL2 使用 Linux 环境开发，解决 Windows 兼容性问题</div></div>
+  </div>
+
+  <h3>SSH 远程开发配置</h3>
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div class="sb-s"><div class="st-t">File → Remote Development → SSH</div><div class="st-d">输入服务器地址、端口、用户名，支持密码或 SSH 密钥认证</div></div></div>
+    <div class="step"><div class="sn">2</div><div class="sb-s"><div class="st-t">PyCharm 自动在服务器上部署后端</div><div class="st-d">首次连接会在服务器安装 JetBrains Remote 后端（~200MB），后续连接秒开</div></div></div>
+    <div class="step"><div class="sn">3</div><div class="sb-s"><div class="st-t">选择远程项目路径，配置远程解释器</div><div class="st-d">支持 uv（2026.1 新增 uv 远程支持）、Conda、虚拟环境</div></div></div>
+    <div class="step"><div class="sn">4</div><div class="sb-s"><div class="st-t">所有 IDE 功能（调试、测试、Git）在远端运行</div><div class="st-d">本地网络延迟对代码补全和调试几乎无影响，因为计算在远端</div></div></div>
+  </div>
+
+  <div class="call c-new">
+    <div class="call-ico">🆕</div>
+    <div class="call-b">
+      <div class="call-t">uv 远程支持（2026.1 新增）</div>
+      PyCharm 2026.1 将 uv 包管理器支持扩展到远程开发环境（SSH 和 Docker）。现在可以在远程目标上使用 uv 创建虚拟环境和管理依赖，与本地开发体验完全一致。
+    </div>
+  </div>
+
+  <div class="nav-b">
+    <button class="nbb" onclick="go('jupyter')">← 上一章</button>
+    <button class="nbb p" onclick="go('new2026')">下一章：2026 新特性 →</button>
+  </div>
+</div>
+
+<!-- ══ 12. NEW2026 ══ -->
+<div id="sec-new2026" class="sec">
+  <div class="ey"><span>第十二章</span><span class="tag t-new" style="margin-left:0">2026.1 最新</span></div>
+  <h2>2026.1 全新特性详解</h2>
+  <p class="lead">PyCharm 2026.1 于 2026 年 3-4 月发布，是 2026 年首个主版本。以下是所有重要更新的完整梳理。</p>
+
+  <h3>① debugpy 新调试引擎<span class="nb">架构升级</span></h3>
+  <div class="feat-hl">
+    <div class="feat-hl-t">🐛 默认切换为 debugpy（Debug Adapter Protocol）</div>
+    <p style="margin:0;font-size:13.5px;color:var(--text2);line-height:1.7;">用行业标准 DAP 协议替代旧版 socket 连接逻辑，消除竞态条件和时序边缘情况导致的调试失败。与 Jupyter 调试、VS Code 远程调试协议对齐。可在 <strong>Settings → Build → Python Debugger</strong> 配置是否使用 debugpy。</p>
+  </div>
+
+  <h3>② Next Edit Suggestions（NES）<span class="nb">全新 AI 功能</span></h3>
+  <div class="feat-hl">
+    <div class="feat-hl-t">⚡ 预测式编辑建议，Tab→Tab 体验</div>
+    <p style="margin:0;font-size:13.5px;color:var(--text2);line-height:1.7;">当你修改代码时，PyCharm AI 实时预测需要级联修改的位置，内联灰色显示建议。按 <kbd>Tab</kbd> 接受当前建议，再按 <kbd>Tab</kbd> 跳到下一个建议位置。<strong>不是 AI 全盘重写</strong>，而是精准的逐步引导，开发者始终保持控制权。典型场景：函数重命名、参数变更、接口修改的连带更新。</p>
+  </div>
+
+  <h3>③ JavaScript/TypeScript/CSS 全部免费<span class="nb nb-free">2026.1 免费开放</span></h3>
+  <div class="feat-hl">
+    <div class="feat-hl-t">🌐 前端工具向所有用户开放</div>
+    <p style="margin:0;font-size:13.5px;color:var(--text2);line-height:1.7;">此前需要 Pro 订阅的 JavaScript、TypeScript、CSS 高级功能——导航、代码智能、重构——现在对所有用户<strong>完全免费</strong>。全栈 Python 开发者（FastAPI + React）无需额外订阅即可享受完整前端支持。</p>
+  </div>
+
+  <h3>④ ACP Registry — AI Agent 应用市场<span class="nb">全新</span></h3>
+  <div class="feat-hl">
+    <div class="feat-hl-t">🗂️ 内置 AI 编码 Agent 目录</div>
+    <p style="margin:0;font-size:13.5px;color:var(--text2);line-height:1.7;">ACP（Agent Control Protocol）Registry 是一个内置在 IDE 中的 AI 编码 Agent 目录，帮助你发现和集成最新的 AI 工具。随着 AI 编码 Agent 日新月异，ACP Registry 让你在同一个工作流中选择和切换最适合当前任务的 Agent。</p>
+  </div>
+
+  <h3>⑤ BYOK（Bring Your Own Key）<span class="nb">新增</span></h3>
+  <div class="feat-hl">
+    <div class="feat-hl-t">🔑 使用自己的 AI API Key</div>
+    <p style="margin:0;font-size:13.5px;color:var(--text2);line-height:1.7;">在 IDE 设置中直接配置来自 OpenAI、Anthropic 或兼容提供商（含本地模型）的 API Key。使用自己的订阅，控制成本，在 PyCharm 内完成所有 AI 辅助开发。</p>
+  </div>
+
+  <h3>⑥ 远程开发 uv 支持<span class="nb">新增</span></h3>
+  <p>uv 包管理器支持延伸到 SSH 和 Docker 远程开发环境，与本地开发体验统一。</p>
+
+  <h3>2026 路线图（近期更新）</h3>
+  <table>
+    <thead><tr><th>版本</th><th>发布时间</th><th>核心更新</th></tr></thead>
+    <tbody>
+      <tr><td><strong style="color:var(--teal)">2025.3.2</strong></td><td>2026年1月</td><td>Google Colab 集成（免费核心）、Claude Agent 首次集成</td></tr>
+      <tr><td><strong style="color:var(--yellow2)">2026.1</strong></td><td>2026年3-4月</td><td>debugpy、NES、BYOK、ACP Registry、JS/TS 免费、远程 uv</td></tr>
+      <tr><td><strong style="color:var(--text3)">2026.2（计划中）</strong></td><td>2026年下半年</td><td>更多 AI 功能、性能优化（关注官方博客）</td></tr>
+    </tbody>
+  </table>
+
+  <div class="nav-b">
+    <button class="nbb" onclick="go('remote')">← 上一章</button>
+    <button class="nbb p" onclick="go('tips')">最后一章：效率技巧 →</button>
+  </div>
+</div>
+
+<!-- ══ 13. TIPS ══ -->
+<div id="sec-tips" class="sec">
+  <div class="ey"><span>第十三章</span><span class="tag t-new" style="margin-left:0">效率提升</span></div>
+  <h2>效率技巧与完整工作流</h2>
+  <p class="lead">掌握这些技巧，让 PyCharm 从「会用」升级到「精通」——减少重复操作，把精力留给真正的思考。</p>
+
+  <h3>必知快捷键大全</h3>
+  <div class="hkg">
+    <div class="hki"><span class="hkd">搜索一切（双击 Shift）</span><div class="hkk"><kbd>Shift</kbd><kbd>Shift</kbd></div></div>
+    <div class="hki"><span class="hkd">运行当前文件</span><div class="hkk"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>F10</kbd></div></div>
+    <div class="hki"><span class="hkd">最近文件列表</span><div class="hkk"><kbd>Ctrl</kbd><kbd>E</kbd></div></div>
+    <div class="hki"><span class="hkd">最近编辑位置</span><div class="hkk"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>E</kbd></div></div>
+    <div class="hki"><span class="hkd">快速修复/意图动作</span><div class="hkk"><kbd>Alt</kbd><kbd>Enter</kbd></div></div>
+    <div class="hki"><span class="hkd">重构菜单</span><div class="hkk"><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>T</kbd></div></div>
+    <div class="hki"><span class="hkd">查看结构（方法列表）</span><div class="hkk"><kbd>Ctrl</kbd><kbd>F12</kbd></div></div>
+    <div class="hki"><span class="hkd">跳转到上/下一个错误</span><div class="hkk"><kbd>F2</kbd></div></div>
+    <div class="hki"><span class="hkd">在文件中查找</span><div class="hkk"><kbd>Ctrl</kbd><kbd>F</kbd></div></div>
+    <div class="hki"><span class="hkd">全局查找</span><div class="hkk"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>F</kbd></div></div>
+    <div class="hki"><span class="hkd">列选择模式</span><div class="hkk"><kbd>Alt</kbd>+拖选</div></div>
+    <div class="hki"><span class="hkd">折叠/展开代码块</span><div class="hkk"><kbd>Ctrl</kbd><kbd>-/+</kbd></div></div>
+  </div>
+
+  <h3>推荐必装插件</h3>
+  <div class="plug">
+    <div class="plug-ico">🦺</div>
+    <div>
+      <div class="plug-n">Ruff</div>
+      <div class="plug-d">Astral 出品的超快 Python Linter，替代 flake8/pylint/isort 等多个工具。PyCharm 2025.3 起原生集成，Settings → Python → Tools → Ruff 一键启用。</div>
+      <div class="plug-tags"><span class="plug-tag">代码质量</span><span class="plug-tag">推荐</span></div>
+    </div>
+  </div>
+  <div class="plug">
+    <div class="plug-ico">🔍</div>
+    <div>
+      <div class="plug-n">Pyright / ty</div>
+      <div class="plug-d">微软 Pyright 和 Astral ty 类型检查器已在 PyCharm 2025.3 中集成。比内置检查更严格，帮助在运行前发现类型错误。Settings → Python → Tools 中启用。</div>
+      <div class="plug-tags"><span class="plug-tag">类型检查</span><span class="plug-tag">2025.3</span></div>
+    </div>
+  </div>
+  <div class="plug">
+    <div class="plug-ico">🌈</div>
+    <div>
+      <div class="plug-n">Rainbow Brackets</div>
+      <div class="plug-d">为嵌套括号着色，大幅提升复杂表达式的可读性。在深层嵌套的 Python 代码（如多层 lambda、列表推导）中特别有用。</div>
+      <div class="plug-tags"><span class="plug-tag">可视化</span></div>
+    </div>
+  </div>
+  <div class="plug">
+    <div class="plug-ico">🐙</div>
+    <div>
+      <div class="plug-n">GitHub Copilot</div>
+      <div class="plug-d">如果你已有 GitHub Copilot 订阅，可作为 PyCharm AI 的补充或替代。在 JetBrains Marketplace 搜索安装，与 Junie 可同时使用。</div>
+      <div class="plug-tags"><span class="plug-tag">AI 补全</span><span class="plug-tag">付费</span></div>
+    </div>
+  </div>
+  <div class="plug">
+    <div class="plug-ico">📝</div>
+    <div>
+      <div class="plug-n">String Manipulation</div>
+      <div class="plug-d">提供丰富的字符串转换操作：驼峰→下划线、base64 编解码、URL 编解码、大小写转换等，通过快捷键菜单直接操作选中文本。</div>
+      <div class="plug-tags"><span class="plug-tag">文本处理</span></div>
+    </div>
+  </div>
+
+  <h3>高效 Python 开发工作流</h3>
+  <div class="dg">
+    <svg width="100%" viewBox="0 0 700 170" role="img">
+      <title>PyCharm 高效开发工作流</title>
+      <defs>
+        <marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <rect x="20" y="45" width="95" height="80" rx="8" fill="#2b2d30" stroke="#6aab73" stroke-width="1"/>
+      <text x="67" y="73" text-anchor="middle" font-size="16">💡</text>
+      <text x="67" y="93" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#6aab73" font-weight="600">需求</text>
+      <text x="67" y="110" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#7f8187">与 Junie 对话</text>
+
+      <path d="M115 85 L143 85" fill="none" stroke="#43454a" stroke-width="1.5" marker-end="url(#a3)"/>
+
+      <rect x="148" y="45" width="95" height="80" rx="8" fill="#2b2d30" stroke="#6eb1e3" stroke-width="1"/>
+      <text x="195" y="73" text-anchor="middle" font-size="16">✏️</text>
+      <text x="195" y="93" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#6eb1e3" font-weight="600">编写代码</text>
+      <text x="195" y="110" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#7f8187">NES + 补全</text>
+
+      <path d="M243 85 L271 85" fill="none" stroke="#43454a" stroke-width="1.5" marker-end="url(#a3)"/>
+
+      <rect x="276" y="45" width="95" height="80" rx="8" fill="#2b2d30" stroke="#cf8ef4" stroke-width="1"/>
+      <text x="323" y="73" text-anchor="middle" font-size="16">🐛</text>
+      <text x="323" y="93" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#cf8ef4" font-weight="600">调试</text>
+      <text x="323" y="110" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#7f8187">debugpy + 断点</text>
+
+      <path d="M371 85 L399 85" fill="none" stroke="#43454a" stroke-width="1.5" marker-end="url(#a3)"/>
+
+      <rect x="404" y="45" width="95" height="80" rx="8" fill="#2b2d30" stroke="#ffc66d" stroke-width="1"/>
+      <text x="451" y="73" text-anchor="middle" font-size="16">🧪</text>
+      <text x="451" y="93" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#ffc66d" font-weight="600">测试</text>
+      <text x="451" y="110" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#7f8187">pytest + 覆盖率</text>
+
+      <path d="M499 85 L527 85" fill="none" stroke="#43454a" stroke-width="1.5" marker-end="url(#a3)"/>
+
+      <rect x="532" y="45" width="148" height="80" rx="8" fill="rgba(107,87,255,.15)" stroke="rgba(107,87,255,.4)" stroke-width="1"/>
+      <text x="606" y="73" text-anchor="middle" font-size="16">🚀</text>
+      <text x="606" y="93" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#8b78ff" font-weight="600">提交 & 部署</text>
+      <text x="606" y="110" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#6b57ff">Git + CI/CD</text>
+    </svg>
+  </div>
+
+  <h3>给不同用户的学习路线</h3>
+  <div class="card">
+    <table>
+      <thead><tr><th>用户类型</th><th>重点章节</th><th>必装功能</th></tr></thead>
+      <tbody>
+        <tr><td>🐍 Python 入门者</td><td>安装 → 界面 → 编辑器 → 调试</td><td>免费核心，uv 虚拟环境</td></tr>
+        <tr><td>🔬 数据科学家</td><td>Jupyter → AI → 远程开发</td><td>免费核心 + Colab 集成</td></tr>
+        <tr><td>🌐 Web 开发者</td><td>项目 → 调试 → Git → AI</td><td>Pro（Django/FastAPI 框架支持）</td></tr>
+        <tr><td>🤖 AI/ML 工程师</td><td>AI 功能 → Jupyter → 远程 → 调试</td><td>Pro + AI Agents Debugger</td></tr>
+        <tr><td>👥 团队协作</td><td>Git → 测试 → 远程开发</td><td>Pro（团队工具、Docker 支持）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top:30px;border-color:var(--accent);background:var(--acl2);">
+    <p style="text-align:center;font-family:'Inter',sans-serif;font-size:17px;color:var(--bright);margin-bottom:8px;font-weight:700;">🎓 恭喜你完成 PyCharm 2026 完全指南！</p>
+    <p style="text-align:center;font-size:13px;color:var(--text2);margin:0;line-height:1.9;">PyCharm 的深度远超一天能掌握的范围。但记住：每天用好一个新功能，<br>三个月后你将成为团队中最高效的 Python 开发者。</p>
+    <p style="text-align:center;margin-top:12px;font-size:11.5px;color:var(--text3);">官网：jetbrains.com/pycharm · 当前版本：2026.1 · 更新日期：2026年3-4月</p>
+  </div>
+
+  <div class="nav-b">
+    <button class="nbb" onclick="go('new2026')">← 上一章</button>
+    <button class="nbb p" onclick="go('intro')">↩ 回到开始</button>
+  </div>
+</div>
+
+</div></main>
+
+<script>
+const ss=['intro','install','ui','project','editor','debug','test','vcs','ai','jupyter','remote','new2026','tips'];
+function go(id){
+  ss.forEach(s=>{
+    document.getElementById('sec-'+s)?.classList.toggle('active',s===id);
+  });
+  document.querySelectorAll('.nav-btn').forEach(b=>{
+    b.classList.toggle('active', b.getAttribute('onclick')===`go('${id}')`);
+  });
+  document.querySelector('.main')?.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo && window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

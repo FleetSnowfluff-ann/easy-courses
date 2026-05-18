@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notion 完全学习指南</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f3;
+  --bg2: #ffffff;
+  --bg3: #f1efe9;
+  --bg4: #e8e5dc;
+  --border: #e3e0d5;
+  --border2: #ccc9bc;
+  --text: #37352f;
+  --text2: #6b6860;
+  --text3: #a8a49a;
+  --accent: #2383e2;
+  --accent-light: #e8f2fc;
+  --accent2: #1d6cb3;
+  --notion: #000000;
+  --red: #d44c47;
+  --orange: #d9730d;
+  --yellow: #cb912f;
+  --green: #448361;
+  --teal: #3d9970;
+  --purple: #7950a1;
+  --pink: #c14f8a;
+  --red-light: #fdecea;
+  --orange-light: #fdf3ec;
+  --yellow-light: #fdf8ec;
+  --green-light: #eef3ec;
+  --purple-light: #f4edf9;
+  --radius: 8px;
+  --radius-sm: 5px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  line-height: 1.75;
+  display: flex;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 240px;
+  min-height: 100vh;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+  padding: 0 0 60px;
+  z-index: 100;
+}
+.sidebar-header {
+  padding: 24px 16px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.logo-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.logo-box {
+  width: 32px; height: 32px;
+  background: var(--notion);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  color: white;
+  font-family: 'Lora', serif;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+.logo-title {
+  font-family: 'Lora', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+.logo-sub {
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.04em;
+}
+.nav-group {
+  padding: 12px 8px 4px;
+}
+.nav-group-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 8px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  color: var(--text2);
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.12s, color 0.12s;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active { background: var(--bg3); color: var(--text); font-weight: 500; }
+.nav-item .nav-icon { font-size: 14px; flex-shrink: 0; width: 18px; text-align: center; }
+.nav-badge {
+  margin-left: auto;
+  font-size: 9.5px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+.badge-basic { background: #e8f5e9; color: #2e7d32; }
+.badge-mid { background: #fff3e0; color: #e65100; }
+.badge-adv { background: #ede7f6; color: #6a1b9a; }
+
+/* ── Main ── */
+.main {
+  margin-left: 240px;
+  flex: 1;
+  min-height: 100vh;
+}
+.content {
+  max-width: 780px;
+  padding: 64px 60px 120px;
+}
+
+/* ── Sections ── */
+.section { display: none; animation: fadeIn 0.25s ease; }
+.section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ── Typography ── */
+.section-eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: var(--text3);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+h2 {
+  font-family: 'Lora', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+.section-lead {
+  font-size: 15px;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+h3 {
+  font-family: 'Lora', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 36px 0 12px;
+  letter-spacing: -0.01em;
+}
+h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 20px 0 8px;
+}
+p { margin-bottom: 14px; line-height: 1.8; color: var(--text); }
+strong { color: var(--text); font-weight: 600; }
+
+/* ── Feature cards ── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+  margin: 16px 0;
+}
+.feat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+.feat-card:hover { box-shadow: var(--shadow); border-color: var(--border2); }
+.feat-icon { font-size: 22px; margin-bottom: 8px; }
+.feat-title { font-size: 13.5px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.feat-desc { font-size: 12.5px; color: var(--text2); line-height: 1.6; }
+
+/* ── Inline card ── */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin: 14px 0;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Code ── */
+pre, code { font-family: 'JetBrains Mono', monospace; }
+code {
+  background: var(--bg3);
+  color: var(--red);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 12.5px;
+  border: 1px solid var(--border);
+}
+pre {
+  background: var(--text);
+  color: #e8e5dc;
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  overflow-x: auto;
+  margin: 14px 0;
+  font-size: 12.5px;
+  line-height: 1.75;
+}
+pre code { background: none; color: inherit; border: none; padding: 0; font-size: inherit; }
+.ck { color: #82cfff; }   /* key */
+.cv { color: #a8ff78; }   /* value */
+.ch { color: #ffd580; }   /* heading */
+.cc { color: #6a737d; }   /* comment */
+.cl { color: #79c0ff; }   /* link */
+.ct { color: #ff9e64; }   /* tag */
+
+/* ── Callouts ── */
+.callout {
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin: 16px 0;
+  font-size: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.callout-icon { font-size: 18px; flex-shrink: 0; line-height: 1.4; }
+.callout-body { flex: 1; }
+.callout-title { font-weight: 600; margin-bottom: 3px; font-size: 13px; }
+.callout-info { background: var(--accent-light); border: 1px solid #c2d8f5; }
+.callout-info .callout-title { color: var(--accent2); }
+.callout-tip { background: var(--green-light); border: 1px solid #c0d9c2; }
+.callout-tip .callout-title { color: var(--green); }
+.callout-warn { background: var(--yellow-light); border: 1px solid #e8d9a0; }
+.callout-warn .callout-title { color: var(--yellow); }
+.callout-note { background: var(--purple-light); border: 1px solid #d0b8e8; }
+.callout-note .callout-title { color: var(--purple); }
+
+/* ── Steps ── */
+.steps { margin: 16px 0; }
+.step {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 18px;
+  position: relative;
+}
+.step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 32px;
+  width: 1px;
+  height: calc(100% - 14px);
+  background: var(--border);
+}
+.step-num {
+  width: 29px; height: 29px;
+  border-radius: 50%;
+  background: var(--text);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.step-body { flex: 1; padding-top: 3px; }
+.step-title { font-weight: 600; color: var(--text); font-size: 14px; margin-bottom: 4px; }
+.step-desc { color: var(--text2); font-size: 13.5px; line-height: 1.65; }
+
+/* ── Table ── */
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13.5px; }
+th {
+  background: var(--bg3);
+  color: var(--text2);
+  font-weight: 600;
+  text-align: left;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border2);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+td { padding: 8px 14px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg3); }
+
+/* ── Keyboard ── */
+kbd {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text2);
+  box-shadow: var(--shadow-sm);
+}
+.hotkey-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 14px 0;
+}
+.hotkey-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 7px 12px;
+  font-size: 12.5px;
+  gap: 8px;
+}
+.hotkey-desc { color: var(--text2); }
+.hotkey-keys { display: flex; gap: 3px; flex-shrink: 0; }
+
+/* ── Diagram wrap ── */
+.diagram {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 20px 16px;
+  margin: 16px 0;
+  overflow-x: auto;
+  box-shadow: var(--shadow-sm);
+}
+.diagram-caption {
+  font-size: 11.5px;
+  color: var(--text3);
+  text-align: center;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  letter-spacing: 0.02em;
+}
+
+/* ── Block type examples ── */
+.block-demo {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 14px 0;
+}
+.block-demo-header {
+  background: var(--bg3);
+  padding: 8px 16px;
+  font-size: 11px;
+  color: var(--text3);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+}
+.block-demo-body { padding: 16px 20px; }
+.notion-h1 { font-family: 'Lora', serif; font-size: 26px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.notion-h2 { font-family: 'Lora', serif; font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 4px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+.notion-h3 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.notion-p { font-size: 14px; color: var(--text2); margin-bottom: 6px; line-height: 1.7; }
+.notion-bullet { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px; font-size: 14px; color: var(--text2); }
+.notion-bullet::before { content: '•'; color: var(--text3); flex-shrink: 0; }
+.notion-toggle { display: flex; align-items: flex-start; gap: 6px; font-size: 14px; margin-bottom: 6px; }
+.notion-toggle-arrow { color: var(--text3); flex-shrink: 0; }
+.notion-callout {
+  background: var(--yellow-light);
+  border-radius: 4px;
+  padding: 10px 14px;
+  display: flex;
+  gap: 8px;
+  font-size: 13.5px;
+  margin-bottom: 6px;
+}
+.notion-quote {
+  border-left: 3px solid var(--border2);
+  padding: 4px 12px;
+  font-style: italic;
+  color: var(--text2);
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.notion-divider { height: 1px; background: var(--border); margin: 10px 0; }
+.notion-todo { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text2); margin-bottom: 4px; }
+.notion-checkbox { width: 14px; height: 14px; border: 1.5px solid var(--border2); border-radius: 3px; flex-shrink: 0; }
+.notion-checkbox.checked { background: var(--accent); border-color: var(--accent); display: flex; align-items: center; justify-content: center; }
+.notion-checkbox.checked::after { content: '✓'; color: white; font-size: 9px; }
+.notion-code {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+/* ── DB view tabs ── */
+.db-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.db-tab {
+  padding: 6px 14px;
+  font-size: 12.5px;
+  color: var(--text2);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.15s;
+  font-family: 'Noto Sans SC', sans-serif;
+  background: none;
+  border-top: none; border-left: none; border-right: none;
+}
+.db-tab.active { color: var(--text); border-bottom-color: var(--text); font-weight: 500; }
+.db-view { display: none; }
+.db-view.active { display: block; }
+
+/* ── Notion block colors ── */
+.color-strip { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+.color-swatch {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ── Nav buttons ── */
+.nav-bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 56px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+}
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text2);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: 'Noto Sans SC', sans-serif;
+  transition: all 0.12s;
+  box-shadow: var(--shadow-sm);
+}
+.nav-btn:hover { border-color: var(--border2); color: var(--text); box-shadow: var(--shadow); }
+.nav-btn.primary {
+  background: var(--text);
+  border-color: var(--text);
+  color: white;
+}
+.nav-btn.primary:hover { background: #555; border-color: #555; }
+
+/* ── Progress bar ── */
+.progress-bar {
+  height: 3px;
+  background: var(--bg4);
+  border-radius: 2px;
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+.progress-fill { height: 100%; background: var(--text); border-radius: 2px; transition: width 0.4s; }
+
+/* ── Formula / inline code styled ── */
+.formula {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  color: var(--text);
+  margin: 10px 0;
+}
+
+blockquote {
+  border-left: 3px solid var(--border2);
+  padding: 10px 18px;
+  color: var(--text2);
+  font-style: italic;
+  margin: 14px 0;
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+@media (max-width: 860px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+  .content { padding: 28px 18px 80px; }
+  .hotkey-grid { grid-template-columns: 1fr; }
+  .card-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo-row">
+      <div class="logo-box">N</div>
+      <div>
+        <div class="logo-title">Notion 完全指南</div>
+        <div class="logo-sub">从零开始 · 2024 版</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">入门起步</div>
+    <button class="nav-item active" onclick="show('intro',1)"><span class="nav-icon">✦</span> Notion 是什么？<span class="nav-badge badge-basic">基础</span></button>
+    <button class="nav-item" onclick="show('start',2)"><span class="nav-icon">⚡</span> 注册与界面<span class="nav-badge badge-basic">基础</span></button>
+    <button class="nav-item" onclick="show('blocks',3)"><span class="nav-icon">⬛</span> Block 块编辑器<span class="nav-badge badge-basic">基础</span></button>
+    <button class="nav-item" onclick="show('pages',4)"><span class="nav-icon">📄</span> 页面与层级结构<span class="nav-badge badge-basic">基础</span></button>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">核心功能</div>
+    <button class="nav-item" onclick="show('database',5)"><span class="nav-icon">🗃️</span> 数据库核心<span class="nav-badge badge-mid">进阶</span></button>
+    <button class="nav-item" onclick="show('views',6)"><span class="nav-icon">👁️</span> 六种数据库视图<span class="nav-badge badge-mid">进阶</span></button>
+    <button class="nav-item" onclick="show('properties',7)"><span class="nav-icon">🏷️</span> 属性与过滤排序<span class="nav-badge badge-mid">进阶</span></button>
+    <button class="nav-item" onclick="show('relations',8)"><span class="nav-icon">🔗</span> 关联与汇总<span class="nav-badge badge-mid">进阶</span></button>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">高阶应用</div>
+    <button class="nav-item" onclick="show('formula',9)"><span class="nav-icon">∑</span> 公式与计算<span class="nav-badge badge-adv">高级</span></button>
+    <button class="nav-item" onclick="show('template',10)"><span class="nav-icon">📋</span> 模板系统<span class="nav-badge badge-adv">高级</span></button>
+    <button class="nav-item" onclick="show('workflow',11)"><span class="nav-icon">🚀</span> 工作流实战<span class="nav-badge badge-adv">高级</span></button>
+  </div>
+</nav>
+
+<!-- ═══════════════════ MAIN ═══════════════════ -->
+<main class="main">
+<div class="content">
+
+<!-- ═══════ 1. INTRO ═══════ -->
+<div id="sec-intro" class="section active">
+  <div class="section-eyebrow"><span>第一章</span><span class="nav-badge badge-basic">基础</span></div>
+  <h2>Notion 是什么？</h2>
+  <p class="section-lead">一款将笔记、数据库、任务管理、Wiki 和协作整合为一体的全能工作空间——「All-in-One Workspace」不是营销口号，而是 Notion 的真实定位。</p>
+
+  <p>Notion 由 Ivan Zhao 于 2016 年创立，核心理念是：<strong>打破工具边界</strong>。它把过去需要 Evernote（笔记）+ Trello（看板）+ Airtable（数据库）+ Confluence（Wiki）才能完成的事，合并在一个界面里完成。</p>
+
+  <blockquote>「Notion 让你用搭积木的方式，构建任何你需要的工作系统。」</blockquote>
+
+  <h3>Notion 能做什么？</h3>
+  <div class="card-grid">
+    <div class="feat-card">
+      <div class="feat-icon">📝</div>
+      <div class="feat-title">个人笔记</div>
+      <div class="feat-desc">日记、读书笔记、学习记录、会议纪要</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🗂️</div>
+      <div class="feat-title">项目管理</div>
+      <div class="feat-desc">看板、甘特图、任务追踪、里程碑</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📊</div>
+      <div class="feat-title">数据库</div>
+      <div class="feat-desc">CRM、内容日历、书单、习惯打卡</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🌐</div>
+      <div class="feat-title">团队 Wiki</div>
+      <div class="feat-desc">知识库、SOP、产品文档、入职手册</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🔗</div>
+      <div class="feat-title">发布网页</div>
+      <div class="feat-desc">一键将页面发布为公开网页，无需代码</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🤖</div>
+      <div class="feat-title">AI 写作</div>
+      <div class="feat-desc">内置 Notion AI，辅助撰写、总结、翻译</div>
+    </div>
+  </div>
+
+  <h3>Notion vs 竞品对比</h3>
+  <table>
+    <thead><tr><th>工具</th><th>核心定位</th><th>数据库</th><th>实时协作</th><th>免费额度</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Notion</strong></td><td>All-in-One</td><td>✅ 极强</td><td>✅ 流畅</td><td>个人免费</td></tr>
+      <tr><td>Obsidian</td><td>知识图谱</td><td>⚠️ 插件</td><td>❌ 本地优先</td><td>完全免费</td></tr>
+      <tr><td>Confluence</td><td>企业 Wiki</td><td>❌ 弱</td><td>✅ 企业级</td><td>10人免费</td></tr>
+      <tr><td>Airtable</td><td>电子表格</td><td>✅ 强</td><td>✅ 流畅</td><td>1200行/库</td></tr>
+      <tr><td>Coda</td><td>文档+数据</td><td>✅ 强</td><td>✅ 流畅</td><td>有限</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Notion 的核心架构</h3>
+  <div class="diagram">
+    <svg width="100%" viewBox="0 0 680 260" role="img">
+      <title>Notion 核心概念架构图：Workspace → Space → Page → Block</title>
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Workspace -->
+      <rect x="30" y="20" width="620" height="220" rx="12" fill="#f7f6f3" stroke="#ccc9bc" stroke-width="1"/>
+      <text x="46" y="44" font-family="Lora,serif" font-size="12" fill="#a8a49a" font-weight="600">Workspace（工作区）</text>
+      <!-- Teamspace -->
+      <rect x="50" y="56" width="280" height="164" rx="8" fill="#ffffff" stroke="#e3e0d5" stroke-width="1"/>
+      <text x="66" y="76" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#6b6860" font-weight="600">Teamspace / Space</text>
+      <!-- Page -->
+      <rect x="68" y="86" width="120" height="118" rx="6" fill="#f7f6f3" stroke="#e3e0d5" stroke-width="0.8"/>
+      <text x="128" y="106" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#37352f" font-weight="500">📄 页面 A</text>
+      <!-- Blocks in page -->
+      <rect x="78" y="114" width="100" height="18" rx="3" fill="#e8e5dc"/>
+      <text x="128" y="127" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#6b6860">H1 标题块</text>
+      <rect x="78" y="136" width="100" height="18" rx="3" fill="#e8e5dc"/>
+      <text x="128" y="149" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#6b6860">段落块</text>
+      <rect x="78" y="158" width="100" height="18" rx="3" fill="#e8e5dc"/>
+      <text x="128" y="171" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#6b6860">数据库块</text>
+      <rect x="78" y="180" width="100" height="18" rx="3" fill="#e8e5dc"/>
+      <text x="128" y="193" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#6b6860">子页面块</text>
+      <!-- Page B -->
+      <rect x="200" y="86" width="116" height="118" rx="6" fill="#f7f6f3" stroke="#e3e0d5" stroke-width="0.8"/>
+      <text x="258" y="106" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#37352f" font-weight="500">📄 页面 B</text>
+      <rect x="210" y="114" width="96" height="18" rx="3" fill="#e8e5dc"/>
+      <text x="258" y="127" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#6b6860">列表块</text>
+      <rect x="210" y="136" width="96" height="18" rx="3" fill="#e8e5dc"/>
+      <text x="258" y="149" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#6b6860">图片块</text>
+      <!-- Right: labels -->
+      <rect x="370" y="56" width="270" height="164" rx="8" fill="#ffffff" stroke="#e3e0d5" stroke-width="1"/>
+      <text x="386" y="80" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#6b6860" font-weight="600">核心层级关系</text>
+      <text x="386" y="104" font-family="Noto Sans SC,sans-serif" font-size="12" fill="#37352f">🏢 Workspace</text>
+      <text x="398" y="120" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#a8a49a">一个账号对应一个或多个</text>
+      <line x1="384" y1="130" x2="384" y2="142" stroke="#ccc9bc" stroke-width="1" marker-end="url(#arr)"/>
+      <text x="386" y="154" font-family="Noto Sans SC,sans-serif" font-size="12" fill="#37352f">📁 Page（页面）</text>
+      <text x="398" y="170" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#a8a49a">无限嵌套，可含子页面</text>
+      <line x1="384" y1="180" x2="384" y2="192" stroke="#ccc9bc" stroke-width="1" marker-end="url(#arr)"/>
+      <text x="386" y="204" font-family="Noto Sans SC,sans-serif" font-size="12" fill="#37352f">⬛ Block（块）</text>
+      <text x="398" y="220" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#a8a49a">一切内容皆由块构成</text>
+    </svg>
+  </div>
+  <p class="diagram-caption">图：Notion 的层级结构——工作区 → 页面 → 块</p>
+
+  <div class="nav-bottom">
+    <div></div>
+    <button class="nav-btn primary" onclick="show('start',2)">下一节：注册与界面 →</button>
+  </div>
+</div>
+
+<!-- ═══════ 2. START ═══════ -->
+<div id="sec-start" class="section">
+  <div class="section-eyebrow"><span>第二章</span><span class="nav-badge badge-basic">基础</span></div>
+  <h2>注册与界面概览</h2>
+  <p class="section-lead">10 分钟完成注册，认识 Notion 的界面布局与基础操作。</p>
+
+  <h3>注册与登录</h3>
+  <p>访问 <code>notion.so</code> 即可注册，支持邮箱、Google、Apple 三种方式。个人使用<strong>免费套餐已足够</strong>，有以下限制：</p>
+  <div class="card-grid">
+    <div class="feat-card">
+      <div class="feat-icon">✅</div>
+      <div class="feat-title">免费套餐包含</div>
+      <div class="feat-desc">无限页面与块、协作成员10人、5MB 文件上传、基础 AI 体验</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">⬆️</div>
+      <div class="feat-title">Plus 套餐 ($10/月)</div>
+      <div class="feat-desc">无限文件上传、版本历史 30 天、高级协作权限、更多 AI 调用</div>
+    </div>
+  </div>
+
+  <h3>界面布局全解析</h3>
+  <div class="diagram">
+    <svg width="100%" viewBox="0 0 680 400" role="img">
+      <title>Notion 界面布局详解</title>
+      <!-- Window -->
+      <rect x="10" y="10" width="660" height="380" rx="10" fill="#f7f6f3" stroke="#e3e0d5" stroke-width="1"/>
+      <!-- Title bar -->
+      <rect x="10" y="10" width="660" height="30" rx="10" fill="#ffffff" stroke-width="0"/>
+      <rect x="10" y="28" width="660" height="12" fill="#ffffff"/>
+      <circle cx="30" cy="25" r="5" fill="#ff6b6b" opacity="0.7"/>
+      <circle cx="46" cy="25" r="5" fill="#ffd580" opacity="0.7"/>
+      <circle cx="62" cy="25" r="5" fill="#a8ff78" opacity="0.7"/>
+      <!-- Sidebar -->
+      <rect x="10" y="40" width="180" height="350" fill="#ffffff" stroke-right="none"/>
+      <rect x="190" y="40" width="1" height="350" fill="#e3e0d5"/>
+      <!-- Sidebar items -->
+      <text x="26" y="66" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#a8a49a">🏠 主页</text>
+      <text x="26" y="86" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#a8a49a">🔍 搜索</text>
+      <text x="26" y="106" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#a8a49a">📥 收件箱</text>
+      <rect x="18" y="116" width="164" height="24" rx="4" fill="#f1efe9"/>
+      <text x="26" y="132" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#37352f" font-weight="500">📄 我的工作区</text>
+      <text x="26" y="156" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#a8a49a">  📄 项目看板</text>
+      <text x="26" y="174" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#a8a49a">  📄 读书清单</text>
+      <text x="26" y="192" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#a8a49a">  📄 每日日记</text>
+      <text x="26" y="216" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#a8a49a">+ 新建页面</text>
+      <!-- Sidebar label -->
+      <rect x="12" y="356" width="176" height="22" rx="4" fill="#e8f2fc"/>
+      <text x="100" y="371" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#2383e2" font-weight="600">① 左侧导航栏</text>
+      <!-- Top bar -->
+      <rect x="191" y="40" width="479" height="36" fill="#ffffff" stroke-bottom="1"/>
+      <rect x="191" y="76" width="479" height="1" fill="#e3e0d5"/>
+      <text x="320" y="62" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#a8a49a">我的工作区</text>
+      <text x="610" y="62" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#a8a49a">分享  ···</text>
+      <!-- Label -->
+      <rect x="191" y="40" width="479" height="36" fill="rgba(232,242,252,0.35)"/>
+      <text x="430" y="100" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#2383e2" font-weight="600">② 顶部工具栏（面包屑导航 + 分享设置）</text>
+      <!-- Page content -->
+      <rect x="191" y="102" width="479" height="288" fill="#f7f6f3"/>
+      <!-- Cover placeholder -->
+      <rect x="191" y="102" width="479" height="60" fill="#e8e5dc"/>
+      <text x="430" y="136" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#a8a49a">页面封面（Cover）</text>
+      <!-- Page icon + title -->
+      <text x="270" y="188" font-size="24" fill="#37352f">🏠</text>
+      <text x="302" y="192" font-family="Lora,serif" font-size="20" fill="#37352f" font-weight="700">我的工作区</text>
+      <!-- Content blocks -->
+      <rect x="260" y="208" width="360" height="12" rx="2" fill="#e8e5dc"/>
+      <rect x="260" y="226" width="280" height="12" rx="2" fill="#e8e5dc"/>
+      <rect x="260" y="244" width="320" height="12" rx="2" fill="#e8e5dc"/>
+      <rect x="260" y="268" width="120" height="24" rx="4" fill="#f1efe9" stroke="#e3e0d5" stroke-width="0.5"/>
+      <text x="320" y="284" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#6b6860">📊 嵌入数据库</text>
+      <!-- Label -->
+      <text x="430" y="380" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#2383e2" font-weight="600">③ 页面内容区（无限画布）</text>
+    </svg>
+  </div>
+  <p class="diagram-caption">图：Notion 界面的三大区域</p>
+
+  <h3>必须掌握的基础操作</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">新建页面</div>
+        <div class="step-desc">左侧边栏底部点击「<strong>+ 新建页面</strong>」，或在任意位置按 <kbd>Ctrl</kbd>+<kbd>N</kbd>（Win）/ <kbd>⌘N</kbd>（Mac）</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">为页面添加图标和封面</div>
+        <div class="step-desc">鼠标悬浮在标题上方，点击「添加图标」选择 Emoji，点击「添加封面」选择图片。这让页面更有辨识度。</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">用 <kbd>/</kbd> 命令唤出块菜单</div>
+        <div class="step-desc">在页面任意位置输入 <kbd>/</kbd>，会弹出完整的块类型菜单，这是 Notion 最核心的操作方式</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">拖拽调整块的位置</div>
+        <div class="step-desc">鼠标悬浮到块左侧，出现「⠿」图标后可拖拽移动，也可拖到其他块旁边形成<strong>分栏布局</strong></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title">全局搜索</div>
+        <div class="step-desc">按 <kbd>Ctrl</kbd>+<kbd>K</kbd> 或 <kbd>⌘K</kbd> 打开快速搜索，可搜索页面标题和内容，也可快速跳转</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>常用快捷键</h3>
+  <div class="hotkey-grid">
+    <div class="hotkey-item"><span class="hotkey-desc">唤出块菜单</span><div class="hotkey-keys"><kbd>/</kbd></div></div>
+    <div class="hotkey-item"><span class="hotkey-desc">快速搜索/跳转</span><div class="hotkey-keys"><kbd>⌘</kbd><kbd>K</kbd></div></div>
+    <div class="hotkey-item"><span class="hotkey-desc">新建页面</span><div class="hotkey-keys"><kbd>⌘</kbd><kbd>N</kbd></div></div>
+    <div class="hotkey-item"><span class="hotkey-desc">加粗</span><div class="hotkey-keys"><kbd>⌘</kbd><kbd>B</kbd></div></div>
+    <div class="hotkey-item"><span class="hotkey-desc">斜体</span><div class="hotkey-keys"><kbd>⌘</kbd><kbd>I</kbd></div></div>
+    <div class="hotkey-item"><span class="hotkey-desc">行内代码</span><div class="hotkey-keys"><kbd>⌘</kbd><kbd>E</kbd></div></div>
+    <div class="hotkey-item"><span class="hotkey-desc">插入链接</span><div class="hotkey-keys"><kbd>⌘</kbd><kbd>L</kbd></div></div>
+    <div class="hotkey-item"><span class="hotkey-desc">复制块链接</span><div class="hotkey-keys"><kbd>⌘</kbd><kbd>⌥</kbd><kbd>L</kbd></div></div>
+    <div class="hotkey-item"><span class="hotkey-desc">向上/下移动块</span><div class="hotkey-keys"><kbd>⌘</kbd><kbd>⇧</kbd><kbd>↑↓</kbd></div></div>
+    <div class="hotkey-item"><span class="hotkey-desc">切换待办状态</span><div class="hotkey-keys"><kbd>⌘</kbd><kbd>↵</kbd></div></div>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('intro',1)">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('blocks',3)">下一节：块编辑器 →</button>
+  </div>
+</div>
+
+<!-- ═══════ 3. BLOCKS ═══════ -->
+<div id="sec-blocks" class="section">
+  <div class="section-eyebrow"><span>第三章</span><span class="nav-badge badge-basic">基础</span></div>
+  <h2>Block 块编辑器</h2>
+  <p class="section-lead">Notion 中一切皆「块」（Block）——文字、标题、图片、视频、代码、数据库，都是块。掌握块的类型与操作，是使用 Notion 的基础。</p>
+
+  <h3>输入 / 唤出所有块类型</h3>
+  <div class="callout callout-info">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <div class="callout-title">核心操作</div>
+      在页面空白处输入 <code>/</code>，弹出块菜单。输入关键词可快速筛选：<code>/h1</code>（一级标题）、<code>/img</code>（图片）、<code>/table</code>（表格）……
+    </div>
+  </div>
+
+  <h3>所有块类型速览</h3>
+  <table>
+    <thead><tr><th>分类</th><th>块名</th><th>/命令</th><th>用途</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="5"><strong>基础文本</strong></td><td>文本</td><td><code>/text</code></td><td>普通段落</td></tr>
+      <tr><td>一级标题</td><td><code>/h1</code></td><td>最大标题</td></tr>
+      <tr><td>二级标题</td><td><code>/h2</code></td><td>章节标题</td></tr>
+      <tr><td>三级标题</td><td><code>/h3</code></td><td>小节标题</td></tr>
+      <tr><td>引用</td><td><code>/quote</code></td><td>引用段落</td></tr>
+      <tr><td rowspan="4"><strong>列表</strong></td><td>无序列表</td><td><code>/bull</code></td><td>项目符号列表</td></tr>
+      <tr><td>有序列表</td><td><code>/num</code></td><td>数字编号列表</td></tr>
+      <tr><td>待办事项</td><td><code>/todo</code></td><td>可勾选的任务</td></tr>
+      <tr><td>折叠列表</td><td><code>/toggle</code></td><td>点击展开/折叠</td></tr>
+      <tr><td rowspan="3"><strong>内容</strong></td><td>图片</td><td><code>/img</code></td><td>上传或链接图片</td></tr>
+      <tr><td>代码块</td><td><code>/code</code></td><td>支持 50+ 语言高亮</td></tr>
+      <tr><td>Callout</td><td><code>/call</code></td><td>高亮提示框</td></tr>
+      <tr><td rowspan="3"><strong>高级</strong></td><td>数据库</td><td><code>/table</code></td><td>嵌入数据库</td></tr>
+      <tr><td>子页面</td><td><code>/page</code></td><td>嵌套新页面</td></tr>
+      <tr><td>目录</td><td><code>/toc</code></td><td>自动生成目录</td></tr>
+    </tbody>
+  </table>
+
+  <h3>块效果演示</h3>
+  <div class="block-demo">
+    <div class="block-demo-header">渲染效果预览</div>
+    <div class="block-demo-body">
+      <div class="notion-h1">一级标题 H1</div>
+      <div class="notion-h2">二级标题 H2</div>
+      <div class="notion-h3">三级标题 H3</div>
+      <div class="notion-p">这是一段普通文字。<strong style="color:var(--text)">加粗</strong>、<em>斜体</em>、<u>下划线</u>、<span style="background:#fdf8ec;padding:1px 3px;border-radius:3px;color:#cb912f">高亮</span>都可以在选中文字后出现的浮动工具栏中设置。</div>
+      <div class="notion-divider"></div>
+      <div class="notion-bullet">无序列表第一项</div>
+      <div class="notion-bullet">无序列表第二项，可以无限缩进</div>
+      <div style="height:8px"></div>
+      <div class="notion-todo"><span class="notion-checkbox checked"></span>已完成的待办事项</div>
+      <div class="notion-todo"><span class="notion-checkbox"></span>未完成的待办事项</div>
+      <div style="height:8px"></div>
+      <div class="notion-toggle"><span class="notion-toggle-arrow">▶</span><strong style="font-size:14px">折叠块标题</strong></div>
+      <div style="padding-left:22px;"><div class="notion-p" style="margin:0">折叠块内的内容，点击箭头展开或收起</div></div>
+      <div style="height:8px"></div>
+      <div class="notion-callout"><span>⚠️</span><span style="color:var(--yellow)">这是一个 Callout 提示块，可以自定义图标和背景色</span></div>
+      <div class="notion-quote">这是引用块，常用于摘录名言或重要段落</div>
+      <div class="notion-code">const greeting = "Hello, Notion!";<br>console.log(greeting);</div>
+    </div>
+  </div>
+
+  <h3>块的六种背景色与字体色</h3>
+  <p>选中任意块内容 → 点击「A」图标，可设置背景色或字体色：</p>
+  <div class="color-strip">
+    <span class="color-swatch" style="background:#fdecea;color:#d44c47">红色背景</span>
+    <span class="color-swatch" style="background:#fdf3ec;color:#d9730d">橙色背景</span>
+    <span class="color-swatch" style="background:#fdf8ec;color:#cb912f">黄色背景</span>
+    <span class="color-swatch" style="background:#eef3ec;color:#448361">绿色背景</span>
+    <span class="color-swatch" style="background:#e8f2fc;color:#2383e2">蓝色背景</span>
+    <span class="color-swatch" style="background:#f4edf9;color:#7950a1">紫色背景</span>
+    <span class="color-swatch" style="background:#f7f6f3;color:#37352f;border:1px solid #e3e0d5">灰色背景</span>
+  </div>
+
+  <h3>拖拽分栏布局</h3>
+  <p>将一个块拖拽到另一个块的<strong>右侧边缘</strong>，松开后即可形成并排的分栏布局。Notion 支持最多 5 栏。这是实现复杂页面布局的关键技巧：</p>
+  <div class="diagram">
+    <svg width="100%" viewBox="0 0 680 140" role="img">
+      <title>Notion 拖拽分栏布局示意</title>
+      <defs>
+        <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Before -->
+      <rect x="30" y="20" width="250" height="100" rx="8" fill="#f7f6f3" stroke="#e3e0d5" stroke-width="1"/>
+      <text x="155" y="44" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#a8a49a">拖拽前</text>
+      <rect x="48" y="56" width="214" height="24" rx="4" fill="#e8e5dc"/>
+      <text x="155" y="72" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#6b6860">块 A（全宽）</text>
+      <rect x="48" y="86" width="214" height="24" rx="4" fill="#e8e5dc"/>
+      <text x="155" y="102" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#6b6860">块 B（全宽）</text>
+      <!-- Arrow -->
+      <path d="M290 70 L360 70" fill="none" stroke="#a8a49a" stroke-width="1.5" marker-end="url(#arr2)" stroke-dasharray="5 3"/>
+      <text x="325" y="62" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#a8a49a">将 B 拖到</text>
+      <text x="325" y="80" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#a8a49a">A 的右侧</text>
+      <!-- After -->
+      <rect x="370" y="20" width="280" height="100" rx="8" fill="#f7f6f3" stroke="#e3e0d5" stroke-width="1"/>
+      <text x="510" y="44" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#a8a49a">拖拽后（分栏）</text>
+      <rect x="388" y="56" width="120" height="54" rx="4" fill="#e8f2fc" stroke="#c2d8f5" stroke-width="0.8"/>
+      <text x="448" y="87" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#2383e2">块 A（左栏）</text>
+      <rect x="516" y="56" width="116" height="54" rx="4" fill="#eef3ec" stroke="#c0d9c2" stroke-width="0.8"/>
+      <text x="574" y="87" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#448361">块 B（右栏）</text>
+    </svg>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('start',2)">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('pages',4)">下一节：页面结构 →</button>
+  </div>
+</div>
+
+<!-- ═══════ 4. PAGES ═══════ -->
+<div id="sec-pages" class="section">
+  <div class="section-eyebrow"><span>第四章</span><span class="nav-badge badge-basic">基础</span></div>
+  <h2>页面与层级结构</h2>
+  <p class="section-lead">Notion 的页面可以无限嵌套——页面里可以有子页面，子页面里还可以有更多页面，形成树状的知识层级。</p>
+
+  <h3>页面的四个组成元素</h3>
+  <div class="card-grid">
+    <div class="feat-card">
+      <div class="feat-icon">🎨</div>
+      <div class="feat-title">封面（Cover）</div>
+      <div class="feat-desc">页面顶部的横幅图片，支持上传图片、Unsplash 搜索或渐变色</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">😀</div>
+      <div class="feat-title">图标（Icon）</div>
+      <div class="feat-desc">Emoji、图片或 Notion 内置图标，显示在标题左侧，增加辨识度</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📌</div>
+      <div class="feat-title">标题（Title）</div>
+      <div class="feat-desc">页面名称，同时出现在左侧导航栏，支持 Emoji 和任意文字</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">⬛</div>
+      <div class="feat-title">内容（Content）</div>
+      <div class="feat-desc">由任意数量和类型的块组成，可以无限添加</div>
+    </div>
+  </div>
+
+  <h3>创建子页面（嵌套层级）</h3>
+  <p>有两种方式创建子页面：</p>
+  <div class="card">
+    <p><strong>方式 1：</strong>在页面内输入 <code>/page</code>，创建一个嵌入在当前页面的子页面块。点击后进入子页面编辑。</p>
+    <p><strong>方式 2：</strong>在左侧导航栏中，悬浮到某个页面旁边，点击出现的「+」按钮，直接在其下方创建子页面。</p>
+    <p style="margin-bottom:0;color:var(--text2);font-size:13.5px;">💡 子页面在左侧导航栏中以缩进方式显示，可以展开/折叠整个子树。</p>
+  </div>
+
+  <h3>页面分享设置</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">点击右上角「分享」按钮</div>
+        <div class="step-desc">可邀请特定成员（输入邮箱），或获取分享链接</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">选择权限等级</div>
+        <div class="step-desc">「完全访问」「编辑」「评论」「仅查看」四个等级，可为不同成员设置不同权限</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">开启「网页发布」</div>
+        <div class="step-desc">开启后页面变为公开网页，任何人可通过链接访问，无需登录。适合发布简历、作品集、博客</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>推荐的工作区组织结构</h3>
+  <pre><code><span class="cc"># 个人工作区结构示例</span>
+
+🏠 主页（Dashboard）
+├── 📁 <span class="ch">Projects（项目）</span>
+│   ├── 📄 项目A
+│   └── 📄 项目B
+├── 📁 <span class="ch">Areas（领域）</span>
+│   ├── 📄 健康与运动
+│   └── 📄 学习与成长
+├── 📁 <span class="ch">Resources（资源）</span>
+│   ├── 🗃️ 读书清单（数据库）
+│   └── 🗃️ 工具收藏（数据库）
+└── 📅 <span class="ch">Journal（日记）</span>
+    └── 🗃️ 每日日记（数据库）</code></pre>
+
+  <div class="callout callout-tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <div class="callout-title">主页 Dashboard 技巧</div>
+      建议创建一个「主页」页面作为工作区入口，通过「关联数据库视图」汇聚各类信息：今日任务、最近阅读、进行中项目……在下文的「工作流实战」章节有完整示例。
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('blocks',3)">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('database',5)">下一节：数据库核心 →</button>
+  </div>
+</div>
+
+<!-- ═══════ 5. DATABASE ═══════ -->
+<div id="sec-database" class="section">
+  <div class="section-eyebrow"><span>第五章</span><span class="nav-badge badge-mid">进阶</span></div>
+  <h2>数据库核心</h2>
+  <p class="section-lead">数据库是 Notion 最强大也最独特的功能——它既是结构化数据容器，又是可展示的视图系统。理解数据库，才算真正入门 Notion。</p>
+
+  <h3>数据库 vs 普通表格</h3>
+  <div class="card-grid">
+    <div class="feat-card">
+      <div class="feat-icon">📊</div>
+      <div class="feat-title">Notion 数据库</div>
+      <div class="feat-desc">每一行是一个完整页面；可切换 6 种视图；支持过滤、排序、分组；属性类型丰富；支持关联其他数据库</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📋</div>
+      <div class="feat-title">普通表格块</div>
+      <div class="feat-desc">仅用于简单数据展示，无法过滤排序，无视图切换，不支持属性类型，每格只是普通文字</div>
+    </div>
+  </div>
+
+  <h3>创建数据库</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">输入 <code>/database</code> 或 <code>/table</code></div>
+        <div class="step-desc">选择「内联数据库」（嵌入当前页面）或「整页数据库」（独立页面），新手推荐「整页数据库」</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">为数据库命名，添加第一行数据</div>
+        <div class="step-desc">点击「+ 新建」添加条目，点击条目名称可打开其完整页面进行详细编辑</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">点击表头右侧「+」添加属性列</div>
+        <div class="step-desc">选择属性类型（日期、多选、状态、人员…），每列就是每个条目的一个属性字段</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>数据库属性类型全览</h3>
+  <table>
+    <thead><tr><th>类型</th><th>示例值</th><th>典型用途</th></tr></thead>
+    <tbody>
+      <tr><td><strong>文本</strong></td><td>「产品描述」</td><td>备注、说明信息</td></tr>
+      <tr><td><strong>数字</strong></td><td>42 / 3.14</td><td>价格、评分、进度百分比</td></tr>
+      <tr><td><strong>单选</strong></td><td>高优先级</td><td>状态、优先级、类型（唯一）</td></tr>
+      <tr><td><strong>多选</strong></td><td>Python, AI, 后端</td><td>标签、技能、分类（可多选）</td></tr>
+      <tr><td><strong>状态</strong></td><td>待办 / 进行中 / 完成</td><td>任务状态流（特殊单选）</td></tr>
+      <tr><td><strong>日期</strong></td><td>2024-01-15</td><td>截止日期、发布时间、开始日期</td></tr>
+      <tr><td><strong>人员</strong></td><td>@张三</td><td>负责人、参与者</td></tr>
+      <tr><td><strong>文件</strong></td><td>附件.pdf</td><td>文件附件</td></tr>
+      <tr><td><strong>复选框</strong></td><td>✅ / ☐</td><td>完成标记</td></tr>
+      <tr><td><strong>URL</strong></td><td>https://...</td><td>参考链接</td></tr>
+      <tr><td><strong>邮箱/电话</strong></td><td>hi@example.com</td><td>联系方式</td></tr>
+      <tr><td><strong>关联（Relation）</strong></td><td>→ 项目A</td><td>关联另一个数据库的条目</td></tr>
+      <tr><td><strong>汇总（Rollup）</strong></td><td>SUM: 150</td><td>聚合关联数据库的数值</td></tr>
+      <tr><td><strong>公式（Formula）</strong></td><td>if(完成, "✅", "🔄")</td><td>计算字段，下章详讲</td></tr>
+      <tr><td><strong>创建时间/者</strong></td><td>2024-01-15 / 我</td><td>自动填充，无需手动</td></tr>
+    </tbody>
+  </table>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('pages',4)">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('views',6)">下一节：六种视图 →</button>
+  </div>
+</div>
+
+<!-- ═══════ 6. VIEWS ═══════ -->
+<div id="sec-views" class="section">
+  <div class="section-eyebrow"><span>第六章</span><span class="nav-badge badge-mid">进阶</span></div>
+  <h2>六种数据库视图</h2>
+  <p class="section-lead">同一份数据库，可以用 6 种完全不同的视图展示。同一任务数据库，可以同时拥有表格视图、看板视图和时间线视图——数据只有一份，视角有多种。</p>
+
+  <div class="diagram">
+    <svg width="100%" viewBox="0 0 680 300" role="img">
+      <title>Notion 六种数据库视图示意</title>
+      <!-- Table view -->
+      <rect x="20" y="20" width="190" height="120" rx="8" fill="#fff" stroke="#e3e0d5" stroke-width="1"/>
+      <rect x="20" y="20" width="190" height="28" rx="8" fill="#f7f6f3" stroke-width="0"/>
+      <rect x="20" y="36" width="190" height="12" fill="#f7f6f3"/>
+      <text x="115" y="38" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#6b6860" font-weight="600">📋 表格视图（Table）</text>
+      <rect x="30" y="54" width="170" height="12" rx="2" fill="#e8e5dc"/>
+      <rect x="30" y="70" width="170" height="12" rx="2" fill="#f1efe9"/>
+      <rect x="30" y="86" width="170" height="12" rx="2" fill="#e8e5dc"/>
+      <rect x="30" y="102" width="170" height="12" rx="2" fill="#f1efe9"/>
+      <text x="115" y="140" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#a8a49a">电子表格式，全属性可见</text>
+      <!-- Board view -->
+      <rect x="230" y="20" width="190" height="120" rx="8" fill="#fff" stroke="#e3e0d5" stroke-width="1"/>
+      <rect x="230" y="20" width="190" height="28" rx="8" fill="#f7f6f3" stroke-width="0"/>
+      <rect x="230" y="36" width="190" height="12" fill="#f7f6f3"/>
+      <text x="325" y="38" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#6b6860" font-weight="600">📌 看板视图（Board）</text>
+      <rect x="240" y="52" width="48" height="70" rx="4" fill="#fdecea" stroke="#e3d0cf" stroke-width="0.5"/>
+      <text x="264" y="64" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#d44c47">待办</text>
+      <rect x="246" y="72" width="36" height="14" rx="3" fill="#fff" stroke="#e3e0d5" stroke-width="0.5"/>
+      <rect x="246" y="90" width="36" height="14" rx="3" fill="#fff" stroke="#e3e0d5" stroke-width="0.5"/>
+      <rect x="296" y="52" width="48" height="70" rx="4" fill="#fdf8ec" stroke="#e3d9b0" stroke-width="0.5"/>
+      <text x="320" y="64" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#cb912f">进行中</text>
+      <rect x="302" y="72" width="36" height="14" rx="3" fill="#fff" stroke="#e3e0d5" stroke-width="0.5"/>
+      <rect x="352" y="52" width="48" height="70" rx="4" fill="#eef3ec" stroke="#b0d4b2" stroke-width="0.5"/>
+      <text x="376" y="64" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#448361">完成</text>
+      <rect x="358" y="72" width="36" height="14" rx="3" fill="#fff" stroke="#e3e0d5" stroke-width="0.5"/>
+      <rect x="358" y="90" width="36" height="14" rx="3" fill="#fff" stroke="#e3e0d5" stroke-width="0.5"/>
+      <text x="325" y="140" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#a8a49a">按状态分组，拖拽移动卡片</text>
+      <!-- Gallery view -->
+      <rect x="440" y="20" width="220" height="120" rx="8" fill="#fff" stroke="#e3e0d5" stroke-width="1"/>
+      <rect x="440" y="20" width="220" height="28" rx="8" fill="#f7f6f3" stroke-width="0"/>
+      <rect x="440" y="36" width="220" height="12" fill="#f7f6f3"/>
+      <text x="550" y="38" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#6b6860" font-weight="600">🖼️ 画廊视图（Gallery）</text>
+      <rect x="450" y="52" width="54" height="64" rx="5" fill="#e8f2fc" stroke="#c2d8f5" stroke-width="0.5"/>
+      <rect x="450" y="52" width="54" height="32" rx="5" fill="#c2d8f5"/>
+      <text x="477" y="100" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#2383e2">卡片A</text>
+      <rect x="512" y="52" width="54" height="64" rx="5" fill="#eef3ec" stroke="#b0d4b2" stroke-width="0.5"/>
+      <rect x="512" y="52" width="54" height="32" rx="5" fill="#b0d4b2"/>
+      <text x="539" y="100" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#448361">卡片B</text>
+      <rect x="574" y="52" width="54" height="64" rx="5" fill="#f4edf9" stroke="#d0b8e8" stroke-width="0.5"/>
+      <rect x="574" y="52" width="54" height="32" rx="5" fill="#d0b8e8"/>
+      <text x="601" y="100" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#7950a1">卡片C</text>
+      <text x="550" y="140" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#a8a49a">展示封面图，适合作品集</text>
+      <!-- List view -->
+      <rect x="20" y="160" width="190" height="120" rx="8" fill="#fff" stroke="#e3e0d5" stroke-width="1"/>
+      <rect x="20" y="160" width="190" height="28" rx="8" fill="#f7f6f3" stroke-width="0"/>
+      <rect x="20" y="176" width="190" height="12" fill="#f7f6f3"/>
+      <text x="115" y="178" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#6b6860" font-weight="600">📝 列表视图（List）</text>
+      <text x="36" y="200" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#37352f">📄 任务一</text>
+      <text x="36" y="216" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#37352f">📄 任务二</text>
+      <text x="36" y="232" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#37352f">📄 任务三</text>
+      <text x="36" y="248" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#37352f">📄 任务四</text>
+      <text x="115" y="278" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#a8a49a">极简，只显示标题行</text>
+      <!-- Timeline view -->
+      <rect x="230" y="160" width="190" height="120" rx="8" fill="#fff" stroke="#e3e0d5" stroke-width="1"/>
+      <rect x="230" y="160" width="190" height="28" rx="8" fill="#f7f6f3" stroke-width="0"/>
+      <rect x="230" y="176" width="190" height="12" fill="#f7f6f3"/>
+      <text x="325" y="178" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#6b6860" font-weight="600">📅 时间线（Timeline）</text>
+      <line x1="240" y1="200" x2="410" y2="200" stroke="#e3e0d5" stroke-width="0.5"/>
+      <rect x="250" y="206" width="60" height="14" rx="3" fill="#c2d8f5"/>
+      <text x="280" y="217" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#2383e2">任务A</text>
+      <rect x="320" y="224" width="70" height="14" rx="3" fill="#d0b8e8"/>
+      <text x="355" y="235" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#7950a1">任务B</text>
+      <rect x="260" y="242" width="50" height="14" rx="3" fill="#b0d4b2"/>
+      <text x="285" y="253" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#448361">任务C</text>
+      <text x="325" y="278" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#a8a49a">甘特图式，项目规划必备</text>
+      <!-- Calendar view -->
+      <rect x="440" y="160" width="220" height="120" rx="8" fill="#fff" stroke="#e3e0d5" stroke-width="1"/>
+      <rect x="440" y="160" width="220" height="28" rx="8" fill="#f7f6f3" stroke-width="0"/>
+      <rect x="440" y="176" width="220" height="12" fill="#f7f6f3"/>
+      <text x="550" y="178" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#6b6860" font-weight="600">📆 日历视图（Calendar）</text>
+      <!-- Mini calendar -->
+      <rect x="450" y="192" width="28" height="24" rx="2" fill="#f7f6f3" stroke="#e3e0d5" stroke-width="0.5"/>
+      <text x="464" y="208" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#a8a49a">一</text>
+      <rect x="480" y="192" width="28" height="24" rx="2" fill="#f7f6f3" stroke="#e3e0d5" stroke-width="0.5"/>
+      <text x="494" y="208" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#a8a49a">二</text>
+      <rect x="510" y="192" width="28" height="24" rx="2" fill="#fdecea" stroke="#e3d0cf" stroke-width="0.5"/>
+      <text x="524" y="204" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="8" fill="#d44c47">📝 发布</text>
+      <rect x="540" y="192" width="28" height="24" rx="2" fill="#f7f6f3" stroke="#e3e0d5" stroke-width="0.5"/>
+      <rect x="570" y="192" width="28" height="24" rx="2" fill="#f7f6f3" stroke="#e3e0d5" stroke-width="0.5"/>
+      <rect x="450" y="220" width="28" height="24" rx="2" fill="#f7f6f3" stroke="#e3e0d5" stroke-width="0.5"/>
+      <rect x="480" y="220" width="28" height="24" rx="2" fill="#eef3ec" stroke="#b0d4b2" stroke-width="0.5"/>
+      <text x="494" y="232" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="8" fill="#448361">✅ 上线</text>
+      <text x="550" y="278" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#a8a49a">按日期显示，内容日历必备</text>
+    </svg>
+  </div>
+  <p class="diagram-caption">图：Notion 的六种数据库视图</p>
+
+  <h3>添加新视图</h3>
+  <p>在任意数据库顶部，点击视图名称旁的「<strong>+ 添加视图</strong>」，选择视图类型即可。同一数据库可以有无数个视图，每个视图可以有独立的过滤和排序设置。</p>
+
+  <div class="callout callout-tip">
+    <div class="callout-icon">🎯</div>
+    <div class="callout-body">
+      <div class="callout-title">选择视图的经验法则</div>
+      • <strong>表格视图</strong>：查看所有属性，类似 Excel<br>
+      • <strong>看板视图</strong>：任务管理、流程跟踪，按状态分组<br>
+      • <strong>时间线视图</strong>：项目排期，有开始/截止日期时<br>
+      • <strong>日历视图</strong>：内容日历、计划日程<br>
+      • <strong>画廊视图</strong>：内容展示，有封面图时<br>
+      • <strong>列表视图</strong>：简洁清单，只关心标题
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('database',5)">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('properties',7)">下一节：过滤与排序 →</button>
+  </div>
+</div>
+
+<!-- ═══════ 7. PROPERTIES ═══════ -->
+<div id="sec-properties" class="section">
+  <div class="section-eyebrow"><span>第七章</span><span class="nav-badge badge-mid">进阶</span></div>
+  <h2>属性、过滤与排序</h2>
+  <p class="section-lead">通过过滤和排序，从同一份数据中提取不同的「切片」视图，是 Notion 数据库的核心价值之一。</p>
+
+  <h3>添加过滤（Filter）</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">点击数据库顶部的「筛选」按钮</div>
+        <div class="step-desc">弹出下拉面板，点击「+ 添加过滤器」</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">选择属性列 → 运算符 → 值</div>
+        <div class="step-desc">例：「状态 ｜ 等于 ｜ 进行中」，即只显示状态为「进行中」的条目</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">可叠加多个过滤条件（AND / OR）</div>
+        <div class="step-desc">例：「状态 = 进行中」 AND「负责人 = 我」= 只显示我负责的进行中任务</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>常用过滤场景</h3>
+  <table>
+    <thead><tr><th>场景</th><th>过滤条件</th></tr></thead>
+    <tbody>
+      <tr><td>只看今日到期任务</td><td>截止日期 ≤ 今天 AND 状态 ≠ 完成</td></tr>
+      <tr><td>只看我负责的项目</td><td>负责人 包含 自己</td></tr>
+      <tr><td>只看高优先级内容</td><td>优先级 = 高</td></tr>
+      <tr><td>最近7天新增</td><td>创建时间 在过去一周内</td></tr>
+      <tr><td>未完成任务</td><td>状态 不等于 完成 AND 状态 不等于 归档</td></tr>
+    </tbody>
+  </table>
+
+  <h3>排序（Sort）与分组（Group By）</h3>
+  <div class="card">
+    <p><strong>排序</strong>：点击「排序」按钮，选择按哪个属性升序/降序排列。可以叠加多个排序条件（先按优先级，再按截止日期）。</p>
+    <p style="margin-bottom:0"><strong>分组</strong>：看板视图默认按状态分组。在其他视图也可以开启「分组」，例如按「负责人」分组，快速查看每人的任务量。</p>
+  </div>
+
+  <h3>隐藏属性列</h3>
+  <p>点击「属性」按钮，可以控制每个视图中哪些属性列可见。在表格视图可以只显示最重要的 3-4 列，在画廊视图可以只显示封面和标题。每个视图的可见属性设置是独立的。</p>
+
+  <div class="callout callout-note">
+    <div class="callout-icon">✨</div>
+    <div class="callout-body">
+      <div class="callout-title">高级技巧：保存过滤视图</div>
+      每个视图（看板视图、列表视图等）的过滤条件是独立保存的。你可以创建「今日任务」「高优先级」「我的项目」等多个视图，每个视图保存不同的过滤条件，点击视图名称即可一键切换。
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('views',6)">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('relations',8)">下一节：关联与汇总 →</button>
+  </div>
+</div>
+
+<!-- ═══════ 8. RELATIONS ═══════ -->
+<div id="sec-relations" class="section">
+  <div class="section-eyebrow"><span>第八章</span><span class="nav-badge badge-mid">进阶</span></div>
+  <h2>关联（Relation）与汇总（Rollup）</h2>
+  <p class="section-lead">关联属性让两个数据库之间建立连接；汇总属性让你从关联数据库中聚合计算数据。这两个功能是构建复杂知识系统的基础。</p>
+
+  <h3>关联属性（Relation）</h3>
+  <p>举例：你有两个数据库——「项目」和「任务」。在「任务」数据库中添加一个「关联」属性，关联到「项目」数据库，就可以把每个任务关联到对应的项目。</p>
+
+  <div class="diagram">
+    <svg width="100%" viewBox="0 0 680 220" role="img">
+      <title>Notion 关联属性示意图：项目数据库与任务数据库的关联</title>
+      <defs>
+        <marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Projects DB -->
+      <rect x="30" y="20" width="240" height="180" rx="10" fill="#fff" stroke="#e3e0d5" stroke-width="1"/>
+      <rect x="30" y="20" width="240" height="32" rx="10" fill="#e8f2fc" stroke-width="0"/>
+      <rect x="30" y="40" width="240" height="12" fill="#e8f2fc"/>
+      <text x="150" y="40" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#2383e2" font-weight="600">📁 项目数据库</text>
+      <!-- Headers -->
+      <text x="46" y="68" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#6b6860" font-weight="600">项目名称</text>
+      <text x="180" y="68" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#6b6860" font-weight="600">关联任务</text>
+      <line x1="40" y1="74" x2="260" y2="74" stroke="#e3e0d5" stroke-width="0.5"/>
+      <!-- Row 1 -->
+      <text x="46" y="92" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#37352f">网站改版</text>
+      <text x="180" y="92" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#2383e2">设计首页、写文案</text>
+      <line x1="40" y1="100" x2="260" y2="100" stroke="#f1efe9" stroke-width="0.5"/>
+      <!-- Row 2 -->
+      <text x="46" y="118" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#37352f">App 上线</text>
+      <text x="180" y="118" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#2383e2">测试、发布</text>
+      <line x1="40" y1="126" x2="260" y2="126" stroke="#f1efe9" stroke-width="0.5"/>
+      <!-- Row 3 -->
+      <text x="46" y="144" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#37352f">市场推广</text>
+      <text x="180" y="144" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#2383e2">写博客</text>
+      <!-- Arrow (bidirectional) -->
+      <path d="M270 110 L390 110" fill="none" stroke="#a8a49a" stroke-width="1.5" marker-end="url(#arr3)" stroke-dasharray="6 4"/>
+      <path d="M390 120 L270 120" fill="none" stroke="#a8a49a" stroke-width="1.5" marker-end="url(#arr3)" stroke-dasharray="6 4"/>
+      <text x="330" y="104" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#a8a49a">关联（双向）</text>
+      <!-- Tasks DB -->
+      <rect x="400" y="20" width="260" height="180" rx="10" fill="#fff" stroke="#e3e0d5" stroke-width="1"/>
+      <rect x="400" y="20" width="260" height="32" rx="10" fill="#eef3ec" stroke-width="0"/>
+      <rect x="400" y="40" width="260" height="12" fill="#eef3ec"/>
+      <text x="530" y="40" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#448361" font-weight="600">✅ 任务数据库</text>
+      <text x="416" y="68" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#6b6860" font-weight="600">任务名称</text>
+      <text x="536" y="68" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#6b6860" font-weight="600">所属项目</text>
+      <line x1="410" y1="74" x2="650" y2="74" stroke="#e3e0d5" stroke-width="0.5"/>
+      <text x="416" y="92" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#37352f">设计首页</text>
+      <text x="536" y="92" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#448361">网站改版 ↗</text>
+      <line x1="410" y1="100" x2="650" y2="100" stroke="#f1efe9" stroke-width="0.5"/>
+      <text x="416" y="118" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#37352f">写文案</text>
+      <text x="536" y="118" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#448361">网站改版 ↗</text>
+      <line x1="410" y1="126" x2="650" y2="126" stroke="#f1efe9" stroke-width="0.5"/>
+      <text x="416" y="144" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#37352f">测试</text>
+      <text x="536" y="144" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#448361">App 上线 ↗</text>
+    </svg>
+  </div>
+  <p class="diagram-caption">图：项目数据库与任务数据库通过关联属性双向连接</p>
+
+  <h3>汇总属性（Rollup）</h3>
+  <p>在「项目」数据库中，可以添加「汇总」属性，从关联的「任务」数据库中聚合数据。例如：</p>
+  <table>
+    <thead><tr><th>汇总配置</th><th>结果示例</th><th>含义</th></tr></thead>
+    <tbody>
+      <tr><td>任务 → 名称 → 计数</td><td>5</td><td>该项目共有 5 个任务</td></tr>
+      <tr><td>任务 → 完成 → 已勾选计数</td><td>3</td><td>已完成 3 个任务</td></tr>
+      <tr><td>任务 → 预计工时 → 求和</td><td>24h</td><td>该项目总预计工时</td></tr>
+      <tr><td>任务 → 截止日期 → 最晚日期</td><td>2024-02-01</td><td>最晚截止日期（项目 deadline）</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-info">
+    <div class="callout-icon">🔗</div>
+    <div class="callout-body">
+      <div class="callout-title">关联的实际应用场景</div>
+      • <strong>CRM 系统</strong>：客户数据库 ↔ 合同数据库 ↔ 沟通记录数据库<br>
+      • <strong>读书系统</strong>：书单数据库 ↔ 书摘笔记数据库<br>
+      • <strong>内容运营</strong>：选题数据库 ↔ 内容草稿数据库 ↔ 发布记录数据库
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('properties',7)">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('formula',9)">下一节：公式计算 →</button>
+  </div>
+</div>
+
+<!-- ═══════ 9. FORMULA ═══════ -->
+<div id="sec-formula" class="section">
+  <div class="section-eyebrow"><span>第九章</span><span class="nav-badge badge-adv">高级</span></div>
+  <h2>公式（Formula）与计算</h2>
+  <p class="section-lead">公式属性让你根据其他属性动态计算数值、状态、文本——相当于 Excel 公式，但语法更友好，且直接与数据库属性绑定。</p>
+
+  <h3>公式基础语法</h3>
+  <pre><code><span class="cc"># 基础运算</span>
+prop("<span class="ck">数字属性</span>") * 1.1           <span class="cc"># 数值乘以 1.1</span>
+prop("<span class="ck">单价</span>") * prop("<span class="ck">数量</span>")    <span class="cc"># 两个数值相乘</span>
+
+<span class="cc"># 条件判断 if(条件, 真值, 假值)</span>
+if(prop("<span class="ck">完成</span>"), "✅", "⏳")    <span class="cc"># 根据复选框显示不同 emoji</span>
+if(prop("<span class="ck">评分</span>") >= 4, "推荐", "不推荐")
+
+<span class="cc"># 日期计算</span>
+dateBetween(prop("<span class="ck">截止日期</span>"), now(), "days")
+<span class="cc"># 返回：距今还有多少天（可为负数）</span>
+
+<span class="cc"># 字符串处理</span>
+prop("<span class="ck">姓</span>") + prop("<span class="ck">名</span>")   <span class="cc"># 拼接字符串</span>
+length(prop("<span class="ck">描述</span>"))           <span class="cc"># 字符串长度</span>
+
+<span class="cc"># 嵌套 if</span>
+if(prop("<span class="ck">优先级</span>") == "高", "🔴",
+  if(prop("<span class="ck">优先级</span>") == "中", "🟡", "🟢"))</code></pre>
+
+  <h3>常用公式示例</h3>
+  <table>
+    <thead><tr><th>公式</th><th>效果</th></tr></thead>
+    <tbody>
+      <tr><td><code>format(prop("评分")) + " 星"</code></td><td>数字转文字，如「4 星」</td></tr>
+      <tr><td><code>dateBetween(prop("截止"), now(), "days") + " 天后"</code></td><td>「5 天后」「-2 天后（已过期）」</td></tr>
+      <tr><td><code>if(prop("完成率") == 100, "🎉 完成", "进度 " + format(prop("完成率")) + "%")</code></td><td>进度显示，完成时庆祝</td></tr>
+      <tr><td><code>ceil(prop("页数") / 30)</code></td><td>按每天 30 页算需要几天</td></tr>
+      <tr><td><code>slice(prop("标题"), 0, 20) + "…"</code></td><td>截断长标题</td></tr>
+    </tbody>
+  </table>
+
+  <h3>实用：倒计时公式</h3>
+  <div class="formula">
+    if(<br>
+    &nbsp;&nbsp;dateBetween(prop("截止日期"), now(), "days") &lt; 0,<br>
+    &nbsp;&nbsp;"⚠️ 已过期 " + format(abs(dateBetween(prop("截止日期"), now(), "days"))) + " 天",<br>
+    &nbsp;&nbsp;if(<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;dateBetween(prop("截止日期"), now(), "days") == 0,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;"🔴 今天到期",<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;"还有 " + format(dateBetween(prop("截止日期"), now(), "days")) + " 天"<br>
+    &nbsp;&nbsp;)<br>
+    )
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <div class="callout-title">公式版本说明</div>
+      Notion 在 2023 年更新了公式系统（Formula 2.0），旧版公式语法略有不同。本章所有示例均为新版语法。如遇报错，可查阅 Notion 官方公式文档（notion.so/help/formulas）。
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('relations',8)">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('template',10)">下一节：模板系统 →</button>
+  </div>
+</div>
+
+<!-- ═══════ 10. TEMPLATE ═══════ -->
+<div id="sec-template" class="section">
+  <div class="section-eyebrow"><span>第十章</span><span class="nav-badge badge-adv">高级</span></div>
+  <h2>模板系统</h2>
+  <p class="section-lead">Notion 有两种模板：页面模板（标准化新页面内容）和数据库条目模板（标准化新数据库行的内容）。合理使用模板大幅减少重复劳动。</p>
+
+  <h3>数据库条目模板（最常用）</h3>
+  <p>在数据库中，点击「新建」旁边的下拉箭头 ▾，选择「新建模板」，然后编辑这个条目的页面内容——这个结构会成为每次新建条目时的默认内容。</p>
+
+  <div class="card">
+    <h4>读书笔记数据库模板</h4>
+    <div class="block-demo-body" style="background:var(--bg3);border-radius:6px;padding:16px;">
+      <div class="notion-h1">📖 书名</div>
+      <div class="notion-p" style="color:var(--text3)">作者 · 出版年份 · 阅读日期</div>
+      <div class="notion-h2">⭐ 一句话总结</div>
+      <div class="notion-p" style="color:var(--text3)"><em>用一句话描述这本书的核心价值</em></div>
+      <div class="notion-h2">🗝️ 核心观点</div>
+      <div class="notion-bullet">观点一</div>
+      <div class="notion-bullet">观点二</div>
+      <div class="notion-h2">💬 精彩摘录</div>
+      <div class="notion-quote">在此粘贴书中金句</div>
+      <div class="notion-h2">💡 行动启示</div>
+      <div class="notion-todo"><span class="notion-checkbox"></span>可以立即实践的行动</div>
+    </div>
+  </div>
+
+  <h3>常用模板收藏</h3>
+  <div class="card-grid">
+    <div class="feat-card">
+      <div class="feat-icon">📅</div>
+      <div class="feat-title">每日日记模板</div>
+      <div class="feat-desc">今日目标 · 感恩清单 · 正文日记 · 今日复盘 · 明日计划</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🤝</div>
+      <div class="feat-title">会议纪要模板</div>
+      <div class="feat-desc">日期 · 参与人 · 议程 · 会议内容 · 决定事项 · 行动待办</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🚀</div>
+      <div class="feat-title">项目启动模板</div>
+      <div class="feat-desc">项目目标 · 范围 · 里程碑 · 资源 · 风险 · 关联任务数据库</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📝</div>
+      <div class="feat-title">周报模板</div>
+      <div class="feat-desc">本周完成 · 遇到问题 · 下周计划 · 需要支持</div>
+    </div>
+  </div>
+
+  <h3>使用 Notion 官方模板库</h3>
+  <p>Notion 提供了数百个官方模板，覆盖个人效率、项目管理、团队协作、创业等场景。入口：点击左侧边栏底部「模板」图标，或访问 <code>notion.so/templates</code>。</p>
+
+  <div class="callout callout-tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <div class="callout-title">模板最佳实践</div>
+      不要直接在官方模板上修改，而是先复制到自己的工作区，再按需调整。好的模板应该「留白有度」——预设结构和提示文字，但不要填太多默认内容，让用户感觉是在填充，而不是在删除。
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('formula',9)">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('workflow',11)">最后一节：工作流实战 →</button>
+  </div>
+</div>
+
+<!-- ═══════ 11. WORKFLOW ═══════ -->
+<div id="sec-workflow" class="section">
+  <div class="section-eyebrow"><span>第十一章</span><span class="nav-badge badge-adv">高级</span></div>
+  <h2>工作流实战</h2>
+  <p class="section-lead">把所有功能整合为可持续运转的日常工作流。这里提供三套完整的实战系统，可直接复用。</p>
+
+  <h3>实战一：GTD 任务管理系统</h3>
+  <p>基于 GTD（Getting Things Done）方法论，用 Notion 构建完整的个人任务系统：</p>
+
+  <div class="diagram">
+    <svg width="100%" viewBox="0 0 680 200" role="img">
+      <title>GTD 任务流在 Notion 中的实现</title>
+      <defs>
+        <marker id="arr5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Inbox -->
+      <rect x="20" y="50" width="100" height="80" rx="8" fill="#f7f6f3" stroke="#e3e0d5" stroke-width="1"/>
+      <text x="70" y="78" text-anchor="middle" font-size="20">📥</text>
+      <text x="70" y="98" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#37352f" font-weight="600">收件箱</text>
+      <text x="70" y="114" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#a8a49a">快速捕获</text>
+      <path d="M120 90 L148 90" fill="none" stroke="#a8a49a" stroke-width="1.5" marker-end="url(#arr5)"/>
+      <!-- Process -->
+      <rect x="148" y="30" width="100" height="120" rx="8" fill="#e8f2fc" stroke="#c2d8f5" stroke-width="1"/>
+      <text x="198" y="58" text-anchor="middle" font-size="18">⚡</text>
+      <text x="198" y="76" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#2383e2" font-weight="600">处理</text>
+      <text x="198" y="94" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#6b6860">2分钟内？</text>
+      <text x="198" y="110" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#6b6860">立即做</text>
+      <text x="198" y="126" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#6b6860">否则添加属性</text>
+      <path d="M248 90 L278 90" fill="none" stroke="#a8a49a" stroke-width="1.5" marker-end="url(#arr5)"/>
+      <!-- Today/Next -->
+      <rect x="278" y="50" width="100" height="80" rx="8" fill="#eef3ec" stroke="#b0d4b2" stroke-width="1"/>
+      <text x="328" y="78" text-anchor="middle" font-size="18">📌</text>
+      <text x="328" y="98" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#448361" font-weight="600">今日/下一步</text>
+      <text x="328" y="114" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#a8a49a">过滤视图</text>
+      <path d="M378 90 L408 90" fill="none" stroke="#a8a49a" stroke-width="1.5" marker-end="url(#arr5)"/>
+      <!-- Do -->
+      <rect x="408" y="50" width="100" height="80" rx="8" fill="#fdf8ec" stroke="#e8d9a0" stroke-width="1"/>
+      <text x="458" y="78" text-anchor="middle" font-size="18">✍️</text>
+      <text x="458" y="98" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#cb912f" font-weight="600">执行</text>
+      <text x="458" y="114" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#a8a49a">深度工作</text>
+      <path d="M508 90 L538 90" fill="none" stroke="#a8a49a" stroke-width="1.5" marker-end="url(#arr5)"/>
+      <!-- Done -->
+      <rect x="538" y="50" width="120" height="80" rx="8" fill="#f4edf9" stroke="#d0b8e8" stroke-width="1"/>
+      <text x="598" y="78" text-anchor="middle" font-size="18">🎉</text>
+      <text x="598" y="98" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#7950a1" font-weight="600">完成/归档</text>
+      <text x="598" y="114" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#a8a49a">状态=完成</text>
+    </svg>
+  </div>
+
+  <pre><code><span class="cc"># 任务数据库所需属性</span>
+<span class="ck">名称</span>: 任务标题
+<span class="ck">状态</span>: 单选（收件箱 | 今日 | 下一步 | 等待中 | 完成 | 归档）
+<span class="ck">优先级</span>: 单选（🔴 高 | 🟡 中 | 🟢 低）
+<span class="ck">截止日期</span>: 日期
+<span class="ck">项目</span>: 关联（→ 项目数据库）
+<span class="ck">情境</span>: 多选（@电脑 | @外出 | @电话 | @家）
+<span class="ck">预计时间</span>: 数字（分钟）
+<span class="ck">倒计时</span>: 公式（见第九章公式）</code></pre>
+
+  <h3>实战二：内容创作日历</h3>
+  <div class="card">
+    <p>建一个「内容数据库」，属性包含：标题、平台（多选）、状态（构思/撰写/审核/发布）、发布日期、关键词、字数、内容类型。</p>
+    <p>然后创建三个视图：<strong>表格视图</strong>（总览所有内容）、<strong>看板视图</strong>（按状态分组，追踪流程）、<strong>日历视图</strong>（按发布日期，看内容节奏）。</p>
+  </div>
+
+  <h3>实战三：个人 Dashboard 首页</h3>
+  <pre><code><span class="ch"># 🏠 我的工作区首页</span>
+
+<span class="cl">## 今日快览</span>
+（嵌入任务数据库，过滤：截止=今天）
+
+<span class="cl">## 🎯 进行中的项目</span>
+（嵌入项目数据库，过滤：状态=进行中）
+
+<span class="cl">## 📚 正在读的书</span>
+（嵌入书单数据库，过滤：状态=在读，画廊视图）
+
+<span class="cl">## 📅 本周日程</span>
+（嵌入任务数据库，日历视图，本周）
+
+<span class="cl">## 🔗 常用快速入口</span>
+→ 新建任务
+→ 新建日记
+→ 新建会议纪要</code></pre>
+
+  <h3>新手成长路线图</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">第 1 周：基础操作</div>
+        <div class="step-desc">注册账号 → 创建第一个页面 → 熟悉块类型 → 用 / 命令 → 建立基本页面层级结构</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">第 2-3 周：使用数据库</div>
+        <div class="step-desc">创建任务数据库 → 设置属性 → 切换视图 → 添加过滤排序 → 用模板标准化条目</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">第 1-2 个月：构建系统</div>
+        <div class="step-desc">建立关联数据库 → 配置 Rollup 汇总 → 尝试公式属性 → 构建个人 Dashboard</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">长期：迭代优化</div>
+        <div class="step-desc">系统会随着你的习惯自然演化。每月复盘一次：哪些数据库在用？哪些没在用？按需增减，保持轻量。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:36px;border-color:#448361;background:#eef3ec;">
+    <p style="text-align:center;font-family:'Lora',serif;font-size:16px;color:#37352f;margin-bottom:8px;font-weight:600;">
+      🎓 你已完成 Notion 完全学习指南！
+    </p>
+    <p style="text-align:center;font-size:13.5px;color:#6b6860;margin:0;line-height:1.8;">
+      记住：Notion 的价值不在于系统有多复杂，而在于它是否真正服务你的工作。<br>
+      从今天开始，建立你的第一个数据库吧。
+    </p>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('template',10)">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('intro',1)">↩ 回到开始</button>
+  </div>
+</div>
+
+</div><!-- /content -->
+</main>
+
+<script>
+const order = ['intro','start','blocks','pages','database','views','properties','relations','formula','template','workflow'];
+const total = order.length;
+function show(id, num) {
+  order.forEach(s => {
+    document.getElementById('sec-'+s)?.classList.toggle('active', s === id);
+    document.querySelectorAll('.nav-item').forEach(btn => {
+      if (btn.getAttribute('onclick') === `show('${s}',${order.indexOf(s)+1})`) {
+        btn.classList.toggle('active', s === id);
+      }
+    });
+  });
+  document.querySelector('.main').scrollTo ? document.querySelector('.main').scrollTo({top:0,behavior:'smooth'}) : window.scrollTo(0,0);
+}
+// init active states
+document.querySelectorAll('.nav-item').forEach(btn => {
+  if (btn.getAttribute('onclick')?.includes("'intro'")) btn.classList.add('active');
+});
+</script>
+</body>
+</html>

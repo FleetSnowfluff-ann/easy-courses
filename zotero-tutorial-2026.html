@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zotero 完全学习指南 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #f4f6f5;
+  --bg2:      #ffffff;
+  --bg3:      #edf2f0;
+  --bg4:      #dfe8e4;
+  --border:   #d0dcd7;
+  --border2:  #b3c9c2;
+  --text:     #1a2e28;
+  --text2:    #4d6b61;
+  --text3:    #8aada4;
+  --accent:   #1a7a5e;
+  --accent2:  #14a37a;
+  --acl:      rgba(26,122,94,0.10);
+  --red:      #c0392b;
+  --orange:   #d35400;
+  --amber:    #c07a00;
+  --blue:     #1f6fab;
+  --purple:   #6c3483;
+  --teal:     #148a78;
+  --red-bg:   #fdf0ee;
+  --amber-bg: #fdf7e3;
+  --blue-bg:  #e8f1fb;
+  --green-bg: #eaf4f0;
+  --purple-bg:#f4edf9;
+  --r:        9px;
+  --r-sm:     5px;
+  --sh:       0 1px 3px rgba(0,0,0,.07), 0 4px 14px rgba(0,0,0,.04);
+  --sh-sm:    0 1px 2px rgba(0,0,0,.05);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-serif;font-size:15px;line-height:1.78;display:flex;}
+
+/* ──── Sidebar ──── */
+.sidebar{width:256px;min-height:100vh;background:var(--bg2);border-right:1px solid var(--border);position:fixed;top:0;left:0;overflow-y:auto;padding-bottom:60px;z-index:100;}
+.sb-head{padding:22px 18px 18px;border-bottom:1px solid var(--border);}
+.sb-logo{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.sb-icon{width:34px;height:34px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sb-icon svg{width:20px;height:20px;fill:white;}
+.sb-title{font-family:'Source Serif 4',serif;font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.01em;}
+.sb-sub{font-size:11px;color:var(--text3);letter-spacing:.06em;}
+.version-tag{display:inline-flex;align-items:center;gap:5px;background:var(--acl);border:1px solid rgba(26,122,94,.2);color:var(--accent);font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:20px;margin-top:6px;letter-spacing:.04em;}
+.version-dot{width:6px;height:6px;background:var(--accent2);border-radius:50%;}
+.nav-sec{padding:10px 10px 2px;}
+.nav-lbl{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;padding:4px 8px;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:var(--r-sm);color:var(--text2);font-size:13px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:background .12s,color .12s;font-family:'Noto Sans SC',sans-serif;}
+.nav-item:hover{background:var(--bg3);color:var(--text);}
+.nav-item.active{background:var(--acl);color:var(--accent);font-weight:500;}
+.nav-item .ni{font-size:14px;width:18px;text-align:center;flex-shrink:0;}
+.nb{margin-left:auto;font-size:9.5px;padding:1px 5px;border-radius:3px;font-weight:600;flex-shrink:0;}
+.nb-basic{background:#e8f4f0;color:#1a7a5e;}
+.nb-mid{background:#fdf7e3;color:#c07a00;}
+.nb-adv{background:#f4edf9;color:#6c3483;}
+.nb-new{background:#e8f1fb;color:#1f6fab;}
+
+/* ──── Main ──── */
+.main{margin-left:256px;flex:1;min-height:100vh;}
+.content{max-width:800px;padding:60px 58px 120px;}
+.section{display:none;animation:fadeIn .25s ease;}
+.section.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+/* ──── Typography ──── */
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-weight:600;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+h2{font-family:'Source Serif 4',serif;font-size:27px;font-weight:700;color:var(--text);line-height:1.25;margin-bottom:6px;letter-spacing:-.02em;}
+.lead{font-size:15px;color:var(--text2);line-height:1.75;margin-bottom:30px;padding-bottom:22px;border-bottom:1px solid var(--border);}
+h3{font-family:'Source Serif 4',serif;font-size:18px;font-weight:600;color:var(--text);margin:34px 0 12px;letter-spacing:-.01em;}
+h4{font-size:12.5px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin:18px 0 7px;}
+p{margin-bottom:13px;line-height:1.82;color:var(--text);}
+strong{color:var(--text);font-weight:600;}
+
+/* ──── Cards ──── */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px;margin:14px 0;}
+.c-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:15px 17px;box-shadow:var(--sh-sm);transition:box-shadow .15s,border-color .15s;}
+.c-card:hover{box-shadow:var(--sh);border-color:var(--border2);}
+.c-icon{font-size:21px;margin-bottom:7px;}
+.c-title{font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.c-desc{font-size:12.5px;color:var(--text2);line-height:1.58;}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px 22px;margin:13px 0;box-shadow:var(--sh-sm);}
+
+/* ──── Code ──── */
+pre,code{font-family:'JetBrains Mono',monospace;}
+code{background:var(--bg3);color:var(--red);padding:1px 5px;border-radius:4px;font-size:12.5px;border:1px solid var(--border);}
+pre{background:#1a2e28;color:#c8d8d4;border-radius:var(--r);padding:18px 22px;overflow-x:auto;margin:14px 0;font-size:12.5px;line-height:1.78;}
+pre code{background:none;color:inherit;border:none;padding:0;font-size:inherit;}
+.ck{color:#88d4b4;} .cv{color:#ffd580;} .ch{color:#79c0ff;}
+.cc{color:#4d6b61;} .cl{color:#f78166;} .ct{color:#d2a8ff;}
+
+/* ──── Callouts ──── */
+.callout{border-radius:var(--r);padding:13px 17px;margin:15px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start;}
+.callout-icon{font-size:17px;flex-shrink:0;line-height:1.45;}
+.callout-body{flex:1;}
+.callout-title{font-weight:600;margin-bottom:3px;font-size:12.5px;letter-spacing:.02em;}
+.c-info{background:var(--blue-bg);border:1px solid #b8d4f0;}
+.c-info .callout-title{color:var(--blue);}
+.c-tip{background:var(--green-bg);border:1px solid #a8cfc4;}
+.c-tip .callout-title{color:var(--teal);}
+.c-warn{background:var(--amber-bg);border:1px solid #e0cc88;}
+.c-warn .callout-title{color:var(--amber);}
+.c-new{background:#eaf0fd;border:1px solid #b4c8f0;}
+.c-new .callout-title{color:#1f5fa0;}
+
+/* ──── Steps ──── */
+.steps{margin:14px 0;}
+.step{display:flex;gap:14px;margin-bottom:18px;position:relative;}
+.step:not(:last-child)::after{content:'';position:absolute;left:14px;top:30px;width:1px;height:calc(100% - 12px);background:var(--border);}
+.step-n{width:29px;height:29px;border-radius:50%;background:var(--accent);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;z-index:1;}
+.step-b{flex:1;padding-top:3px;}
+.step-t{font-weight:600;color:var(--text);font-size:14px;margin-bottom:4px;}
+.step-d{color:var(--text2);font-size:13.5px;line-height:1.65;}
+
+/* ──── Table ──── */
+table{width:100%;border-collapse:collapse;margin:13px 0;font-size:13.5px;}
+th{background:var(--bg3);color:var(--text2);font-weight:600;text-align:left;padding:9px 13px;border-bottom:1px solid var(--border2);font-size:11px;text-transform:uppercase;letter-spacing:.07em;}
+td{padding:8px 13px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--bg3);}
+
+/* ──── KBD ──── */
+kbd{background:var(--bg2);border:1px solid var(--border2);border-bottom-width:2px;border-radius:4px;padding:1px 6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);box-shadow:var(--sh-sm);}
+.hk-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:13px 0;}
+.hk-item{display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);padding:7px 12px;font-size:12.5px;gap:8px;}
+.hk-d{color:var(--text2);}
+.hk-k{display:flex;gap:3px;flex-shrink:0;}
+
+/* ──── Diagram ──── */
+.dg{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px 18px 14px;margin:15px 0;overflow-x:auto;box-shadow:var(--sh-sm);}
+.dg-cap{font-size:11.5px;color:var(--text3);text-align:center;margin-top:8px;margin-bottom:15px;}
+
+/* ──── New badge ──── */
+.new-badge{display:inline-flex;align-items:center;gap:3px;background:#e8f1fb;border:1px solid #b4c8f0;color:#1f5fa0;font-size:10px;font-weight:700;padding:1px 6px;border-radius:3px;margin-left:6px;letter-spacing:.04em;vertical-align:middle;}
+
+/* ──── Annotation type demo ──── */
+.anno-demo{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin:13px 0;}
+.anno-demo-head{background:var(--bg3);padding:7px 15px;font-size:10.5px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border);}
+.anno-demo-body{padding:16px 20px;display:flex;flex-direction:column;gap:8px;}
+.anno-line{display:flex;align-items:center;gap:10px;font-size:13.5px;}
+.anno-swatch{width:14px;height:14px;border-radius:3px;flex-shrink:0;}
+.anno-label{color:var(--text2);font-size:12.5px;width:90px;flex-shrink:0;}
+.anno-example{flex:1;padding:4px 10px;border-radius:4px;font-size:13px;}
+
+/* ──── Workflow diagram ──── */
+blockquote{border-left:3px solid var(--border2);padding:10px 18px;color:var(--text2);font-style:italic;margin:13px 0;font-size:14.5px;line-height:1.7;}
+
+/* ──── Nav ──── */
+.nav-bottom{display:flex;justify-content:space-between;margin-top:54px;padding-top:22px;border-top:1px solid var(--border);}
+.nb-btn{display:flex;align-items:center;gap:7px;padding:9px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--text2);cursor:pointer;font-size:13px;font-family:'Noto Sans SC',sans-serif;transition:all .12s;box-shadow:var(--sh-sm);}
+.nb-btn:hover{border-color:var(--border2);color:var(--text);box-shadow:var(--sh);}
+.nb-btn.primary{background:var(--accent);border-color:var(--accent);color:white;}
+.nb-btn.primary:hover{background:var(--teal);border-color:var(--teal);}
+
+/* ──── Scrollbar ──── */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+
+@media(max-width:860px){
+  .sidebar{display:none;} .main{margin-left:0;}
+  .content{padding:24px 16px 80px;}
+  .hk-grid{grid-template-columns:1fr;} .card-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<nav class="sidebar">
+  <div class="sb-head">
+    <div class="sb-logo">
+      <div class="sb-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+      </div>
+      <div>
+        <div class="sb-title">Zotero 学习指南</div>
+        <div class="sb-sub">文献管理完全教程</div>
+      </div>
+    </div>
+    <div class="version-tag"><span class="version-dot"></span>最新版 · Zotero 9 · 2026</div>
+  </div>
+
+  <div class="nav-sec">
+    <div class="nav-lbl">入门起步</div>
+    <button class="nav-item active" onclick="go('intro')"><span class="ni">📚</span>Zotero 是什么？<span class="nb nb-basic">基础</span></button>
+    <button class="nav-item" onclick="go('install')"><span class="ni">⚙️</span>安装与初始设置<span class="nb nb-basic">基础</span></button>
+    <button class="nav-item" onclick="go('collect')"><span class="ni">🧲</span>文献收集方法<span class="nb nb-basic">基础</span></button>
+    <button class="nav-item" onclick="go('organize')"><span class="ni">🗂️</span>文库组织管理<span class="nb nb-basic">基础</span></button>
+  </div>
+  <div class="nav-sec">
+    <div class="nav-lbl">核心功能</div>
+    <button class="nav-item" onclick="go('reader')"><span class="ni">📖</span>内置阅读器<span class="nb nb-mid">进阶</span></button>
+    <button class="nav-item" onclick="go('annotate')"><span class="ni">🖊️</span>标注与笔记系统<span class="nb nb-mid">进阶</span></button>
+    <button class="nav-item" onclick="go('cite')"><span class="ni">✍️</span>引用与参考文献<span class="nb nb-mid">进阶</span></button>
+    <button class="nav-item" onclick="go('sync')"><span class="ni">☁️</span>同步与备份<span class="nb nb-mid">进阶</span></button>
+  </div>
+  <div class="nav-sec">
+    <div class="nav-lbl">高阶应用</div>
+    <button class="nav-item" onclick="go('plugins')"><span class="ni">🔌</span>插件推荐<span class="nb nb-adv">高级</span></button>
+    <button class="nav-item" onclick="go('new9')"><span class="ni">🆕</span>Zotero 9 新功能<span class="nb nb-new">2026新</span></button>
+    <button class="nav-item" onclick="go('workflow')"><span class="ni">🚀</span>科研工作流实战<span class="nb nb-adv">高级</span></button>
+  </div>
+</nav>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<main class="main"><div class="content">
+
+<!-- ════ 1. INTRO ════ -->
+<div id="sec-intro" class="section active">
+  <div class="eyebrow"><span>第一章</span><span class="nb nb-basic">基础</span></div>
+  <h2>Zotero 是什么？</h2>
+  <p class="lead">Zotero 是全球最受欢迎的开源免费文献管理软件，帮助研究人员、学生和学者收集、整理、标注文献，并自动生成规范的参考文献。截至 2026 年，最新稳定版为 <strong>Zotero 9.0.3</strong>（发布于 2026年5月6日）。</p>
+
+  <blockquote>「Zotero is a free, easy-to-use tool to help you collect, organize, cite, and share research.」—— Zotero 官方定义</blockquote>
+
+  <h3>Zotero 能为你做什么？</h3>
+  <div class="card-grid">
+    <div class="c-card"><div class="c-icon">🧲</div><div class="c-title">一键抓取文献</div><div class="c-desc">浏览器插件自动识别网页上的论文、书籍、新闻，一键保存元数据和 PDF</div></div>
+    <div class="c-card"><div class="c-icon">🗂️</div><div class="c-title">智能整理文库</div><div class="c-desc">文件夹、标签、智能文件夹多维度组织，支持无限嵌套分类</div></div>
+    <div class="c-card"><div class="c-icon">📖</div><div class="c-title">内置阅读标注</div><div class="c-desc">PDF/EPUB/网页快照均可在内置阅读器中高亮、批注、笔记</div></div>
+    <div class="c-card"><div class="c-icon">✍️</div><div class="c-title">自动生成引用</div><div class="c-desc">Word/LibreOffice 插件，支持 9000+ 引用格式（APA、MLA、GB/T…）</div></div>
+    <div class="c-card"><div class="c-icon">🔊</div><div class="c-title">朗读文献<span class="new-badge">v9新</span></div><div class="c-desc">内置 Read Aloud，用自然声音朗读 PDF/EPUB，可边听边标注</div></div>
+    <div class="c-card"><div class="c-icon">👥</div><div class="c-title">团队协作</div><div class="c-desc">群组文库实时共享，多人协同标注与管理文献</div></div>
+  </div>
+
+  <h3>Zotero vs 竞品一览</h3>
+  <table>
+    <thead><tr><th>工具</th><th>价格</th><th>开源</th><th>内置 PDF 阅读</th><th>离线使用</th><th>引用格式数</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Zotero 9</strong></td><td>免费（存储可付费）</td><td>✅ 开源</td><td>✅ 功能强大</td><td>✅ 完全离线</td><td>9000+</td></tr>
+      <tr><td>Mendeley</td><td>免费</td><td>❌ 闭源</td><td>✅ 基础功能</td><td>⚠️ 受限</td><td>数千</td></tr>
+      <tr><td>EndNote</td><td>$250/年</td><td>❌ 闭源</td><td>✅ 较完整</td><td>✅</td><td>7000+</td></tr>
+      <tr><td>Paperpile</td><td>$36/年</td><td>❌ 闭源</td><td>✅</td><td>❌ 需网络</td><td>数千</td></tr>
+      <tr><td>ReadCube</td><td>$55/年</td><td>❌ 闭源</td><td>✅</td><td>⚠️</td><td>有限</td></tr>
+    </tbody>
+  </table>
+
+  <h3>版本演进时间线</h3>
+  <div class="dg">
+    <svg width="100%" viewBox="0 0 700 130" role="img">
+      <title>Zotero 版本时间线</title>
+      <line x1="40" y1="65" x2="660" y2="65" stroke="#d0dcd7" stroke-width="2"/>
+      <!-- v6 -->
+      <circle cx="80" cy="65" r="10" fill="#8aada4" stroke="#fff" stroke-width="2"/>
+      <text x="80" y="45" text-anchor="middle" font-family="Source Serif 4,serif" font-size="12" fill="#4d6b61" font-weight="600">v6</text>
+      <text x="80" y="92" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#8aada4">2022</text>
+      <!-- v7 -->
+      <circle cx="220" cy="65" r="12" fill="#1a7a5e" stroke="#fff" stroke-width="2"/>
+      <text x="220" y="43" text-anchor="middle" font-family="Source Serif 4,serif" font-size="13" fill="#1a7a5e" font-weight="700">v7</text>
+      <text x="220" y="84" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61">2024年8月</text>
+      <text x="220" y="100" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#8aada4">全新UI+PDF阅读器</text>
+      <!-- v8 -->
+      <circle cx="420" cy="65" r="13" fill="#1a7a5e" stroke="#fff" stroke-width="2"/>
+      <text x="420" y="42" text-anchor="middle" font-family="Source Serif 4,serif" font-size="13" fill="#1a7a5e" font-weight="700">v8</text>
+      <text x="420" y="85" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61">2026年1月22日</text>
+      <text x="420" y="101" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#8aada4">新引用对话框+主题</text>
+      <!-- v9 -->
+      <circle cx="620" cy="65" r="15" fill="#14a37a" stroke="#acdfcf" stroke-width="3"/>
+      <text x="620" y="41" text-anchor="middle" font-family="Source Serif 4,serif" font-size="14" fill="#14a37a" font-weight="700">v9</text>
+      <text x="620" y="88" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#1a7a5e" font-weight="600">2026年4月10日</text>
+      <text x="620" y="104" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#4d6b61">Read Aloud+最新版</text>
+      <!-- "最新" label -->
+      <rect x="572" y="18" width="96" height="16" rx="4" fill="#14a37a"/>
+      <text x="620" y="29.5" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="white" font-weight="600">当前最新版本</text>
+    </svg>
+  </div>
+  <p class="dg-cap">图：Zotero 版本演进时间线（截至 2026年5月）</p>
+
+  <div class="callout c-tip">
+    <div class="callout-icon">🎯</div>
+    <div class="callout-body">
+      <div class="callout-title">适合哪些人使用？</div>
+      在读研究生（文献综述利器）、科研工作者（论文写作）、本科生（学术作业）、图书馆从业者，以及任何需要系统管理大量文献资料的人。Zotero 完全免费，个人使用无任何功能限制。
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <div></div>
+    <button class="nb-btn primary" onclick="go('install')">下一章：安装配置 →</button>
+  </div>
+</div>
+
+<!-- ════ 2. INSTALL ════ -->
+<div id="sec-install" class="section">
+  <div class="eyebrow"><span>第二章</span><span class="nb nb-basic">基础</span></div>
+  <h2>安装与初始设置</h2>
+  <p class="lead">Zotero 9 支持 Windows 10+、macOS 10.15+、Linux，以及 iOS/Android 移动端。15 分钟完成全套安装与配置。</p>
+
+  <h3>第一步：下载安装桌面端</h3>
+  <p>访问 <code>zotero.org</code> 下载对应平台安装包：</p>
+  <div class="card-grid">
+    <div class="c-card"><div class="c-icon">🪟</div><div class="c-title">Windows</div><div class="c-desc">.exe 安装包，64 位版本，原生支持 Windows ARM。直接双击安装</div></div>
+    <div class="c-card"><div class="c-icon">🍎</div><div class="c-title">macOS</div><div class="c-desc">.dmg，原生支持 Apple Silicon（M系芯片）。拖入 Applications</div></div>
+    <div class="c-card"><div class="c-icon">🐧</div><div class="c-title">Linux</div><div class="c-desc">tar.bz2 包，v8 起支持 ARM64（树莓派、M芯片 Linux VM）</div></div>
+    <div class="c-card"><div class="c-icon">📱</div><div class="c-title">移动端</div><div class="c-desc">iOS App Store 搜索 Zotero，支持 PDF/EPUB 阅读与标注</div></div>
+  </div>
+
+  <h3>第二步：安装浏览器插件 Zotero Connector</h3>
+  <p><strong>Zotero Connector</strong> 是 Zotero 最核心的配套工具——它是一个浏览器扩展，让你在浏览学术网站时一键将文献（含元数据和 PDF）保存到 Zotero。</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">1</div>
+      <div class="step-b">
+        <div class="step-t">确保 Zotero 桌面端已运行</div>
+        <div class="step-d">Connector 需要桌面端 Zotero 处于开启状态才能完整工作</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div class="step-b">
+        <div class="step-t">在浏览器扩展商店搜索「Zotero Connector」</div>
+        <div class="step-d">支持 Chrome、Firefox、Safari、Edge。点击「添加到浏览器」</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div class="step-b">
+        <div class="step-t">地址栏右侧出现 Zotero 图标即安装成功</div>
+        <div class="step-d">图标会根据当前网页自动变化：书本图标（书籍）、论文图标（学术文章）、文件夹图标（多条目页面）</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>界面布局全解析</h3>
+  <div class="dg">
+    <svg width="100%" viewBox="0 0 700 400" role="img">
+      <title>Zotero 9 界面布局说明图</title>
+      <!-- Window frame -->
+      <rect x="10" y="10" width="680" height="380" rx="10" fill="#f4f6f5" stroke="#d0dcd7" stroke-width="1"/>
+      <!-- Title bar -->
+      <rect x="10" y="10" width="680" height="32" rx="10" fill="#1a2e28"/>
+      <rect x="10" y="30" width="680" height="12" fill="#1a2e28"/>
+      <circle cx="30" cy="26" r="5" fill="#c0392b" opacity=".8"/>
+      <circle cx="46" cy="26" r="5" fill="#c07a00" opacity=".8"/>
+      <circle cx="62" cy="26" r="5" fill="#14a37a" opacity=".8"/>
+      <text x="350" y="30" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#4d6b61">Zotero 9</text>
+      <!-- Toolbar -->
+      <rect x="10" y="42" width="680" height="34" fill="#edf2f0" stroke-bottom="1"/>
+      <rect x="10" y="76" width="680" height="1" fill="#d0dcd7"/>
+      <rect x="18" y="52" width="60" height="14" rx="4" fill="#1a7a5e"/>
+      <text x="48" y="63" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="white">+ 新建条目</text>
+      <rect x="86" y="52" width="50" height="14" rx="4" fill="#dfe8e4" stroke="#b3c9c2" stroke-width="0.5"/>
+      <text x="111" y="63" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#4d6b61">上传附件</text>
+      <rect x="480" y="52" width="120" height="14" rx="4" fill="#fff" stroke="#d0dcd7" stroke-width="0.5"/>
+      <text x="540" y="63" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#8aada4">🔍 搜索文库...</text>
+      <!-- Left panel: Collections -->
+      <rect x="10" y="77" width="170" height="313" fill="#fff" stroke="#d0dcd7" stroke-width="0.5"/>
+      <text x="94" y="98" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61" font-weight="600">文库面板</text>
+      <text x="24" y="118" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#1a2e28" font-weight="500">📚 我的文库</text>
+      <rect x="16" y="124" width="154" height="20" rx="3" fill="#eaf4f0"/>
+      <text x="30" y="138" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#1a7a5e">  📁 机器学习</text>
+      <text x="30" y="156" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#4d6b61">  📁 深度学习</text>
+      <text x="30" y="174" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#4d6b61">  📁 NLP</text>
+      <text x="24" y="198" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#4d6b61">👥 群组文库</text>
+      <text x="24" y="218" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#4d6b61">🕐 最近阅读<tspan font-size="9" fill="#1f6fab"> NEW</tspan></text>
+      <text x="24" y="238" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#4d6b61">🔖 未读文献</text>
+      <text x="24" y="258" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#4d6b61">🗑️ 已删除</text>
+      <!-- Tags at bottom -->
+      <text x="94" y="310" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#8aada4" font-weight="600">标签选择器</text>
+      <rect x="18" y="316" width="40" height="14" rx="3" fill="#eaf4f0" stroke="#a8cfc4" stroke-width="0.5"/>
+      <text x="38" y="326.5" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#1a7a5e">重要</text>
+      <rect x="64" y="316" width="40" height="14" rx="3" fill="#e8f1fb" stroke="#b4c8f0" stroke-width="0.5"/>
+      <text x="84" y="326.5" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#1f6fab">待读</text>
+      <rect x="110" y="316" width="50" height="14" rx="3" fill="#fdf7e3" stroke="#e0cc88" stroke-width="0.5"/>
+      <text x="135" y="326.5" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#c07a00">草稿阶段</text>
+      <text x="94" y="385" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#14a37a" font-weight="600">① 文库与标签面板</text>
+      <!-- Middle panel: Items list -->
+      <rect x="180" y="77" width="260" height="313" fill="#f9fbfa" stroke="#d0dcd7" stroke-width="0.5"/>
+      <!-- Column headers -->
+      <rect x="180" y="77" width="260" height="22" fill="#edf2f0"/>
+      <text x="196" y="91" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61" font-weight="600">标题</text>
+      <text x="360" y="91" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61" font-weight="600">年份</text>
+      <!-- Item rows -->
+      <rect x="180" y="99" width="260" height="32" fill="#eaf4f0"/>
+      <text x="192" y="111" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#1a7a5e" font-weight="500">📄 Attention Is All You Need</text>
+      <text x="192" y="126" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#8aada4">Vaswani et al.</text>
+      <text x="400" y="118" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61">2017</text>
+      <rect x="180" y="131" width="260" height="32" fill="#fff"/>
+      <text x="192" y="143" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#1a2e28">📄 BERT: Pre-training...</text>
+      <text x="192" y="158" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#8aada4">Devlin et al.</text>
+      <text x="400" y="150" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61">2019</text>
+      <rect x="180" y="163" width="260" height="32" fill="#fff"/>
+      <text x="192" y="175" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#1a2e28">📄 GPT-4 Technical Report</text>
+      <text x="192" y="190" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#8aada4">OpenAI</text>
+      <text x="400" y="182" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61">2023</text>
+      <!-- Annotations visible under item (v8 feature) -->
+      <rect x="192" y="195" width="230" height="14" rx="2" fill="#f4edf9" stroke="#d0b8e8" stroke-width="0.5"/>
+      <text x="200" y="205" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#6c3483">  🖊 "The architecture avoids recurrence..."</text>
+      <text x="350" y="385" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#14a37a" font-weight="600">② 条目列表（含标注）</text>
+      <!-- Right panel: Item info -->
+      <rect x="440" y="77" width="250" height="313" fill="#fff" stroke="#d0dcd7" stroke-width="0.5"/>
+      <text x="565" y="98" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61" font-weight="600">条目信息面板</text>
+      <text x="453" y="118" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#8aada4">标题</text>
+      <text x="453" y="133" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#1a2e28" font-weight="500">Attention Is All You Need</text>
+      <text x="453" y="155" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#8aada4">作者</text>
+      <text x="453" y="170" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#1a2e28">Vaswani, A.; Shazeer, N. ...</text>
+      <text x="453" y="192" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#8aada4">年份</text>
+      <text x="453" y="207" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#1a2e28">2017</text>
+      <text x="453" y="229" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#8aada4">期刊/会议</text>
+      <text x="453" y="244" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#1a2e28">NeurIPS 2017</text>
+      <text x="453" y="266" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#8aada4">附件</text>
+      <rect x="453" y="272" width="90" height="16" rx="3" fill="#eaf4f0" stroke="#a8cfc4" stroke-width="0.5"/>
+      <text x="498" y="283.5" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#1a7a5e">📄 Full Text PDF</text>
+      <text x="453" y="310" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#8aada4">标签</text>
+      <rect x="453" y="316" width="36" height="14" rx="3" fill="#eaf4f0" stroke="#a8cfc4" stroke-width="0.5"/>
+      <text x="471" y="326.5" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#1a7a5e">重要</text>
+      <text x="565" y="385" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#14a37a" font-weight="600">③ 条目信息面板</text>
+    </svg>
+  </div>
+  <p class="dg-cap">图：Zotero 9 界面三栏布局——文库/标签 · 条目列表 · 条目详情</p>
+
+  <h3>推荐初始设置</h3>
+  <div class="card">
+    <h4>编辑 → 首选项 → 常规</h4>
+    <table>
+      <tr><td><code>文件重命名</code></td><td>开启「自动保持文件名与元数据同步」（v8 新增）</td></tr>
+      <tr><td><code>快照</code></td><td>根据硬盘空间决定是否自动保存网页快照</td></tr>
+    </table>
+    <h4>编辑 → 首选项 → 同步</h4>
+    <table>
+      <tr><td><code>账号登录</code></td><td>v9 起支持通过浏览器登录，可使用密码管理器，建议开启</td></tr>
+      <tr><td><code>文件同步</code></td><td>免费 300MB，超出可付费升级或用 WebDAV 替代方案</td></tr>
+    </table>
+    <h4>编辑 → 首选项 → 高级 → 文件和文件夹</h4>
+    <table>
+      <tr><td><code>数据目录</code></td><td>建议放在 iCloud/OneDrive 以外的本地目录，避免冲突</td></tr>
+    </table>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nb-btn" onclick="go('intro')">← 上一章</button>
+    <button class="nb-btn primary" onclick="go('collect')">下一章：文献收集 →</button>
+  </div>
+</div>
+
+<!-- ════ 3. COLLECT ════ -->
+<div id="sec-collect" class="section">
+  <div class="eyebrow"><span>第三章</span><span class="nb nb-basic">基础</span></div>
+  <h2>文献收集方法</h2>
+  <p class="lead">Zotero 提供六种获取文献的方式，从浏览器一键抓取到手动输入一应俱全。掌握这些方法，你的文库会快速充实。</p>
+
+  <h3>方法一：Zotero Connector 一键抓取（最常用）</h3>
+  <p>这是效率最高的方式。在支持的学术数据库网站上，点击浏览器地址栏旁的 Zotero 图标即可保存。</p>
+  <div class="card-grid">
+    <div class="c-card"><div class="c-icon">🔬</div><div class="c-title">Google Scholar</div><div class="c-desc">搜索结果页点击图标，可批量保存多条文献到指定文件夹</div></div>
+    <div class="c-card"><div class="c-icon">📰</div><div class="c-title">PubMed / arXiv</div><div class="c-desc">自动识别元数据，同时尝试抓取全文 PDF（若可访问）</div></div>
+    <div class="c-card"><div class="c-icon">🏛️</div><div class="c-title">各大出版商</div><div class="c-desc">Elsevier、Springer、Nature、ACM DL 等均完美支持</div></div>
+    <div class="c-card"><div class="c-icon">📰</div><div class="c-title">新闻/网页</div><div class="c-desc">保存《纽约时报》、知乎、博客文章等网页内容，自动抓取快照</div></div>
+  </div>
+
+  <div class="callout c-tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <div class="callout-title">Connector 新功能（Zotero 8+）</div>
+      保存文献时，弹出框现支持<strong>自动补全标签</strong>（从你的文库标签中搜索）并可<strong>直接添加笔记</strong>，无需打开桌面端即可完成标注。
+    </div>
+  </div>
+
+  <h3>方法二：通过标识符添加（DOI / ISBN / PMID）</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">1</div>
+      <div class="step-b">
+        <div class="step-t">点击工具栏「通过标识符添加」按钮（魔法棒图标）</div>
+        <div class="step-d">或使用快捷键 <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>A</kbd></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div class="step-b">
+        <div class="step-t">输入 DOI、ISBN、PMID 或 arXiv ID</div>
+        <div class="step-d">例：<code>10.48550/arXiv.1706.03762</code>（Attention Is All You Need）</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div class="step-b">
+        <div class="step-t">Zotero 自动查询元数据并添加条目</div>
+        <div class="step-d">同时尝试自动下载可访问的全文 PDF</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>方法三：拖放 PDF 文件</h3>
+  <p>直接将 PDF 文件拖拽到 Zotero 窗口中，Zotero 会：</p>
+  <div class="card">
+    <ol style="padding-left:20px;color:var(--text2);font-size:14px;line-height:2.1;">
+      <li>自动识别 PDF 内部元数据（标题、作者、DOI 等）</li>
+      <li>通过 DOI 向 CrossRef 查询完整元数据</li>
+      <li>自动重命名文件并关联到正确的文献条目下</li>
+      <li>（v8+）持续保持文件名与元数据同步</li>
+    </ol>
+    <p style="margin-top:10px;margin-bottom:0;font-size:13.5px;color:var(--text2);">如元数据识别不准确，右键点击 PDF → 「从 PDF 重新获取元数据」。</p>
+  </div>
+
+  <h3>方法四：手动创建条目</h3>
+  <p>点击工具栏「新建条目」→ 选择类型（期刊文章、书籍、会议论文…）→ 在右侧面板手动填写元数据。适用于无法自动识别的文献（古籍、内部报告等）。</p>
+
+  <h3>方法五：导入 RIS / BibTeX</h3>
+  <p>大多数学术数据库和文献管理工具支持导出 RIS 或 BibTeX 文件。在 Zotero 中：<strong>文件 → 导入</strong>，选择 .ris/.bib 文件，批量导入文献。</p>
+
+  <h3>支持自动识别的数据库（部分）</h3>
+  <table>
+    <thead><tr><th>数据库</th><th>类型</th><th>自动抓取 PDF</th></tr></thead>
+    <tbody>
+      <tr><td>Google Scholar</td><td>综合学术</td><td>⚠️ 取决于访问权限</td></tr>
+      <tr><td>PubMed / PubMed Central</td><td>生物医学</td><td>✅（PMC 开放文章）</td></tr>
+      <tr><td>arXiv.org</td><td>预印本</td><td>✅ 免费全文</td></tr>
+      <tr><td>Semantic Scholar</td><td>综合学术</td><td>✅ 开放 PDF</td></tr>
+      <tr><td>Web of Science / Scopus</td><td>综合引文</td><td>⚠️ 需机构权限</td></tr>
+      <tr><td>IEEE Xplore / ACM DL</td><td>计算机</td><td>⚠️ 需机构权限</td></tr>
+      <tr><td>SpringerLink / ScienceDirect</td><td>综合期刊</td><td>⚠️ 需机构权限</td></tr>
+      <tr><td>Amazon / WorldCat</td><td>书籍</td><td>无 PDF（书籍）</td></tr>
+    </tbody>
+  </table>
+
+  <div class="nav-bottom">
+    <button class="nb-btn" onclick="go('install')">← 上一章</button>
+    <button class="nb-btn primary" onclick="go('organize')">下一章：文库整理 →</button>
+  </div>
+</div>
+
+<!-- ════ 4. ORGANIZE ════ -->
+<div id="sec-organize" class="section">
+  <div class="eyebrow"><span>第四章</span><span class="nb nb-basic">基础</span></div>
+  <h2>文库组织管理</h2>
+  <p class="lead">Zotero 提供文件夹（Collection）、标签（Tag）、智能文件夹（Saved Search）三种组织方式，相互补充，构建灵活的文献管理体系。</p>
+
+  <h3>文件夹（Collection）</h3>
+  <p><strong>注意</strong>：Zotero 的 Collection 不是真正意义上的文件夹——<strong>一篇文献可以同时属于多个 Collection</strong>，但实际文件只有一份。删除 Collection 不会删除文献本身。</p>
+  <div class="card-grid">
+    <div class="c-card"><div class="c-icon">📁</div><div class="c-title">创建方式</div><div class="c-desc">右键文库 → 新建合集；支持无限嵌套子合集</div></div>
+    <div class="c-card"><div class="c-icon">🖱️</div><div class="c-title">添加文献</div><div class="c-desc">拖拽文献到目标合集；或右键 → 添加到合集</div></div>
+    <div class="c-card"><div class="c-icon">🗂️</div><div class="c-title">组织建议</div><div class="c-desc">按研究项目 / 论文章节 / 课题组织，不要按主题重复文库结构</div></div>
+  </div>
+
+  <h3>标签（Tag）</h3>
+  <p>标签是多维度分类的利器。一篇文献可以有无数个标签，通过标签面板（左下角）快速过滤。</p>
+  <pre><code><span class="cc"># 推荐的标签体系设计</span>
+
+<span class="ck">状态类</span>：  <span class="cv">待读</span>  <span class="cv">精读</span>  <span class="cv">已引用</span>  <span class="cv">需复习</span>
+<span class="ck">重要性</span>：  <span class="cv">★核心文献</span>  <span class="cv">★★必读</span>
+<span class="ck">用途类</span>：  <span class="cv">引言</span>  <span class="cv">方法对比</span>  <span class="cv">实验基线</span>  <span class="cv">相关工作</span>
+<span class="ck">来源类</span>：  <span class="cv">导师推荐</span>  <span class="cv">会议精选</span>
+<span class="ck">彩色标签</span>：为重要标签设置颜色，在条目列表中直接显示</code></pre>
+
+  <p>为标签设置颜色：右键标签 → 指定颜色（最多 9 个彩色标签，显示为条目列表中的圆点）。</p>
+
+  <h3>智能文件夹 / 已保存搜索（Saved Search）</h3>
+  <p>点击 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd>，创建条件查询并保存为动态文件夹，文库内容更新时自动刷新结果：</p>
+  <table>
+    <thead><tr><th>智能文件夹名称</th><th>查询条件</th></tr></thead>
+    <tbody>
+      <tr><td>📥 未读文献</td><td>标签 · 包含 · 待读</td></tr>
+      <tr><td>⭐ 核心文献</td><td>标签 · 包含 · ★核心文献</td></tr>
+      <tr><td>📅 本月新增</td><td>添加日期 · 在最近 · 30天</td></tr>
+      <tr><td>❗ 缺少 PDF</td><td>附件 · 不包含</td></tr>
+      <tr><td>📝 有标注</td><td>标注 · 存在</td></tr>
+    </tbody>
+  </table>
+
+  <h3>最近阅读（Recently Read）<span class="new-badge">v9 新增</span></h3>
+  <p>Zotero 9 新增「<strong>最近阅读</strong>」虚拟合集，自动收录近期阅读过的文献，跨设备同步。条目列表中也新增「Last Read（最后阅读时间）」列，方便追踪阅读进度。</p>
+
+  <h3>文献组织最佳实践</h3>
+  <div class="dg">
+    <svg width="100%" viewBox="0 0 700 200" role="img">
+      <title>文库组织推荐结构图</title>
+      <defs>
+        <marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- My Library -->
+      <rect x="20" y="70" width="120" height="60" rx="8" fill="#eaf4f0" stroke="#a8cfc4" stroke-width="1"/>
+      <text x="80" y="95" text-anchor="middle" font-size="18">📚</text>
+      <text x="80" y="115" text-anchor="middle" font-family="Source Serif 4,serif" font-size="12" fill="#1a7a5e" font-weight="600">我的文库</text>
+      <!-- Arrow -->
+      <path d="M140 100 L178 100" fill="none" stroke="#b3c9c2" stroke-width="1.5" marker-end="url(#a1)"/>
+      <!-- Research projects -->
+      <rect x="185" y="30" width="130" height="50" rx="7" fill="#fff" stroke="#d0dcd7" stroke-width="1"/>
+      <text x="250" y="52" text-anchor="middle" font-size="14">🔬</text>
+      <text x="250" y="70" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#1a2e28">按研究项目分合集</text>
+      <path d="M140 90 L178 56" fill="none" stroke="#b3c9c2" stroke-width="1" marker-end="url(#a1)" stroke-dasharray="4 3"/>
+      <!-- Tags -->
+      <rect x="185" y="90" width="130" height="50" rx="7" fill="#fff" stroke="#d0dcd7" stroke-width="1"/>
+      <text x="250" y="112" text-anchor="middle" font-size="14">🏷️</text>
+      <text x="250" y="130" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#1a2e28">标签标记状态/用途</text>
+      <!-- Smart folders -->
+      <rect x="185" y="150" width="130" height="50" rx="7" fill="#fff" stroke="#d0dcd7" stroke-width="1"/>
+      <text x="250" y="172" text-anchor="middle" font-size="14">🔍</text>
+      <text x="250" y="190" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#1a2e28">智能文件夹动态聚合</text>
+      <path d="M140 110 L178 116" fill="none" stroke="#b3c9c2" stroke-width="1" marker-end="url(#a1)" stroke-dasharray="4 3"/>
+      <path d="M140 115 L178 168" fill="none" stroke="#b3c9c2" stroke-width="1" marker-end="url(#a1)" stroke-dasharray="4 3"/>
+      <!-- Right: benefits -->
+      <path d="M315 56 L365 56" fill="none" stroke="#b3c9c2" stroke-width="1" marker-end="url(#a1)"/>
+      <path d="M315 115 L365 115" fill="none" stroke="#b3c9c2" stroke-width="1" marker-end="url(#a1)"/>
+      <path d="M315 175 L365 175" fill="none" stroke="#b3c9c2" stroke-width="1" marker-end="url(#a1)"/>
+      <rect x="365" y="38" width="165" height="34" rx="6" fill="#eaf4f0" stroke="#a8cfc4" stroke-width="0.8"/>
+      <text x="447" y="57" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#1a7a5e">一篇文献属于多个项目合集</text>
+      <rect x="365" y="98" width="165" height="34" rx="6" fill="#e8f1fb" stroke="#b4c8f0" stroke-width="0.8"/>
+      <text x="447" y="117" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#1f6fab">多维度快速筛选</text>
+      <rect x="365" y="158" width="165" height="34" rx="6" fill="#fdf7e3" stroke="#e0cc88" stroke-width="0.8"/>
+      <text x="447" y="177" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="11" fill="#c07a00">实时动态，自动更新</text>
+    </svg>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nb-btn" onclick="go('collect')">← 上一章</button>
+    <button class="nb-btn primary" onclick="go('reader')">下一章：内置阅读器 →</button>
+  </div>
+</div>
+
+<!-- ════ 5. READER ════ -->
+<div id="sec-reader" class="section">
+  <div class="eyebrow"><span>第五章</span><span class="nb nb-mid">进阶</span></div>
+  <h2>内置阅读器</h2>
+  <p class="lead">Zotero 的内置阅读器支持 PDF、EPUB 和网页快照，集阅读、标注、笔记于一体，是文献研读的核心工作区。Zotero 9 进一步增强了阅读体验。</p>
+
+  <h3>阅读器支持的文件类型</h3>
+  <div class="card-grid">
+    <div class="c-card"><div class="c-icon">📄</div><div class="c-title">PDF</div><div class="c-desc">学术文献的标准格式。支持多页显示、分屏、搜索、全部标注类型</div></div>
+    <div class="c-card"><div class="c-icon">📗</div><div class="c-title">EPUB</div><div class="c-desc">电子书格式，文字自动适应窗口宽度，可调节字体大小。v7 起支持</div></div>
+    <div class="c-card"><div class="c-icon">🌐</div><div class="c-title">网页快照</div><div class="c-desc">保存的网页离线版本，v8 起支持「阅读模式」自动去除广告和导航栏</div></div>
+  </div>
+
+  <h3>阅读器界面说明</h3>
+  <div class="dg">
+    <svg width="100%" viewBox="0 0 700 320" role="img">
+      <title>Zotero 阅读器界面布局</title>
+      <!-- Reader window -->
+      <rect x="10" y="10" width="680" height="300" rx="8" fill="#f4f6f5" stroke="#d0dcd7" stroke-width="1"/>
+      <!-- Toolbar -->
+      <rect x="10" y="10" width="680" height="32" rx="8" fill="#1a2e28"/>
+      <rect x="10" y="30" width="680" height="12" fill="#1a2e28"/>
+      <text x="120" y="29" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61">← →  🔎+  🔎-  ↕  📄1/12</text>
+      <text x="350" y="29" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#8aada4">Attention Is All You Need</text>
+      <text x="590" y="29" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61">🔍 搜索  🖊 标注  🎨 外观</text>
+      <!-- Left sidebar: outline -->
+      <rect x="10" y="42" width="130" height="268" fill="#fff" stroke="#d0dcd7" stroke-width="0.5"/>
+      <text x="75" y="62" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61" font-weight="600">目录</text>
+      <text x="22" y="80" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61">1. Introduction</text>
+      <text x="22" y="96" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61">2. Background</text>
+      <text x="22" y="112" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#1a7a5e" font-weight="500">3. Model Architecture</text>
+      <text x="22" y="128" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61">   3.1 Encoder</text>
+      <text x="22" y="144" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61">   3.2 Decoder</text>
+      <text x="22" y="160" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61">4. Attention</text>
+      <text x="22" y="176" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61">5. Training</text>
+      <text x="22" y="192" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61">6. Results</text>
+      <text x="22" y="208" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61">7. Conclusion</text>
+      <text x="75" y="295" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#14a37a" font-weight="600">① 目录/标注列表</text>
+      <!-- PDF content area -->
+      <rect x="140" y="42" width="380" height="268" fill="#fff"/>
+      <text x="200" y="75" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#1a2e28" font-weight="600">3 Model Architecture</text>
+      <text x="160" y="94" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#1a2e28">Most competitive neural sequence transduction models have an</text>
+      <text x="160" y="108" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#1a2e28">encoder-decoder structure. The encoder maps an input sequence of</text>
+      <!-- Highlight simulation -->
+      <rect x="158" y="114" width="188" height="12" rx="2" fill="#ffd58040" opacity="0.7"/>
+      <text x="160" y="124" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#1a2e28">symbol representations to a sequence of continuous representations.</text>
+      <text x="160" y="138" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#1a2e28">Given z, the decoder generates an output sequence of</text>
+      <!-- Underline simulation -->
+      <text x="160" y="154" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#1a2e28" text-decoration="underline">symbols one element at a time.</text>
+      <!-- Text annotation -->
+      <rect x="370" y="100" width="100" height="40" rx="4" fill="#fdf7e3" stroke="#e0cc88" stroke-width="0.8"/>
+      <text x="375" y="114" font-family="Noto Sans SC,sans-serif" font-size="8.5" fill="#c07a00">核心机制：</text>
+      <text x="375" y="126" font-family="Noto Sans SC,sans-serif" font-size="8.5" fill="#c07a00">Encoder→z→</text>
+      <text x="375" y="138" font-family="Noto Sans SC,sans-serif" font-size="8.5" fill="#c07a00">Decoder</text>
+      <text x="330" y="295" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#14a37a" font-weight="600">② PDF/EPUB 内容阅读区</text>
+      <!-- Right sidebar: annotations -->
+      <rect x="520" y="42" width="170" height="268" fill="#edf2f0" stroke="#d0dcd7" stroke-width="0.5"/>
+      <text x="605" y="62" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61" font-weight="600">标注列表</text>
+      <!-- Annotation items -->
+      <rect x="530" y="70" width="150" height="42" rx="4" fill="#fff" stroke="#d0dcd7" stroke-width="0.5"/>
+      <rect x="530" y="70" width="4" height="42" rx="2" fill="#ffd580"/>
+      <text x="540" y="84" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#4d6b61">🟡 高亮 · p.3</text>
+      <text x="540" y="97" font-family="Noto Sans SC,sans-serif" font-size="8.5" fill="#1a2e28">symbol representations to...</text>
+      <text x="540" y="109" font-family="Noto Sans SC,sans-serif" font-size="8" fill="#8aada4">添加评论</text>
+      <rect x="530" y="118" width="150" height="42" rx="4" fill="#fff" stroke="#d0dcd7" stroke-width="0.5"/>
+      <rect x="530" y="118" width="4" height="42" rx="2" fill="#1f6fab"/>
+      <text x="540" y="132" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#4d6b61">🔵 下划线 · p.3</text>
+      <text x="540" y="145" font-family="Noto Sans SC,sans-serif" font-size="8.5" fill="#1a2e28">symbols one element at a time</text>
+      <rect x="530" y="166" width="150" height="42" rx="4" fill="#fdf7e3" stroke="#e0cc88" stroke-width="0.5"/>
+      <text x="540" y="180" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#c07a00">📝 文字注释 · p.3</text>
+      <text x="540" y="193" font-family="Noto Sans SC,sans-serif" font-size="8.5" fill="#1a2e28">核心机制：Encoder→z→...</text>
+      <text x="605" y="295" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#14a37a" font-weight="600">③ 标注侧边栏</text>
+    </svg>
+  </div>
+  <p class="dg-cap">图：Zotero 阅读器三栏布局——目录导航 · PDF 内容 · 标注列表</p>
+
+  <h3>阅读器主题（Zotero 8 新增）<span class="new-badge">v8+</span></h3>
+  <p>点击工具栏「🎨 外观」按钮，可切换阅读主题：</p>
+  <div class="card-grid">
+    <div class="c-card"><div class="c-icon" style="background:#fff;width:30px;height:20px;border:1px solid #ddd;border-radius:3px;display:inline-block;"></div><div class="c-title" style="margin-top:6px">Original</div><div class="c-desc">原始白底黑字，打印效果最准确</div></div>
+    <div class="c-card"><div class="c-icon" style="background:#1a1a1a;width:30px;height:20px;border:1px solid #444;border-radius:3px;display:inline-block;"></div><div class="c-title" style="margin-top:6px">Dark（深色）</div><div class="c-desc">深夜阅读护眼，自动调整图片亮度</div></div>
+    <div class="c-card"><div class="c-icon" style="background:#f5f0e8;width:30px;height:20px;border:1px solid #ccc;border-radius:3px;display:inline-block;"></div><div class="c-title" style="margin-top:6px">Sepia（纸黄）</div><div class="c-desc">仿古纸质感，减少视觉疲劳</div></div>
+    <div class="c-card"><div class="c-icon" style="background:#f8f8ff;width:30px;height:20px;border:1px solid #ddd;border-radius:3px;display:inline-block;"></div><div class="c-title" style="margin-top:6px">Snow（雪白）</div><div class="c-desc">纯净高对比，文字清晰</div></div>
+  </div>
+  <p style="font-size:13.5px;color:var(--text2);">还支持<strong>自定义主题</strong>（指定前景色和背景色）。主题可为亮色/暗色模式分别设置不同方案。</p>
+
+  <h3>朗读模式（Read Aloud）<span class="new-badge">v9 全新</span></h3>
+  <p>Zotero 9 重磅新增 Read Aloud 功能，使用高质量自然声音朗读 PDF、EPUB 和网页快照：</p>
+  <div class="card">
+    <table>
+      <tr><td>🔊 启动方式</td><td>阅读器工具栏点击「Read Aloud」，或按 <kbd>R</kbd> / <kbd>L</kbd> 键切换</td></tr>
+      <tr><td>📍 从任意位置开始</td><td>激活后，点击左侧页边空白处，从该段落开始朗读</td></tr>
+      <tr><td>🖊 朗读时标注</td><td>朗读到某句时，按 <kbd>H</kbd> 键高亮，按 <kbd>U</kbd> 键添加下划线</td></tr>
+      <tr><td>☁️ 位置同步</td><td>阅读进度自动保存并跨设备同步（包括 iOS）</td></tr>
+    </table>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nb-btn" onclick="go('organize')">← 上一章</button>
+    <button class="nb-btn primary" onclick="go('annotate')">下一章：标注与笔记 →</button>
+  </div>
+</div>
+
+<!-- ════ 6. ANNOTATE ════ -->
+<div id="sec-annotate" class="section">
+  <div class="eyebrow"><span>第六章</span><span class="nb nb-mid">进阶</span></div>
+  <h2>标注与笔记系统</h2>
+  <p class="lead">Zotero 的标注系统支持六种标注类型，全部可提取为笔记，并与 Word/LibreOffice 深度集成——标注直接变成文献摘录进入论文草稿。</p>
+
+  <h3>六种标注类型</h3>
+  <div class="anno-demo">
+    <div class="anno-demo-head">标注类型演示</div>
+    <div class="anno-demo-body">
+      <div class="anno-line">
+        <div class="anno-swatch" style="background:#ffd580;"></div>
+        <span class="anno-label">黄色高亮</span>
+        <span class="anno-example" style="background:#ffd58040;">选中文本自动高亮，最常用的标注方式</span>
+      </div>
+      <div class="anno-line">
+        <div class="anno-swatch" style="background:#76d9b8;"></div>
+        <span class="anno-label">绿色高亮</span>
+        <span class="anno-example" style="background:#76d9b840;">可用于区分不同类型内容，如方法部分</span>
+      </div>
+      <div class="anno-line">
+        <div class="anno-swatch" style="background:#78b4e8;"></div>
+        <span class="anno-label">蓝色高亮</span>
+        <span class="anno-example" style="background:#78b4e840;">用于标注实验结果或重要数据</span>
+      </div>
+      <div class="anno-line">
+        <div class="anno-swatch" style="background:none;border-bottom:2px solid #1f6fab;"></div>
+        <span class="anno-label" style="display:flex;align-items:center;">下划线</span>
+        <span class="anno-example" style="text-decoration:underline;text-decoration-color:#1f6fab;">关键术语或定义使用下划线标记</span>
+      </div>
+      <div class="anno-line">
+        <div class="anno-swatch" style="background:#e8f1fb;border:1px solid #1f6fab;"></div>
+        <span class="anno-label">文字注释</span>
+        <span class="anno-example" style="background:#fdf7e3;border-radius:3px;padding:2px 6px;font-size:12.5px;color:#c07a00;">「这里是你的评论或想法」</span>
+      </div>
+      <div class="anno-line">
+        <div class="anno-swatch" style="background:#eaf4f0;border:1px dashed #1a7a5e;"></div>
+        <span class="anno-label">区域截图</span>
+        <span class="anno-example" style="color:var(--text2);font-size:12.5px;">框选 PDF 区域截图保存，适合图表和公式</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>标注工作流：从标注到笔记</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">1</div>
+      <div class="step-b">
+        <div class="step-t">在阅读器中完成标注</div>
+        <div class="step-d">高亮、下划线、截图、文字注释——阅读时随手标注重要内容</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div class="step-b">
+        <div class="step-t">从标注生成笔记</div>
+        <div class="step-d">阅读器右侧标注列表 → 点击「从标注添加到笔记」，自动将所有标注提取为结构化笔记，包含原文引用和页码</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div class="step-b">
+        <div class="step-t">在笔记编辑器中整理</div>
+        <div class="step-d">自动生成的笔记可以自由编辑、补充个人理解、重组结构</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">4</div>
+      <div class="step-b">
+        <div class="step-t">笔记标签页（Zotero 8 新增）<span class="new-badge">v8+</span></div>
+        <div class="step-d">笔记现在可以在独立标签页中打开，与文献并排阅读。宽边距设计，专注笔记书写</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">5</div>
+      <div class="step-b">
+        <div class="step-t">直接插入 Word 文档（Zotero 9 新增）<span class="new-badge">v9+</span></div>
+        <div class="step-d">Zotero 9 的 Word 插件新增「Add Annotation」按钮，可将带引用的标注直接插入正在写作的论文中</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>标注在条目列表中可见（Zotero 8）<span class="new-badge">v8+</span></h3>
+  <p>Zotero 8 起，标注会显示在条目列表中（位于父附件下方），可以在条目列表、合集甚至跨文库<strong>直接搜索标注内容</strong>。还可以将标注拖拽到标签选择器，批量为标注打标签。</p>
+
+  <h3>笔记模板（Note Templates）</h3>
+  <p>可以为笔记设置自定义模板，标准化阅读笔记结构。在「编辑 → 首选项 → 笔记」中配置。推荐模板：</p>
+  <pre><code><span class="cc"># 推荐阅读笔记模板</span>
+
+<span class="ch">## 核心问题</span>
+本文解决了什么问题？
+
+<span class="ch">## 方法/贡献</span>
+- 
+
+<span class="ch">## 实验结果</span>
+- 主要指标：
+
+<span class="ch">## 局限性</span>
+- 
+
+<span class="ch">## 与我的研究的关联</span>
+- 
+
+<span class="ch">## 引用的重点标注</span>
+（从标注自动生成区域）</code></pre>
+
+  <div class="nav-bottom">
+    <button class="nb-btn" onclick="go('reader')">← 上一章</button>
+    <button class="nb-btn primary" onclick="go('cite')">下一章：引用格式 →</button>
+  </div>
+</div>
+
+<!-- ════ 7. CITE ════ -->
+<div id="sec-cite" class="section">
+  <div class="eyebrow"><span>第七章</span><span class="nb nb-mid">进阶</span></div>
+  <h2>引用与参考文献生成</h2>
+  <p class="lead">这是 Zotero 最实用的功能：在 Word 或 LibreOffice 中写论文时，一键插入引用，Zotero 自动维护参考文献列表，支持 9000+ 引用格式。</p>
+
+  <h3>第一步：安装 Word 插件</h3>
+  <p>Zotero 安装时会<strong>自动检测并安装</strong> Word/LibreOffice 插件。如需手动安装：<strong>编辑 → 首选项 → 引用 → 文字处理软件 → 安装插件</strong>。安装后打开 Word，顶部出现「Zotero」选项卡。</p>
+
+  <h3>Word 中的 Zotero 工具栏</h3>
+  <div class="dg">
+    <svg width="100%" viewBox="0 0 700 80" role="img">
+      <title>Word 中 Zotero 工具栏</title>
+      <rect x="10" y="10" width="680" height="60" rx="8" fill="#fff" stroke="#d0dcd7" stroke-width="1"/>
+      <rect x="10" y="10" width="680" height="28" rx="8" fill="#edf2f0"/>
+      <rect x="10" y="26" width="680" height="12" fill="#edf2f0"/>
+      <text x="350" y="28" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#4d6b61" font-weight="600">Zotero 选项卡</text>
+      <!-- Buttons -->
+      <rect x="20" y="40" width="120" height="22" rx="4" fill="#1a7a5e"/>
+      <text x="80" y="55" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="white">添加/编辑引用</text>
+      <rect x="148" y="40" width="110" height="22" rx="4" fill="#dfe8e4" stroke="#b3c9c2" stroke-width="0.5"/>
+      <text x="203" y="55" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#1a2e28">添加/编辑参考</text>
+      <rect x="266" y="40" width="100" height="22" rx="4" fill="#dfe8e4" stroke="#b3c9c2" stroke-width="0.5"/>
+      <text x="316" y="55" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#1a2e28">添加标注<tspan font-size="8" fill="#1f6fab"> v9</tspan></text>
+      <rect x="374" y="40" width="90" height="22" rx="4" fill="#dfe8e4" stroke="#b3c9c2" stroke-width="0.5"/>
+      <text x="419" y="55" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#1a2e28">刷新引用</text>
+      <rect x="472" y="40" width="90" height="22" rx="4" fill="#dfe8e4" stroke="#b3c9c2" stroke-width="0.5"/>
+      <text x="517" y="55" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#1a2e28">文档首选项</text>
+      <rect x="570" y="40" width="110" height="22" rx="4" fill="#dfe8e4" stroke="#b3c9c2" stroke-width="0.5"/>
+      <text x="625" y="55" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="10" fill="#1a2e28">取消文档链接</text>
+    </svg>
+  </div>
+
+  <h3>新版统一引用对话框（Zotero 8）<span class="new-badge">v8+</span></h3>
+  <p>Zotero 8 用全新的统一引用对话框，替代了原来的「红色工具栏」和「经典对话框」。新对话框有两个模式：</p>
+  <div class="card-grid">
+    <div class="c-card">
+      <div class="c-icon">🔍</div>
+      <div class="c-title">List 模式（快速搜索）</div>
+      <div class="c-desc">在所有文库中按标题/作者/年份搜索，回车即可插入。日常使用推荐</div>
+    </div>
+    <div class="c-card">
+      <div class="c-icon">📚</div>
+      <div class="c-title">Library 模式（文库浏览）</div>
+      <div class="c-desc">可浏览文库和合集，从树状结构选择文献。适合需要精确定位的场景</div>
+    </div>
+  </div>
+  <p style="font-size:13.5px;color:var(--text2);">新对话框还支持直接从搜索框输入定位符（如 <code>line 10</code>），并可通过左下角按钮在「添加引用」和「添加笔记」间切换。</p>
+
+  <h3>插入引用的完整流程</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">1</div>
+      <div class="step-b">
+        <div class="step-t">点击「文档首选项」，选择引用格式</div>
+        <div class="step-d">例：APA 7th、Chicago 17th、GB/T 7714-2015（中国国标）、MLA 9th</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div class="step-b">
+        <div class="step-t">将光标置于正文需要引用处</div>
+        <div class="step-d">不需要提前选中文字</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div class="step-b">
+        <div class="step-t">点击「添加/编辑引用」</div>
+        <div class="step-d">弹出搜索框，输入关键词找到文献，回车确认。Word 中立即插入 <code>(Vaswani et al., 2017)</code> 样式的引用</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">4</div>
+      <div class="step-b">
+        <div class="step-t">在文末插入参考文献列表</div>
+        <div class="step-d">光标移到文章末尾，点击「添加/编辑参考文献」，自动生成格式化参考文献列表</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">5</div>
+      <div class="step-b">
+        <div class="step-t">增删引用后点「刷新」</div>
+        <div class="step-d">Zotero 自动重新排序编号、更新参考文献列表，无需手动修改</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>常用引用格式</h3>
+  <table>
+    <thead><tr><th>格式</th><th>适用场景</th><th>示例</th></tr></thead>
+    <tbody>
+      <tr><td>APA 7th</td><td>心理学、教育学、社会科学</td><td>(Vaswani et al., 2017)</td></tr>
+      <tr><td>MLA 9th</td><td>人文学科、文学</td><td>(Vaswani et al. 45)</td></tr>
+      <tr><td>Chicago 17th</td><td>历史学、出版业</td><td><sup>1</sup>脚注</td></tr>
+      <tr><td>Vancouver</td><td>医学、生物学</td><td>[1]</td></tr>
+      <tr><td>GB/T 7714-2015</td><td>中国学术论文标准</td><td>[1]</td></tr>
+      <tr><td>IEEE</td><td>工程、计算机</td><td>[1]</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout c-warn">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <div class="callout-title">重要：不要手动编辑引用格式</div>
+      手动修改 Zotero 插入的引用文字后，下次刷新时会被覆盖。正确做法：点击引用 → 点击「添加/编辑引用」→ 在弹出框中点击引用气泡 → 添加页码、前缀、后缀等自定义内容。
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nb-btn" onclick="go('annotate')">← 上一章</button>
+    <button class="nb-btn primary" onclick="go('sync')">下一章：同步备份 →</button>
+  </div>
+</div>
+
+<!-- ════ 8. SYNC ════ -->
+<div id="sec-sync" class="section">
+  <div class="eyebrow"><span>第八章</span><span class="nb nb-mid">进阶</span></div>
+  <h2>同步与备份</h2>
+  <p class="lead">Zotero 提供元数据免费同步，文件同步有 300MB 免费空间。通过 WebDAV 或第三方存储，可以实现完全免费的全文件同步。</p>
+
+  <h3>Zotero 同步的两个层面</h3>
+  <div class="card-grid">
+    <div class="c-card"><div class="c-icon">📋</div><div class="c-title">元数据同步</div><div class="c-desc"><strong>永久免费</strong>。文献信息、标签、笔记、标注、集合结构等全部数据，跨设备实时同步</div></div>
+    <div class="c-card"><div class="c-icon">📎</div><div class="c-title">文件同步（PDF等）</div><div class="c-desc">通过 Zotero 服务器：<strong>免费 300MB</strong>。超出需付费（$20/年 2GB，$60/年 6GB）</div></div>
+  </div>
+
+  <h3>免费无限文件同步方案：WebDAV</h3>
+  <p>使用第三方 WebDAV 服务替代 Zotero 的文件存储，可实现<strong>完全免费的无限同步</strong>：</p>
+  <table>
+    <thead><tr><th>服务</th><th>免费空间</th><th>WebDAV 地址格式</th></tr></thead>
+    <tbody>
+      <tr><td><strong>坚果云</strong>（国内推荐）</td><td>1GB/月上传量</td><td><code>https://dav.jianguoyun.com/dav/</code></td></tr>
+      <tr><td>Box</td><td>10GB</td><td><code>https://dav.box.com/dav</code></td></tr>
+      <tr><td>4shared</td><td>15GB</td><td>支持 WebDAV</td></tr>
+    </tbody>
+  </table>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">1</div>
+      <div class="step-b">
+        <div class="step-t">在坚果云中创建一个专用文件夹（如 ZoteroStorage）</div>
+        <div class="step-d">在坚果云网页版或 App 中创建，记下文件夹名</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div class="step-b">
+        <div class="step-t">坚果云 → 账户信息 → 安全选项 → 添加应用密码</div>
+        <div class="step-d">为 Zotero 单独创建应用密码（不是登录密码）</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div class="step-b">
+        <div class="step-t">Zotero → 编辑 → 首选项 → 同步</div>
+        <div class="step-d">文件同步选「WebDAV」，输入地址 <code>https://dav.jianguoyun.com/dav/ZoteroStorage</code>、账号、应用密码</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">4</div>
+      <div class="step-b">
+        <div class="step-t">点击「验证服务器」→ 确认正常 → 同步</div>
+        <div class="step-d">首次同步会上传所有 PDF，之后增量同步</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>数据备份</h3>
+  <div class="callout c-warn">
+    <div class="callout-icon">🛡️</div>
+    <div class="callout-body">
+      <div class="callout-title">强烈建议定期备份本地数据目录</div>
+      Zotero 数据存储在「数据目录」（可在首选项 → 高级 → 文件和文件夹中查看），将整个目录定期复制到外置硬盘或另一台电脑。数据目录包含所有文献、PDF、笔记、标注，丢失后无法从云端完全恢复。
+    </div>
+  </div>
+  <p>Zotero 在「编辑 → 首选项 → 高级」中也提供了手动备份数据库的选项（仅备份数据库文件，不含附件）。</p>
+
+  <div class="nav-bottom">
+    <button class="nb-btn" onclick="go('cite')">← 上一章</button>
+    <button class="nb-btn primary" onclick="go('plugins')">下一章：插件推荐 →</button>
+  </div>
+</div>
+
+<!-- ════ 9. PLUGINS ════ -->
+<div id="sec-plugins" class="section">
+  <div class="eyebrow"><span>第九章</span><span class="nb nb-adv">高级</span></div>
+  <h2>插件推荐</h2>
+  <p class="lead">Zotero 的插件生态丰富，可以扩展几乎任何功能。插件安装方式：<strong>工具 → 附加组件 → 从文件安装</strong>（.xpi 文件），或直接搜索 Zotero 插件仓库。</p>
+
+  <div class="callout c-info">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <div class="callout-title">插件兼容性说明</div>
+      Zotero 7 起插件系统重构，部分旧插件（如 ZotFile）已停止维护。以下推荐均为兼容 Zotero 8/9 的最新插件。从 <code>github.com/zotero/zotero-plugins</code> 可查看完整社区插件列表。
+    </div>
+  </div>
+
+  <h3>必装插件</h3>
+
+  <div class="card" style="margin-bottom:10px;">
+    <div style="display:flex;align-items:flex-start;gap:14px;">
+      <div style="font-size:26px;flex-shrink:0;">🔎</div>
+      <div>
+        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;">Better BibTeX for Zotero</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.7;">为每篇文献生成唯一引用键（Citation Key），在 LaTeX/Overleaf 写作中不可或缺。自动维护 .bib 文件，实时同步。支持自定义键格式如 <code>Vaswani2017</code>。Zotero 9 起在条目列表新增「Citation Key」列。</div>
+        <div style="margin-top:8px;display:flex;gap:6px;"><span style="background:var(--green-bg);color:var(--teal);font-size:10.5px;padding:2px 7px;border-radius:3px;font-weight:600;">LaTeX必备</span><span style="background:var(--blue-bg);color:var(--blue);font-size:10.5px;padding:2px 7px;border-radius:3px;font-weight:600;">Overleaf</span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:10px;">
+    <div style="display:flex;align-items:flex-start;gap:14px;">
+      <div style="font-size:26px;flex-shrink:0;">✨</div>
+      <div>
+        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;">Zotero PDF Translate</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.7;">在 PDF 阅读器中划词翻译。支持 DeepL、Google 翻译、GPT 等多种翻译引擎。对阅读英文文献的中文用户来说非常实用，无需切换其他软件。</div>
+        <div style="margin-top:8px;"><span style="background:#fdf7e3;color:#c07a00;font-size:10.5px;padding:2px 7px;border-radius:3px;font-weight:600;">中文用户推荐</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:10px;">
+    <div style="display:flex;align-items:flex-start;gap:14px;">
+      <div style="font-size:26px;flex-shrink:0;">📊</div>
+      <div>
+        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;">Zotero Citation Counts Manager</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.7;">自动从 Google Scholar、Semantic Scholar 等抓取文献的被引次数，在条目列表显示引用数列，帮助快速评估文献影响力。</div>
+        <div style="margin-top:8px;"><span style="background:var(--green-bg);color:var(--teal);font-size:10.5px;padding:2px 7px;border-radius:3px;font-weight:600;">文献评估</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:10px;">
+    <div style="display:flex;align-items:flex-start;gap:14px;">
+      <div style="font-size:26px;flex-shrink:0;">🗺️</div>
+      <div>
+        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;">Zotero Reference Map</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.7;">在条目信息面板中显示文献的引文关系图谱，可视化展示「哪些文章引用了它」「它引用了哪些文章」，帮助探索研究脉络。</div>
+        <div style="margin-top:8px;"><span style="background:var(--purple-bg);color:var(--purple);font-size:10.5px;padding:2px 7px;border-radius:3px;font-weight:600;">文献探索</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:10px;">
+    <div style="display:flex;align-items:flex-start;gap:14px;">
+      <div style="font-size:26px;flex-shrink:0;">🎨</div>
+      <div>
+        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;">Zotero Night / Dracula theme</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.7;">自定义 Zotero 界面主题，提供多种深色/浅色配色方案。配合内置阅读器的阅读主题，打造统一舒适的阅读环境。</div>
+        <div style="margin-top:8px;"><span style="background:var(--bg3);color:var(--text2);font-size:10.5px;padding:2px 7px;border-radius:3px;font-weight:600;">界面美化</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>与其他工具的集成</h3>
+  <table>
+    <thead><tr><th>工具</th><th>集成方式</th><th>用途</th></tr></thead>
+    <tbody>
+      <tr><td>Obsidian</td><td>Obsidian Zotero Integration 插件</td><td>将 Zotero 标注和笔记导入 Obsidian，形成文献知识图谱</td></tr>
+      <tr><td>Notion</td><td>Notero 插件</td><td>将 Zotero 条目同步到 Notion 数据库</td></tr>
+      <tr><td>Overleaf/LaTeX</td><td>Better BibTeX 导出 .bib</td><td>LaTeX 论文中使用 \cite{Vaswani2017}</td></tr>
+      <tr><td>Logseq</td><td>Logseq Zotero 插件</td><td>从 Logseq 直接引用 Zotero 条目</td></tr>
+      <tr><td>Markdown 编辑器</td><td>Better BibTeX + Pandoc</td><td>Markdown 写作 + Pandoc 转换时自动处理引用</td></tr>
+    </tbody>
+  </table>
+
+  <div class="nav-bottom">
+    <button class="nb-btn" onclick="go('sync')">← 上一章</button>
+    <button class="nb-btn primary" onclick="go('new9')">下一章：Zotero 9 新功能 →</button>
+  </div>
+</div>
+
+<!-- ════ 10. NEW 9 ════ -->
+<div id="sec-new9" class="section">
+  <div class="eyebrow"><span>第十章</span><span class="nb nb-new">2026 新版</span></div>
+  <h2>Zotero 8 &amp; 9 全新功能详解</h2>
+  <p class="lead">2026 年 Zotero 连发两个大版本，带来了大量实质性改进。本章完整梳理 <strong>Zotero 8（2026年1月）</strong>和<strong>Zotero 9（2026年4月）</strong>的新特性。</p>
+
+  <h3>🆕 Zotero 8 新功能（2026年1月22日）</h3>
+
+  <div class="card">
+    <h4>① 统一引用对话框</h4>
+    <p>用全新的统一引用对话框取代了三种旧版对话框（红色工具栏、经典对话框、黄色笔记工具栏）。新对话框拥有 <strong>List 模式</strong>（快速全库搜索）和 <strong>Library 模式</strong>（文库浏览器），两种模式无缝切换。支持直接输入定位符（如 <code>line 10</code>、<code>p. 42</code>）。</p>
+  </div>
+
+  <div class="card">
+    <h4>② 标注显示在条目列表</h4>
+    <p>PDF/EPUB/快照中的标注现在以子条目形式显示在条目列表中（位于附件下方）。可以<strong>直接搜索标注文字</strong>，可以将标注拖到标签面板打标签，可以批量通过 Quick Copy 复制标注文字到其他应用。</p>
+  </div>
+
+  <div class="card">
+    <h4>③ 阅读器主题系统</h4>
+    <p>全新「外观」面板提供 Original / Dark / Snow / Sepia 四种内置主题，并支持<strong>完全自定义主题</strong>（仅需指定前景色和背景色），可为亮色/暗色系统模式分别设置主题。</p>
+  </div>
+
+  <div class="card">
+    <h4>④ 笔记标签页</h4>
+    <p>笔记现在可以在独立的全屏标签页中打开，拥有宽边距和无干扰书写空间，支持独立的字体大小设置。不再局限于侧边栏中的小窗口。</div>
+
+  <div class="card">
+    <h4>⑤ 网页快照「阅读模式」</h4>
+    <p>网页快照在阅读器中新增「阅读模式」，自动提取正文内容、去除广告和导航元素，重新排版以提升阅读体验。可在「外观」面板中调整行高等参数。</p>
+  </div>
+
+  <div class="card">
+    <h4>⑥ 持续文件重命名</h4>
+    <p>附件文件名现在与元数据<strong>保持持续同步</strong>。修改文献标题、作者等元数据后，对应 PDF 文件名自动更新，无需手动右键重命名。可在设置中配置适用的文件类型。</p>
+  </div>
+
+  <div class="card">
+    <h4>⑦ Connector 标签自动补全</h4>
+    <p>用浏览器插件保存文献时，弹出框现在可以<strong>自动补全你文库中已有的标签</strong>，并允许在保存时直接添加笔记，减少事后整理的工作量。</p>
+  </div>
+
+  <h3>🆕 Zotero 9 新功能（2026年4月10日）</h3>
+
+  <div class="card">
+    <h4>① Read Aloud（文献朗读）</h4>
+    <p>最重磅的新功能。使用<strong>高质量自然发音</strong>朗读 PDF、EPUB 和网页快照。特色功能：朗读时可按键一键标注当前句子（H=高亮，U=下划线）；点击左侧页边从任意位置开始；阅读进度自动保存并跨所有设备同步（含 iOS）。</p>
+  </div>
+
+  <div class="card">
+    <h4>② Recently Read（最近阅读）</h4>
+    <p>在每个文库中新增「最近阅读」虚拟合集，自动收录近期阅读的文献，跨设备同步。条目列表中新增「Last Read」列，可用于搜索条件（Attachment Last Read）。再也不会忘记上次读到哪篇了。</p>
+  </div>
+
+  <div class="card">
+    <h4>③ Word 中直接插入标注</h4>
+    <p>Word 插件新增「<strong>Add Annotation</strong>」按钮，可将 Zotero 中的标注（带完整引用信息）直接插入正在写作的文档，标注文字和来源引用一步完成。对于需要大量引用原文的研究者来说极为方便。</p>
+  </div>
+
+  <div class="card">
+    <h4>④ 群组文库增强</h4>
+    <p>群组文库中的条目现在显示「<strong>Added By</strong>」（添加者）和「<strong>Modified By</strong>」（最后修改者），追踪团队协作中的贡献来源。群组管理员还可为每个群组单独配置文件重命名模板。</p>
+  </div>
+
+  <div class="card">
+    <h4>⑤ 性能大幅提升</h4>
+    <p>启动内存占用减少约 20%；更智能的本地附件变更检测（无需全盘扫描）；macOS 上利用 APFS 克隆特性备份数据库，可节省数百 MB 甚至数 GB 磁盘空间。</p>
+  </div>
+
+  <div class="card">
+    <h4>⑥ 网页登录流程</h4>
+    <p>Zotero 账号现在通过<strong>浏览器网页登录</strong>，可使用密码管理器，并支持双因素认证（2FA）。更安全，更便捷。</p>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nb-btn" onclick="go('plugins')">← 上一章</button>
+    <button class="nb-btn primary" onclick="go('workflow')">最后一章：工作流实战 →</button>
+  </div>
+</div>
+
+<!-- ════ 11. WORKFLOW ════ -->
+<div id="sec-workflow" class="section">
+  <div class="eyebrow"><span>第十一章</span><span class="nb nb-adv">高级</span></div>
+  <h2>科研工作流实战</h2>
+  <p class="lead">将 Zotero 的各项功能整合为完整的科研写作工作流。以下是一套经过验证的「文献阅读 → 笔记整理 → 论文写作」全流程方案。</p>
+
+  <h3>完整科研工作流图</h3>
+  <div class="dg">
+    <svg width="100%" viewBox="0 0 700 260" role="img">
+      <title>Zotero 科研工作流：从发现文献到完成论文</title>
+      <defs>
+        <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Phase 1: Collect -->
+      <rect x="20" y="30" width="120" height="100" rx="10" fill="#eaf4f0" stroke="#a8cfc4" stroke-width="1"/>
+      <text x="80" y="58" text-anchor="middle" font-size="20">🧲</text>
+      <text x="80" y="80" text-anchor="middle" font-family="Source Serif 4,serif" font-size="13" fill="#1a7a5e" font-weight="700">收集</text>
+      <text x="80" y="98" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#4d6b61">Connector一键抓取</text>
+      <text x="80" y="114" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#4d6b61">DOI/ISBN导入</text>
+      <path d="M140 80 L168 80" fill="none" stroke="#b3c9c2" stroke-width="1.5" marker-end="url(#a2)"/>
+      <!-- Phase 2: Organize -->
+      <rect x="173" y="30" width="120" height="100" rx="10" fill="#e8f1fb" stroke="#b4c8f0" stroke-width="1"/>
+      <text x="233" y="58" text-anchor="middle" font-size="20">🗂️</text>
+      <text x="233" y="80" text-anchor="middle" font-family="Source Serif 4,serif" font-size="13" fill="#1f6fab" font-weight="700">整理</text>
+      <text x="233" y="98" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#4d6b61">合集+标签分类</text>
+      <text x="233" y="114" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#4d6b61">智能文件夹过滤</text>
+      <path d="M293 80 L321 80" fill="none" stroke="#b3c9c2" stroke-width="1.5" marker-end="url(#a2)"/>
+      <!-- Phase 3: Read & Annotate -->
+      <rect x="326" y="30" width="120" height="100" rx="10" fill="#fdf7e3" stroke="#e0cc88" stroke-width="1"/>
+      <text x="386" y="58" text-anchor="middle" font-size="20">📖</text>
+      <text x="386" y="80" text-anchor="middle" font-family="Source Serif 4,serif" font-size="13" fill="#c07a00" font-weight="700">阅读标注</text>
+      <text x="386" y="98" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#4d6b61">内置阅读器</text>
+      <text x="386" y="114" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#4d6b61">高亮/截图/注释</text>
+      <path d="M446 80 L474 80" fill="none" stroke="#b3c9c2" stroke-width="1.5" marker-end="url(#a2)"/>
+      <!-- Phase 4: Notes -->
+      <rect x="479" y="30" width="120" height="100" rx="10" fill="#f4edf9" stroke="#d0b8e8" stroke-width="1"/>
+      <text x="539" y="58" text-anchor="middle" font-size="20">📝</text>
+      <text x="539" y="80" text-anchor="middle" font-family="Source Serif 4,serif" font-size="13" fill="#6c3483" font-weight="700">笔记整理</text>
+      <text x="539" y="98" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#4d6b61">从标注生成笔记</text>
+      <text x="539" y="114" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9.5" fill="#4d6b61">笔记标签页编辑</text>
+      <!-- Arrow down to write -->
+      <path d="M539 130 L539 155" fill="none" stroke="#b3c9c2" stroke-width="1.5" marker-end="url(#a2)"/>
+      <!-- Phase 5: Write -->
+      <rect x="330" y="160" width="420" height="70" rx="10" fill="#eaf4f0" stroke="#a8cfc4" stroke-width="1"/>
+      <text x="540" y="195" text-anchor="middle" font-size="20">✍️</text>
+      <text x="540" y="215" text-anchor="middle" font-family="Source Serif 4,serif" font-size="13" fill="#1a7a5e" font-weight="700">论文写作（Word / Overleaf）</text>
+      <!-- Arrow from Collect to Write (cycle) -->
+      <path d="M80 130 L80 195 L326 195" fill="none" stroke="#d0dcd7" stroke-width="1" stroke-dasharray="5 4" marker-end="url(#a2)"/>
+      <text x="180" y="210" text-anchor="middle" font-family="Noto Sans SC,sans-serif" font-size="9" fill="#8aada4">根据写作需要补充文献</text>
+    </svg>
+  </div>
+
+  <h3>快速文献检索与评估流程</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">1</div>
+      <div class="step-b">
+        <div class="step-t">Google Scholar / arXiv 检索关键词</div>
+        <div class="step-d">Connector 一键将搜索结果页的所有文献保存到「待评估」合集</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div class="step-b">
+        <div class="step-t">在 Zotero 中快速预览摘要</div>
+        <div class="step-d">点击条目，右侧面板显示摘要。结合 Citation Counts Manager 插件查看引用数，30秒完成初步筛选</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div class="step-b">
+        <div class="step-t">给文献打标签：待读 / 精读 / 跳过</div>
+        <div class="step-d">通过标签快速分级。「精读」标签对应需要详细阅读标注的重点文献</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">4</div>
+      <div class="step-b">
+        <div class="step-t">用「精读」智能文件夹聚焦核心文献</div>
+        <div class="step-d">按优先级逐篇精读，在阅读器中完成标注（高亮/截图/文字注释）</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">5</div>
+      <div class="step-b">
+        <div class="step-t">每篇文献生成阅读笔记</div>
+        <div class="step-d">从标注一键生成结构化笔记，在笔记标签页中补充个人理解</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">6</div>
+      <div class="step-b">
+        <div class="step-t">写作时在 Word 中插入引用</div>
+        <div class="step-d">Zotero 8 新引用对话框快速搜索，Zotero 9「Add Annotation」直接将标注插入论文</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>常用快捷键汇总</h3>
+  <div class="hk-grid">
+    <div class="hk-item"><span class="hk-d">快速搜索文库</span><div class="hk-k"><kbd>Ctrl/⌘</kbd><kbd>F</kbd></div></div>
+    <div class="hk-item"><span class="hk-d">通过标识符添加</span><div class="hk-k"><kbd>Ctrl/⌘</kbd><kbd>Alt</kbd><kbd>A</kbd></div></div>
+    <div class="hk-item"><span class="hk-d">创建新笔记</span><div class="hk-k"><kbd>Ctrl/⌘</kbd><kbd>N</kbd></div></div>
+    <div class="hk-item"><span class="hk-d">同步文库</span><div class="hk-k"><kbd>Ctrl/⌘</kbd><kbd>Shift</kbd><kbd>S</kbd></div></div>
+    <div class="hk-item"><span class="hk-d">切换阅读器标签</span><div class="hk-k"><kbd>Ctrl/⌘</kbd><kbd>Tab</kbd></div></div>
+    <div class="hk-item"><span class="hk-d">阅读器：高亮</span><div class="hk-k"><kbd>H</kbd></div></div>
+    <div class="hk-item"><span class="hk-d">阅读器：下划线</span><div class="hk-k"><kbd>U</kbd></div></div>
+    <div class="hk-item"><span class="hk-d">阅读器：文字注释</span><div class="hk-k"><kbd>A</kbd></div></div>
+    <div class="hk-item"><span class="hk-d">朗读开关(v9)</span><div class="hk-k"><kbd>R</kbd>/<kbd>L</kbd></div></div>
+    <div class="hk-item"><span class="hk-d">关闭标签页</span><div class="hk-k"><kbd>Ctrl/⌘</kbd><kbd>W</kbd></div></div>
+  </div>
+
+  <h3>新手路线图</h3>
+  <div class="card">
+    <table>
+      <thead><tr><th>阶段</th><th>目标</th><th>时间参考</th></tr></thead>
+      <tbody>
+        <tr><td>🟢 第一周</td><td>安装 Zotero + Connector，收集 20 篇文献，学会合集与标签</td><td>3 小时</td></tr>
+        <tr><td>🟡 第二周</td><td>完成 5 篇文献的精读标注，生成阅读笔记，Word 插件完成第一次引用</td><td>5 小时</td></tr>
+        <tr><td>🟠 第一个月</td><td>建立完整标签体系，配置 WebDAV 同步，安装 Better BibTeX 和翻译插件</td><td>渐进学习</td></tr>
+        <tr><td>🔵 长期</td><td>形成稳定的「收集→阅读→笔记→写作」工作流，文库超过 500 篇</td><td>持续迭代</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top:32px;border-color:var(--accent);background:var(--green-bg);">
+    <p style="text-align:center;font-family:'Source Serif 4',serif;font-size:17px;color:var(--text);margin-bottom:8px;font-weight:600;">🎓 你已完成 Zotero 9 完全学习指南！</p>
+    <p style="text-align:center;font-size:13.5px;color:var(--text2);margin:0;line-height:1.9;">Zotero 是一个越用越顺手的工具——每一篇精读的文献都在积累你的知识资产。<br>今天就下载 Zotero 9，开始你的科研文献管理之旅吧。</p>
+    <p style="text-align:center;margin-top:12px;font-size:12px;color:var(--text3);">官网：zotero.org · 当前稳定版：9.0.3（2026年5月6日）</p>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nb-btn" onclick="go('new9')">← 上一章</button>
+    <button class="nb-btn primary" onclick="go('intro')">↩ 回到开始</button>
+  </div>
+</div>
+
+</div></main>
+
+<script>
+const secs=['intro','install','collect','organize','reader','annotate','cite','sync','plugins','new9','workflow'];
+function go(id){
+  secs.forEach(s=>{
+    document.getElementById('sec-'+s)?.classList.toggle('active',s===id);
+  });
+  document.querySelectorAll('.nav-item').forEach(b=>{
+    b.classList.toggle('active', b.getAttribute('onclick')===`go('${id}')`);
+  });
+  document.querySelector('.main')?.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

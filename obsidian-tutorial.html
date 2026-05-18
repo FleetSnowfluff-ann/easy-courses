@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obsidian 完全学习指南</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0e10;
+    --bg2: #16181c;
+    --bg3: #1e2128;
+    --bg4: #252830;
+    --border: #2e3038;
+    --border2: #3a3d48;
+    --text: #c9ccd6;
+    --text2: #8b8fa8;
+    --text3: #5a5e72;
+    --accent: #7c6af0;
+    --accent2: #9d8df5;
+    --accent-glow: rgba(124,106,240,0.15);
+    --gold: #e8c96d;
+    --teal: #4ecdc4;
+    --coral: #ff6b6b;
+    --green: #6bcb77;
+    --pink: #c06af0;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    display: flex;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    padding: 28px 0 40px;
+    z-index: 100;
+  }
+  .sidebar-logo {
+    padding: 0 20px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .sidebar-logo .gem {
+    font-size: 28px; margin-bottom: 6px;
+  }
+  .sidebar-logo h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 16px;
+    color: var(--accent2);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .sidebar-logo p {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 2px;
+    letter-spacing: 0.06em;
+  }
+  .nav-section {
+    padding: 0 12px;
+    margin-bottom: 8px;
+  }
+  .nav-label {
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 8px 4px;
+    font-weight: 600;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: var(--radius-sm);
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.15s;
+    cursor: pointer;
+    border: none; background: none; width: 100%; text-align: left;
+  }
+  .nav-item:hover, .nav-item.active {
+    background: var(--accent-glow);
+    color: var(--accent2);
+  }
+  .nav-item .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--text3);
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .nav-item.active .dot { background: var(--accent2); }
+  .nav-item .level {
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: auto;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .level-basic { background: rgba(107,203,119,0.15); color: var(--green); }
+  .level-mid { background: rgba(232,201,109,0.15); color: var(--gold); }
+  .level-adv { background: rgba(192,106,240,0.15); color: var(--pink); }
+
+  /* Main content */
+  .main {
+    margin-left: 260px;
+    flex: 1;
+    min-height: 100vh;
+  }
+  .content {
+    max-width: 820px;
+    padding: 60px 56px 120px;
+  }
+
+  /* Sections */
+  .section {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  /* Typography */
+  h2 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #e2e4f0;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .section-icon {
+    width: 36px; height: 36px;
+    background: var(--accent-glow);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .section-meta {
+    font-size: 12px;
+    color: var(--text3);
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .badge {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  h3 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #d0d3e8;
+    margin: 32px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h3::before {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 16px;
+    background: var(--accent);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text2);
+    margin: 20px 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  p { color: var(--text); margin-bottom: 14px; line-height: 1.85; }
+
+  /* Cards */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .feature-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    transition: border-color 0.2s;
+  }
+  .feature-card:hover { border-color: var(--accent); }
+  .feature-card .icon { font-size: 22px; margin-bottom: 8px; }
+  .feature-card .title { font-size: 14px; font-weight: 600; color: #d0d3e8; margin-bottom: 4px; }
+  .feature-card .desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
+
+  /* Code */
+  pre, code {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  code {
+    background: var(--bg4);
+    color: var(--gold);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+  pre {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  pre code {
+    background: none;
+    color: var(--text);
+    padding: 0;
+    font-size: inherit;
+  }
+  .code-comment { color: var(--text3); }
+  .code-key { color: var(--accent2); }
+  .code-val { color: var(--teal); }
+  .code-head { color: var(--coral); }
+  .code-link { color: var(--gold); }
+  .code-tag { color: var(--pink); }
+
+  /* Callouts */
+  .callout {
+    border-left: 3px solid;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .callout-info { border-color: var(--accent); background: rgba(124,106,240,0.07); }
+  .callout-tip { border-color: var(--teal); background: rgba(78,205,196,0.07); }
+  .callout-warn { border-color: var(--gold); background: rgba(232,201,109,0.07); }
+  .callout-title { font-weight: 600; margin-bottom: 4px; font-size: 13px; letter-spacing: 0.04em; }
+  .callout-info .callout-title { color: var(--accent2); }
+  .callout-tip .callout-title { color: var(--teal); }
+  .callout-warn .callout-title { color: var(--gold); }
+
+  /* Steps */
+  .steps { margin: 16px 0; }
+  .step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 34px;
+    width: 1px;
+    height: calc(100% - 14px);
+    background: var(--border);
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    background: var(--accent-glow);
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent2);
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  .step-body { flex: 1; padding-top: 4px; }
+  .step-title { font-weight: 600; color: #d0d3e8; font-size: 14px; margin-bottom: 6px; }
+  .step-desc { color: var(--text2); font-size: 13.5px; line-height: 1.7; }
+
+  /* Hotkey table */
+  .hotkey-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .hotkey-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .hotkey-desc { color: var(--text2); }
+  .hotkey-keys { display: flex; gap: 4px; }
+  kbd {
+    background: var(--bg4);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+  }
+
+  /* Plugin cards */
+  .plugin-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin: 10px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    transition: border-color 0.2s;
+  }
+  .plugin-card:hover { border-color: var(--accent); }
+  .plugin-icon {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+  }
+  .plugin-body .name { font-size: 14px; font-weight: 600; color: #d0d3e8; margin-bottom: 4px; }
+  .plugin-body .info { font-size: 12.5px; color: var(--text2); line-height: 1.6; }
+  .plugin-tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .plugin-tag {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    background: var(--bg4);
+    color: var(--text3);
+    border: 1px solid var(--border);
+  }
+
+  /* SVG diagrams */
+  .diagram-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 20px 0;
+    overflow-x: auto;
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13.5px;
+  }
+  th {
+    background: var(--bg3);
+    color: var(--text2);
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border2);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* Progress / navigation */
+  .nav-bottom {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text2);
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Noto Sans SC', sans-serif;
+    transition: all 0.15s;
+  }
+  .nav-btn:hover { border-color: var(--accent); color: var(--accent2); }
+  .nav-btn.primary {
+    background: var(--accent-glow);
+    border-color: var(--accent);
+    color: var(--accent2);
+  }
+
+  /* Inline diagram note */
+  .diagram-caption {
+    font-size: 12px;
+    color: var(--text3);
+    text-align: center;
+    margin-top: -8px;
+    margin-bottom: 16px;
+  }
+  
+  /* Highlight quote */
+  blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 12px 20px;
+    background: var(--bg3);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    color: var(--text2);
+    font-style: italic;
+    margin: 16px 0;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* Markdown preview box */
+  .md-preview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 16px 0;
+  }
+  .md-raw { background: var(--bg3); padding: 16px 18px; }
+  .md-rendered { background: var(--bg2); padding: 16px 18px; border-left: 1px solid var(--border); }
+  .md-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .rendered-h1 { font-size: 19px; font-weight: 700; color: #e2e4f0; margin-bottom: 8px; }
+  .rendered-h2 { font-size: 16px; font-weight: 600; color: #d0d3e8; margin-bottom: 6px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+  .rendered-h3 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .rendered-p { font-size: 13.5px; color: var(--text); line-height: 1.7; margin-bottom: 8px; }
+  .rendered-b { font-weight: 700; color: #e2e4f0; }
+  .rendered-i { font-style: italic; color: var(--text2); }
+  .rendered-code { font-family: 'JetBrains Mono', monospace; background: var(--bg4); color: var(--gold); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+  .rendered-link { color: var(--accent2); text-decoration: underline; text-decoration-style: dotted; }
+  .rendered-tag { color: var(--pink); cursor: pointer; }
+  .rendered-blockquote { border-left: 2px solid var(--accent); padding: 6px 12px; background: rgba(124,106,240,0.06); font-style: italic; font-size: 13px; color: var(--text2); margin: 8px 0; }
+  ul.rendered { padding-left: 20px; margin: 6px 0; }
+  ul.rendered li { font-size: 13.5px; color: var(--text); line-height: 1.7; margin-bottom: 2px; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+    .content { padding: 30px 20px 80px; }
+    .hotkey-grid { grid-template-columns: 1fr; }
+    .md-preview { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="gem">💎</div>
+    <h1>Obsidian 完全指南</h1>
+    <p>从入门到精通 · 2024</p>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">入门基础</div>
+    <button class="nav-item active" onclick="show('intro')">
+      <span class="dot"></span> 什么是 Obsidian？ <span class="badge level-basic">基础</span>
+    </button>
+    <button class="nav-item" onclick="show('install')">
+      <span class="dot"></span> 安装与初始配置 <span class="badge level-basic">基础</span>
+    </button>
+    <button class="nav-item" onclick="show('markdown')">
+      <span class="dot"></span> Markdown 快速入门 <span class="badge level-basic">基础</span>
+    </button>
+    <button class="nav-item" onclick="show('notes')">
+      <span class="dot"></span> 笔记创建与管理 <span class="badge level-basic">基础</span>
+    </button>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">核心功能</div>
+    <button class="nav-item" onclick="show('links')">
+      <span class="dot"></span> 双向链接系统 <span class="badge level-mid">进阶</span>
+    </button>
+    <button class="nav-item" onclick="show('tags')">
+      <span class="dot"></span> 标签与文件夹 <span class="badge level-mid">进阶</span>
+    </button>
+    <button class="nav-item" onclick="show('graph')">
+      <span class="dot"></span> 图谱视图 <span class="badge level-mid">进阶</span>
+    </button>
+    <button class="nav-item" onclick="show('templates')">
+      <span class="dot"></span> 模板系统 <span class="badge level-mid">进阶</span>
+    </button>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">高阶玩法</div>
+    <button class="nav-item" onclick="show('plugins')">
+      <span class="dot"></span> 插件生态 <span class="badge level-adv">高级</span>
+    </button>
+    <button class="nav-item" onclick="show('dataview')">
+      <span class="dot"></span> Dataview 数据库 <span class="badge level-adv">高级</span>
+    </button>
+    <button class="nav-item" onclick="show('workflow')">
+      <span class="dot"></span> 工作流与最佳实践 <span class="badge level-adv">高级</span>
+    </button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+<div class="content">
+
+<!-- =================== SECTION: INTRO =================== -->
+<div id="sec-intro" class="section active">
+  <h2><span class="section-icon">💎</span>什么是 Obsidian？</h2>
+  <div class="section-meta">
+    <span class="badge level-basic">入门基础</span>
+    <span>了解 Obsidian 的核心理念与适用场景</span>
+  </div>
+
+  <p>Obsidian 是一款基于本地 Markdown 文件的<strong style="color:#e2e4f0">知识管理与笔记工具</strong>。它的核心哲学是：你的笔记是永久属于你的——所有数据以纯文本格式存储在本地，不依赖任何云服务，保证数据主权。</p>
+  
+  <blockquote>「Obsidian 就是你思想的第二大脑——一个让知识自由流动、相互连接的数字花园。」</blockquote>
+
+  <h3>Obsidian 的五大特色</h3>
+  <div class="card-grid">
+    <div class="feature-card">
+      <div class="icon">🗂️</div>
+      <div class="title">本地优先</div>
+      <div class="desc">所有笔记存为 .md 文件，永久可读，不锁定在任何平台</div>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🕸️</div>
+      <div class="title">双向链接</div>
+      <div class="desc">用 [[链接]] 语法连接笔记，形成知识网络</div>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔭</div>
+      <div class="title">图谱视图</div>
+      <div class="desc">可视化你的整个知识库，发现隐藏连接</div>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔌</div>
+      <div class="title">丰富插件</div>
+      <div class="desc">1000+ 社区插件，按需扩展任意功能</div>
+    </div>
+    <div class="feature-card">
+      <div class="icon">⚡</div>
+      <div class="title">速度极快</div>
+      <div class="desc">基于 Electron 构建，打开即用，无加载等待</div>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🆓</div>
+      <div class="title">免费使用</div>
+      <div class="desc">个人使用完全免费，付费功能仅为可选增值服务</div>
+    </div>
+  </div>
+
+  <h3>Obsidian vs 其他笔记工具</h3>
+  <table>
+    <thead>
+      <tr><th>工具</th><th>存储方式</th><th>双向链接</th><th>离线使用</th><th>数据主权</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong style="color:#e2e4f0">Obsidian</strong></td><td>本地 Markdown</td><td>✅ 原生支持</td><td>✅ 完全离线</td><td>✅ 完全自有</td></tr>
+      <tr><td>Notion</td><td>云端数据库</td><td>⚠️ 有限支持</td><td>❌ 需联网</td><td>❌ 平台托管</td></tr>
+      <tr><td>Roam Research</td><td>云端存储</td><td>✅ 核心功能</td><td>❌ 需联网</td><td>❌ 平台托管</td></tr>
+      <tr><td>Logseq</td><td>本地/云端</td><td>✅ 支持</td><td>✅ 可离线</td><td>✅ 可自有</td></tr>
+      <tr><td>Apple Notes</td><td>iCloud</td><td>❌ 不支持</td><td>⚠️ 有限</td><td>❌ Apple 托管</td></tr>
+    </tbody>
+  </table>
+
+  <h3>知识连接原理图</h3>
+  <div class="diagram-wrap">
+    <svg width="100%" viewBox="0 0 680 320" role="img">
+      <title>Obsidian 双向链接知识网络示意图</title>
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Lines between nodes -->
+      <line x1="340" y1="150" x2="160" y2="80" stroke="#7c6af0" stroke-width="1.5" opacity="0.5" marker-end="url(#arrow)"/>
+      <line x1="340" y1="150" x2="520" y2="80" stroke="#7c6af0" stroke-width="1.5" opacity="0.5" marker-end="url(#arrow)"/>
+      <line x1="340" y1="150" x2="160" y2="240" stroke="#7c6af0" stroke-width="1.5" opacity="0.5" marker-end="url(#arrow)"/>
+      <line x1="340" y1="150" x2="520" y2="240" stroke="#7c6af0" stroke-width="1.5" opacity="0.5" marker-end="url(#arrow)"/>
+      <line x1="160" y1="80" x2="520" y2="240" stroke="#4ecdc4" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+      <line x1="520" y1="80" x2="160" y2="240" stroke="#4ecdc4" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+      <!-- Center node -->
+      <circle cx="340" cy="150" r="40" fill="#1e2128" stroke="#7c6af0" stroke-width="1.5"/>
+      <text x="340" y="146" text-anchor="middle" font-family="Noto Sans SC" font-size="12" fill="#9d8df5" font-weight="600">机器学习</text>
+      <text x="340" y="163" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">中心笔记</text>
+      <!-- Satellite nodes -->
+      <circle cx="160" cy="80" r="30" fill="#1e2128" stroke="#4ecdc4" stroke-width="1"/>
+      <text x="160" y="76" text-anchor="middle" font-family="Noto Sans SC" font-size="11" fill="#4ecdc4">神经网络</text>
+      <text x="160" y="92" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">关联笔记</text>
+      <circle cx="520" cy="80" r="30" fill="#1e2128" stroke="#e8c96d" stroke-width="1"/>
+      <text x="520" y="76" text-anchor="middle" font-family="Noto Sans SC" font-size="11" fill="#e8c96d">Python</text>
+      <text x="520" y="92" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">工具笔记</text>
+      <circle cx="160" cy="240" r="30" fill="#1e2128" stroke="#ff6b6b" stroke-width="1"/>
+      <text x="160" y="236" text-anchor="middle" font-family="Noto Sans SC" font-size="11" fill="#ff6b6b">数据集</text>
+      <text x="160" y="252" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">资源笔记</text>
+      <circle cx="520" cy="240" r="30" fill="#1e2128" stroke="#c06af0" stroke-width="1"/>
+      <text x="520" y="236" text-anchor="middle" font-family="Noto Sans SC" font-size="11" fill="#c06af0">项目计划</text>
+      <text x="520" y="252" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">行动笔记</text>
+      <!-- Legend -->
+      <line x1="40" y1="290" x2="70" y2="290" stroke="#7c6af0" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <text x="76" y="294" font-family="Noto Sans SC" font-size="11" fill="#5a5e72">主动链接</text>
+      <line x1="200" y1="290" x2="230" y2="290" stroke="#4ecdc4" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="236" y="294" font-family="Noto Sans SC" font-size="11" fill="#5a5e72">双向关联</text>
+    </svg>
+  </div>
+  <p class="diagram-caption">图：Obsidian 中笔记之间通过双向链接形成知识网络</p>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">💡 适合哪些人？</div>
+    Obsidian 特别适合：学习型读者（读书笔记、文献管理）、研究人员、软件工程师（技术文档）、写作者（知识积累）、以及任何希望建立长期知识体系的人。
+  </div>
+
+  <div class="nav-bottom">
+    <div></div>
+    <button class="nav-btn primary" onclick="show('install')">下一步：安装配置 →</button>
+  </div>
+</div>
+
+<!-- =================== SECTION: INSTALL =================== -->
+<div id="sec-install" class="section">
+  <h2><span class="section-icon">⚙️</span>安装与初始配置</h2>
+  <div class="section-meta">
+    <span class="badge level-basic">入门基础</span>
+    <span>10 分钟完成安装并配置好你的第一个知识库</span>
+  </div>
+
+  <h3>下载安装</h3>
+  <p>Obsidian 支持 Windows、macOS、Linux、iOS 和 Android。前往 <code>obsidian.md</code> 官网下载对应平台版本，安装过程与普通应用无异。</p>
+  
+  <div class="card-grid">
+    <div class="feature-card">
+      <div class="icon">🪟</div>
+      <div class="title">Windows</div>
+      <div class="desc">下载 .exe 安装包，双击安装。推荐安装到用户目录而非 Program Files</div>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🍎</div>
+      <div class="title">macOS</div>
+      <div class="desc">下载 .dmg，拖拽到 Applications。首次打开需在隐私设置允许</div>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🐧</div>
+      <div class="title">Linux</div>
+      <div class="desc">提供 AppImage、Snap、Flatpak 三种格式，推荐 AppImage</div>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📱</div>
+      <div class="title">移动端</div>
+      <div class="desc">App Store / Google Play 搜索 Obsidian，免费下载，支持 iCloud/本地同步</div>
+    </div>
+  </div>
+
+  <h3>创建你的第一个 Vault（知识库）</h3>
+  <p><strong style="color:#e2e4f0">Vault（保险库/知识库）</strong>是 Obsidian 的核心概念——本质上就是一个普通的文件夹，Obsidian 将它作为笔记的根目录。</p>
+  
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">启动 Obsidian，点击「Create new vault」</div>
+        <div class="step-desc">首次启动会出现欢迎界面，选择「新建知识库」选项</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">为 Vault 命名，选择存储位置</div>
+        <div class="step-desc">推荐放在 <code>~/Documents/MyVault</code> 或 iCloud/OneDrive 下以便多设备同步。名称建议简短有意义，如「学习笔记」「工作知识库」</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">进入界面，熟悉四大区域</div>
+        <div class="step-desc">左侧文件树、中间编辑区、右侧面板（反向链接等）、底部状态栏</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">打开设置（⌘, / Ctrl+,），做基础配置</div>
+        <div class="step-desc">建议首先设置语言为中文、调整字体大小、开启「默认文件夹」等</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>界面布局解析</h3>
+  <div class="diagram-wrap">
+    <svg width="100%" viewBox="0 0 680 380" role="img">
+      <title>Obsidian 界面布局示意图</title>
+      <!-- Main window frame -->
+      <rect x="20" y="20" width="640" height="340" rx="10" fill="#0d0e10" stroke="#2e3038" stroke-width="1"/>
+      <!-- Title bar -->
+      <rect x="20" y="20" width="640" height="28" rx="10" fill="#16181c" stroke-width="0"/>
+      <rect x="20" y="36" width="640" height="12" fill="#16181c"/>
+      <circle cx="40" cy="34" r="5" fill="#ff6b6b" opacity="0.8"/>
+      <circle cx="56" cy="34" r="5" fill="#e8c96d" opacity="0.8"/>
+      <circle cx="72" cy="34" r="5" fill="#6bcb77" opacity="0.8"/>
+      <text x="340" y="38" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">Obsidian — 我的知识库</text>
+      <!-- Ribbon (leftmost) -->
+      <rect x="20" y="48" width="36" height="312" fill="#0d0e10" stroke-right="none"/>
+      <text x="38" y="80" text-anchor="middle" font-size="14" fill="#5a5e72">📁</text>
+      <text x="38" y="108" text-anchor="middle" font-size="14" fill="#5a5e72">🔍</text>
+      <text x="38" y="136" text-anchor="middle" font-size="14" fill="#7c6af0">🔭</text>
+      <text x="38" y="164" text-anchor="middle" font-size="14" fill="#5a5e72">⭐</text>
+      <text x="38" y="340" text-anchor="middle" font-size="14" fill="#5a5e72">⚙️</text>
+      <!-- Left panel: File tree -->
+      <rect x="56" y="48" width="150" height="312" fill="#16181c" stroke="#2e3038" stroke-width="0.5"/>
+      <text x="131" y="70" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72" font-weight="600">文件管理器</text>
+      <text x="70" y="94" font-family="Noto Sans SC" font-size="11" fill="#5a5e72">📂 01-每日笔记</text>
+      <text x="70" y="114" font-family="Noto Sans SC" font-size="11" fill="#5a5e72">📂 02-读书笔记</text>
+      <text x="70" y="134" font-family="Noto Sans SC" font-size="11" fill="#9d8df5">📄 机器学习.md</text>
+      <text x="70" y="154" font-family="Noto Sans SC" font-size="11" fill="#5a5e72">📄 Python入门.md</text>
+      <text x="70" y="174" font-family="Noto Sans SC" font-size="11" fill="#5a5e72">📂 03-项目</text>
+      <!-- Label -->
+      <text x="131" y="345" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#7c6af0">① 文件树面板</text>
+      <!-- Editor area -->
+      <rect x="206" y="48" width="316" height="312" fill="#0d0e10" stroke="#2e3038" stroke-width="0.5"/>
+      <text x="364" y="70" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72" font-weight="600">机器学习.md</text>
+      <text x="220" y="96" font-family="JetBrains Mono" font-size="11" fill="#ff6b6b"># 机器学习笔记</text>
+      <text x="220" y="116" font-family="JetBrains Mono" font-size="10" fill="#5a5e72">## 简介</text>
+      <text x="220" y="134" font-family="Noto Sans SC" font-size="10" fill="#8b8fa8">机器学习是 AI 的核心分支...</text>
+      <text x="220" y="154" font-family="JetBrains Mono" font-size="10" fill="#e8c96d">[[神经网络]] [[Python]]</text>
+      <text x="220" y="174" font-family="JetBrains Mono" font-size="10" fill="#c06af0">#机器学习 #AI</text>
+      <!-- Cursor blink indicator -->
+      <rect x="220" y="185" width="1.5" height="14" fill="#7c6af0" opacity="0.8"/>
+      <text x="364" y="345" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#7c6af0">② 主编辑区</text>
+      <!-- Right panel -->
+      <rect x="522" y="48" width="138" height="312" fill="#16181c" stroke="#2e3038" stroke-width="0.5"/>
+      <text x="591" y="70" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72" font-weight="600">反向链接</text>
+      <rect x="534" y="84" width="114" height="40" rx="4" fill="#1e2128" stroke="#2e3038" stroke-width="0.5"/>
+      <text x="544" y="100" font-family="Noto Sans SC" font-size="10" fill="#4ecdc4">🔗 神经网络笔记</text>
+      <text x="544" y="116" font-family="Noto Sans SC" font-size="9" fill="#5a5e72">「机器学习 是...」</text>
+      <rect x="534" y="132" width="114" height="40" rx="4" fill="#1e2128" stroke="#2e3038" stroke-width="0.5"/>
+      <text x="544" y="148" font-family="Noto Sans SC" font-size="10" fill="#4ecdc4">🔗 深度学习</text>
+      <text x="544" y="164" font-family="Noto Sans SC" font-size="9" fill="#5a5e72">「基于机器学习...」</text>
+      <text x="591" y="345" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#7c6af0">③ 右侧面板</text>
+    </svg>
+  </div>
+  <p class="diagram-caption">图：Obsidian 界面的三大主要区域</p>
+
+  <h3>推荐的初始设置</h3>
+  <div class="card">
+    <h4>设置 → 编辑器</h4>
+    <table>
+      <tr><td><code>默认视图模式</code></td><td>推荐选「实时预览」——边写边看渲染效果</td></tr>
+      <tr><td><code>折叠缩进</code></td><td>开启——方便折叠大纲层级</td></tr>
+      <tr><td><code>行宽</code></td><td>可调整为 80-100 字符，阅读更舒适</td></tr>
+      <tr><td><code>自动配对括号</code></td><td>建议开启</td></tr>
+    </table>
+    <h4>设置 → 文件与链接</h4>
+    <table>
+      <tr><td><code>新建笔记默认位置</code></td><td>设置为固定文件夹（如 Inbox），方便后续整理</td></tr>
+      <tr><td><code>附件默认位置</code></td><td>设为「当前文件所在文件夹的子文件夹」</td></tr>
+      <tr><td><code>链接格式</code></td><td>推荐「尽可能使用最短路径」</td></tr>
+    </table>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="callout-title">⚠️ 关于 Obsidian Sync</div>
+    Obsidian 提供付费同步服务（$8/月）。免费替代方案：将 Vault 放在 iCloud / OneDrive / Dropbox / Git 中，Windows+macOS 均可免费同步。
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('intro')">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('markdown')">下一步：Markdown 入门 →</button>
+  </div>
+</div>
+
+<!-- =================== SECTION: MARKDOWN =================== -->
+<div id="sec-markdown" class="section">
+  <h2><span class="section-icon">✍️</span>Markdown 快速入门</h2>
+  <div class="section-meta">
+    <span class="badge level-basic">入门基础</span>
+    <span>掌握 Obsidian 使用的 Markdown 语法</span>
+  </div>
+
+  <p>Obsidian 使用标准 Markdown 语法，并扩展了一些特有语法。下面是左侧原始文本、右侧渲染效果的对照展示：</p>
+
+  <h3>基础格式语法</h3>
+  <div class="md-preview">
+    <div class="md-raw">
+      <div class="md-label">原始 Markdown</div>
+      <pre style="margin:0;padding:0;background:none;border:none;font-size:12px;"><code><span class="code-head"># 一级标题</span>
+<span class="code-head">## 二级标题</span>
+<span class="code-head">### 三级标题</span>
+
+普通段落文字
+
+<span class="code-key">**加粗文字**</span>
+<span class="code-val">*斜体文字*</span>
+<span class="code-key">~~删除线~~</span>
+<span class="code-val">==高亮文字==</span>
+
+- 无序列表项 1
+- 无序列表项 2
+
+1. 有序列表
+2. 第二项
+
+<span class="code-link">> 这是引用块</span>
+
+`行内代码`
+
+<span class="code-tag">#标签</span> <span class="code-tag">#知识管理</span></code></pre>
+    </div>
+    <div class="md-rendered">
+      <div class="md-label">渲染效果</div>
+      <div class="rendered-h1">一级标题</div>
+      <div class="rendered-h2">二级标题</div>
+      <div class="rendered-h3">三级标题</div>
+      <div class="rendered-p">普通段落文字</div>
+      <div class="rendered-p"><span class="rendered-b">加粗文字</span> <span class="rendered-i">斜体文字</span> <span style="text-decoration:line-through;color:var(--text2)">删除线</span> <span style="background:rgba(232,201,109,0.25);color:#e8c96d;padding:1px 4px;border-radius:3px">高亮文字</span></div>
+      <ul class="rendered"><li>无序列表项 1</li><li>无序列表项 2</li></ul>
+      <ol style="padding-left:20px;margin:6px 0;"><li style="font-size:13.5px;color:var(--text);line-height:1.7">有序列表</li><li style="font-size:13.5px;color:var(--text);line-height:1.7">第二项</li></ol>
+      <div class="rendered-blockquote">这是引用块</div>
+      <div class="rendered-p"><span class="rendered-code">行内代码</span></div>
+      <div class="rendered-p"><span class="rendered-tag">#标签</span> <span class="rendered-tag">#知识管理</span></div>
+    </div>
+  </div>
+
+  <h3>Obsidian 特有语法</h3>
+  <table>
+    <thead><tr><th>语法</th><th>含义</th><th>示例</th></tr></thead>
+    <tbody>
+      <tr><td><code>[[笔记名]]</code></td><td>内部链接（核心功能）</td><td><code>[[机器学习]]</code></td></tr>
+      <tr><td><code>[[笔记名|别名]]</code></td><td>带别名的内部链接</td><td><code>[[机器学习|ML]]</code></td></tr>
+      <tr><td><code>[[笔记名#标题]]</code></td><td>链接到特定章节</td><td><code>[[机器学习#简介]]</code></td></tr>
+      <tr><td><code>![[笔记名]]</code></td><td>嵌入（内联展示）笔记</td><td><code>![[模板]]</code></td></tr>
+      <tr><td><code>![[图片.png]]</code></td><td>嵌入图片</td><td><code>![[screenshot.png|300]]</code></td></tr>
+      <tr><td><code>==文字==</code></td><td>高亮文本</td><td><code>==重点==</code></td></tr>
+      <tr><td><code>%%注释%%</code></td><td>不渲染的注释</td><td><code>%%待修改%%</code></td></tr>
+      <tr><td><code>---</code> (Front Matter)</td><td>YAML 元数据区域</td><td>见下方示例</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Front Matter（元数据）</h3>
+  <p>每篇笔记顶部可以添加 YAML 格式的元数据，用于标记日期、标签、状态等属性：</p>
+  <pre><code><span class="code-comment">---</span>
+<span class="code-key">title</span>: <span class="code-val">机器学习入门</span>
+<span class="code-key">date</span>: <span class="code-val">2024-01-15</span>
+<span class="code-key">tags</span>: <span class="code-val">[AI, 学习笔记, 机器学习]</span>
+<span class="code-key">status</span>: <span class="code-val">in-progress</span>
+<span class="code-key">aliases</span>: <span class="code-val">[ML, 机器学习笔记]</span>
+<span class="code-comment">---</span>
+
+<span class="code-head"># 机器学习入门</span>
+
+正文内容从这里开始...</code></pre>
+
+  <h3>代码块语法高亮</h3>
+  <pre><code><span class="code-comment">```python</span>
+<span class="code-key">import</span> numpy <span class="code-key">as</span> np
+
+<span class="code-val">def</span> sigmoid(x):
+    <span class="code-key">return</span> 1 / (1 + np.exp(-x))
+
+<span class="code-comment"># 测试</span>
+print(sigmoid(0))  <span class="code-comment"># 输出 0.5</span>
+<span class="code-comment">```</span></code></pre>
+
+  <h3>常用快捷键</h3>
+  <div class="hotkey-grid">
+    <div class="hotkey-item"><span class="hotkey-desc">加粗</span><div class="hotkey-keys"><kbd>Ctrl</kbd><kbd>B</kbd></div></div>
+    <div class="hotkey-item"><span class="hotkey-desc">斜体</span><div class="hotkey-keys"><kbd>Ctrl</kbd><kbd>I</kbd></div></div>
+    <div class="hotkey-item"><span class="hotkey-desc">创建链接</span><div class="hotkey-keys"><kbd>[[</kbd></div></div>
+    <div class="hotkey-item"><span class="hotkey-desc">切换预览/编辑</span><div class="hotkey-keys"><kbd>Ctrl</kbd><kbd>E</kbd></div></div>
+    <div class="hotkey-item"><span class="hotkey-desc">命令面板</span><div class="hotkey-keys"><kbd>Ctrl</kbd><kbd>P</kbd></div></div>
+    <div class="hotkey-item"><span class="hotkey-desc">快速切换文件</span><div class="hotkey-keys"><kbd>Ctrl</kbd><kbd>O</kbd></div></div>
+    <div class="hotkey-item"><span class="hotkey-desc">全局搜索</span><div class="hotkey-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>F</kbd></div></div>
+    <div class="hotkey-item"><span class="hotkey-desc">插入图片/附件</span><div class="hotkey-keys">拖拽到编辑区</div></div>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('install')">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('notes')">下一步：笔记管理 →</button>
+  </div>
+</div>
+
+<!-- =================== SECTION: NOTES =================== -->
+<div id="sec-notes" class="section">
+  <h2><span class="section-icon">📝</span>笔记创建与管理</h2>
+  <div class="section-meta">
+    <span class="badge level-basic">入门基础</span>
+    <span>建立有序的文件夹结构与笔记命名规范</span>
+  </div>
+
+  <h3>推荐文件夹结构（PARA 方法）</h3>
+  <p><strong style="color:#e2e4f0">PARA</strong> 是知识管理大师 Tiago Forte 提出的组织方法，分为四类：</p>
+  <div class="diagram-wrap">
+    <svg width="100%" viewBox="0 0 680 220" role="img">
+      <title>PARA 文件夹组织方法</title>
+      <defs>
+        <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- P -->
+      <rect x="30" y="40" width="140" height="140" rx="10" fill="#1e2128" stroke="#7c6af0" stroke-width="1"/>
+      <text x="100" y="66" text-anchor="middle" font-size="22" fill="#7c6af0">🎯</text>
+      <text x="100" y="90" text-anchor="middle" font-family="Noto Serif SC" font-size="14" fill="#9d8df5" font-weight="700">Projects</text>
+      <text x="100" y="108" text-anchor="middle" font-family="Noto Sans SC" font-size="11" fill="#5a5e72">项目</text>
+      <text x="100" y="130" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">有截止日期的</text>
+      <text x="100" y="148" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">具体目标</text>
+      <text x="100" y="168" text-anchor="middle" font-family="Noto Sans SC" font-size="9" fill="#7c6af0">如：写毕业论文</text>
+      <!-- A -->
+      <rect x="190" y="40" width="140" height="140" rx="10" fill="#1e2128" stroke="#4ecdc4" stroke-width="1"/>
+      <text x="260" y="66" text-anchor="middle" font-size="22" fill="#4ecdc4">🗺️</text>
+      <text x="260" y="90" text-anchor="middle" font-family="Noto Serif SC" font-size="14" fill="#4ecdc4" font-weight="700">Areas</text>
+      <text x="260" y="108" text-anchor="middle" font-family="Noto Sans SC" font-size="11" fill="#5a5e72">领域</text>
+      <text x="260" y="130" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">需要长期维护的</text>
+      <text x="260" y="148" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">生活/工作领域</text>
+      <text x="260" y="168" text-anchor="middle" font-family="Noto Sans SC" font-size="9" fill="#4ecdc4">如：健康、财务</text>
+      <!-- R -->
+      <rect x="350" y="40" width="140" height="140" rx="10" fill="#1e2128" stroke="#e8c96d" stroke-width="1"/>
+      <text x="420" y="66" text-anchor="middle" font-size="22" fill="#e8c96d">📚</text>
+      <text x="420" y="90" text-anchor="middle" font-family="Noto Serif SC" font-size="14" fill="#e8c96d" font-weight="700">Resources</text>
+      <text x="420" y="108" text-anchor="middle" font-family="Noto Sans SC" font-size="11" fill="#5a5e72">资源</text>
+      <text x="420" y="130" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">感兴趣的主题</text>
+      <text x="420" y="148" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">或参考资料</text>
+      <text x="420" y="168" text-anchor="middle" font-family="Noto Sans SC" font-size="9" fill="#e8c96d">如：机器学习</text>
+      <!-- A -->
+      <rect x="510" y="40" width="140" height="140" rx="10" fill="#1e2128" stroke="#ff6b6b" stroke-width="1"/>
+      <text x="580" y="66" text-anchor="middle" font-size="22" fill="#ff6b6b">🗄️</text>
+      <text x="580" y="90" text-anchor="middle" font-family="Noto Serif SC" font-size="14" fill="#ff6b6b" font-weight="700">Archive</text>
+      <text x="580" y="108" text-anchor="middle" font-family="Noto Sans SC" font-size="11" fill="#5a5e72">归档</text>
+      <text x="580" y="130" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">已完成/暂停的</text>
+      <text x="580" y="148" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">所有内容</text>
+      <text x="580" y="168" text-anchor="middle" font-family="Noto Sans SC" font-size="9" fill="#ff6b6b">如：旧项目记录</text>
+    </svg>
+  </div>
+  
+  <pre><code><span class="code-comment"># 推荐的 Vault 文件夹结构</span>
+MyVault/
+├── <span class="code-key">00-Inbox/</span>          <span class="code-comment"># 临时收件箱，先放在这里</span>
+├── <span class="code-key">01-Projects/</span>       <span class="code-comment"># 进行中的项目</span>
+│   ├── 毕业论文/
+│   └── 网站开发/
+├── <span class="code-key">02-Areas/</span>          <span class="code-comment"># 长期维护的领域</span>
+│   ├── 健康/
+│   └── 职业发展/
+├── <span class="code-key">03-Resources/</span>      <span class="code-comment"># 知识资源库</span>
+│   ├── 机器学习/
+│   ├── 读书笔记/
+│   └── 工具&教程/
+├── <span class="code-key">04-Archive/</span>        <span class="code-comment"># 归档</span>
+├── <span class="code-key">Templates/</span>         <span class="code-comment"># 模板文件夹</span>
+└── <span class="code-key">Attachments/</span>       <span class="code-comment"># 图片等附件</span></code></pre>
+
+  <h3>笔记命名规范</h3>
+  <div class="card">
+    <table>
+      <thead><tr><th>类型</th><th>命名格式</th><th>示例</th></tr></thead>
+      <tbody>
+        <tr><td>每日笔记</td><td><code>YYYY-MM-DD</code></td><td><code>2024-01-15</code></td></tr>
+        <tr><td>会议记录</td><td><code>YYYY-MM-DD 主题</code></td><td><code>2024-01-15 团队周会</code></td></tr>
+        <tr><td>读书笔记</td><td><code>书名 - 作者</code></td><td><code>原子习惯 - James Clear</code></td></tr>
+        <tr><td>概念笔记</td><td>直接用概念名称</td><td><code>机器学习</code></td></tr>
+        <tr><td>项目笔记</td><td><code>项目名_任务</code></td><td><code>网站开发_首页设计</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">💡 Inbox 工作流</div>
+    养成「先放 Inbox，定期整理」的习惯：快速记录时不纠结分类，每周固定时间（如周五下午）将 Inbox 中的笔记整理归类到正确位置。
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('markdown')">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('links')">下一步：双向链接 →</button>
+  </div>
+</div>
+
+<!-- =================== SECTION: LINKS =================== -->
+<div id="sec-links" class="section">
+  <h2><span class="section-icon">🔗</span>双向链接系统</h2>
+  <div class="section-meta">
+    <span class="badge level-mid">进阶功能</span>
+    <span>Obsidian 最核心的知识连接机制</span>
+  </div>
+
+  <p>双向链接是 Obsidian 的灵魂功能。当你在笔记 A 中写 <code>[[笔记B]]</code>，Obsidian 不仅会在 A 中显示指向 B 的链接，<strong style="color:#e2e4f0">还会在 B 的「反向链接」面板中自动显示「A 链接了我」</strong>——无需手动维护，知识之间的网络自动形成。</p>
+
+  <h3>链接语法详解</h3>
+  <pre><code><span class="code-comment"># 基础链接</span>
+<span class="code-link">[[机器学习]]</span>                    <span class="code-comment"># 链接到「机器学习」笔记</span>
+<span class="code-link">[[机器学习|ML 概述]]</span>            <span class="code-comment"># 显示为「ML 概述」，但链接到「机器学习」</span>
+<span class="code-link">[[机器学习#监督学习]]</span>           <span class="code-comment"># 链接到「机器学习」笔记的「监督学习」章节</span>
+<span class="code-link">[[机器学习#监督学习|点我跳转]]</span>  <span class="code-comment"># 章节链接 + 自定义别名</span>
+
+<span class="code-comment"># 嵌入（内联展示其他笔记）</span>
+<span class="code-link">![[机器学习]]</span>                   <span class="code-comment"># 将整篇「机器学习」笔记嵌入到当前位置</span>
+<span class="code-link">![[机器学习#简介]]</span>              <span class="code-comment"># 只嵌入「简介」章节</span>
+<span class="code-link">![[图表.png|400]]</span>              <span class="code-comment"># 嵌入图片并设置宽度为 400px</span>
+
+<span class="code-comment"># 外部链接（标准 Markdown）</span>
+<span class="code-link">[Obsidian 官网](https://obsidian.md)</span></code></pre>
+
+  <h3>反向链接（Backlinks）</h3>
+  <p>这是双向链接系统的核心体验。打开右侧面板中的「反向链接」视图，就能看到所有链接到当前笔记的笔记列表。</p>
+  <div class="diagram-wrap">
+    <svg width="100%" viewBox="0 0 680 280" role="img">
+      <title>双向链接与反向链接机制示意图</title>
+      <defs>
+        <marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Center: 机器学习 -->
+      <rect x="255" y="100" width="170" height="60" rx="10" fill="#1e2128" stroke="#7c6af0" stroke-width="1.5"/>
+      <text x="340" y="125" text-anchor="middle" font-family="Noto Serif SC" font-size="14" fill="#9d8df5" font-weight="700">机器学习.md</text>
+      <text x="340" y="145" text-anchor="middle" font-family="Noto Sans SC" font-size="11" fill="#5a5e72">目标笔记</text>
+      <!-- Left top: 神经网络 links to 机器学习 -->
+      <rect x="40" y="30" width="150" height="52" rx="8" fill="#1e2128" stroke="#4ecdc4" stroke-width="1"/>
+      <text x="115" y="53" text-anchor="middle" font-family="Noto Sans SC" font-size="12" fill="#4ecdc4">神经网络.md</text>
+      <text x="115" y="70" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">含 [[机器学习]]</text>
+      <path d="M190 56 Q230 56 255 115" fill="none" stroke="#4ecdc4" stroke-width="1.5" marker-end="url(#arr3)" opacity="0.7"/>
+      <!-- Left bottom: Python -->
+      <rect x="40" y="120" width="150" height="52" rx="8" fill="#1e2128" stroke="#e8c96d" stroke-width="1"/>
+      <text x="115" y="143" text-anchor="middle" font-family="Noto Sans SC" font-size="12" fill="#e8c96d">Python学习.md</text>
+      <text x="115" y="160" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">含 [[机器学习]]</text>
+      <path d="M190 146 Q225 146 255 138" fill="none" stroke="#e8c96d" stroke-width="1.5" marker-end="url(#arr3)" opacity="0.7"/>
+      <!-- Left lower: 数学基础 -->
+      <rect x="40" y="210" width="150" height="52" rx="8" fill="#1e2128" stroke="#ff6b6b" stroke-width="1"/>
+      <text x="115" y="233" text-anchor="middle" font-family="Noto Sans SC" font-size="12" fill="#ff6b6b">数学基础.md</text>
+      <text x="115" y="250" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">含 [[机器学习]]</text>
+      <path d="M190 236 Q230 200 255 155" fill="none" stroke="#ff6b6b" stroke-width="1.5" marker-end="url(#arr3)" opacity="0.7"/>
+      <!-- Right: backlinks panel -->
+      <rect x="490" y="20" width="170" height="240" rx="10" fill="#16181c" stroke="#2e3038" stroke-width="0.5"/>
+      <text x="575" y="46" text-anchor="middle" font-family="Noto Sans SC" font-size="11" fill="#5a5e72" font-weight="600">↩ 反向链接 (3)</text>
+      <rect x="502" y="58" width="146" height="52" rx="6" fill="#1e2128" stroke="#2e3038" stroke-width="0.5"/>
+      <text x="514" y="76" font-family="Noto Sans SC" font-size="11" fill="#4ecdc4">神经网络</text>
+      <text x="514" y="94" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">「机器学习 是...」</text>
+      <rect x="502" y="120" width="146" height="52" rx="6" fill="#1e2128" stroke="#2e3038" stroke-width="0.5"/>
+      <text x="514" y="138" font-family="Noto Sans SC" font-size="11" fill="#e8c96d">Python学习</text>
+      <text x="514" y="156" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">「用于机器学习的...」</text>
+      <rect x="502" y="182" width="146" height="52" rx="6" fill="#1e2128" stroke="#2e3038" stroke-width="0.5"/>
+      <text x="514" y="200" font-family="Noto Sans SC" font-size="11" fill="#ff6b6b">数学基础</text>
+      <text x="514" y="218" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">「机器学习 需要...」</text>
+      <!-- Arrow from center to backlinks panel -->
+      <path d="M425 130 Q460 130 490 130" fill="none" stroke="#7c6af0" stroke-width="1" stroke-dasharray="5 4" marker-end="url(#arr3)" opacity="0.5"/>
+      <text x="456" y="122" font-family="Noto Sans SC" font-size="9" fill="#5a5e72">自动生成</text>
+    </svg>
+  </div>
+  <p class="diagram-caption">图：三篇笔记链接到「机器学习」，其反向链接面板自动显示所有来源</p>
+
+  <h3>未解析链接（Unresolved Links）</h3>
+  <p>Obsidian 允许你先写下 <code>[[尚不存在的笔记名]]</code>，这个链接会以虚线显示。当你将来创建这篇笔记时，链接自动激活。这种「先占位、后填充」的工作方式大幅降低了写作时的阻力。</p>
+
+  <h3>链接提示与自动补全</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">输入 <code>[[</code>，自动弹出搜索面板</div>
+        <div class="step-desc">开始输入笔记名的任意部分，Obsidian 会实时模糊搜索所有笔记标题</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">用 ↑↓ 键选择，Enter 确认</div>
+        <div class="step-desc">也可以用鼠标点击候选项</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">按 <code>|</code> 键可立即为链接添加别名</div>
+        <div class="step-desc">例：<code>[[机器学习|ML]]</code> — 在当前笔记显示为「ML」但实际链接到「机器学习」</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">🔗 最佳实践：链接时多用别名</div>
+    在自然语言段落中使用链接时，借助别名保持文字流畅。例如：「<code>[[机器学习|这门技术]]</code>改变了世界」比「<code>[[机器学习]]</code>改变了世界」读起来更自然。
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('notes')">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('tags')">下一步：标签系统 →</button>
+  </div>
+</div>
+
+<!-- =================== SECTION: TAGS =================== -->
+<div id="sec-tags" class="section">
+  <h2><span class="section-icon">🏷️</span>标签与文件夹</h2>
+  <div class="section-meta">
+    <span class="badge level-mid">进阶功能</span>
+    <span>用标签实现跨文件夹的灵活分类</span>
+  </div>
+
+  <p>标签（Tags）与文件夹各有侧重：<strong style="color:#e2e4f0">文件夹</strong>负责物理存储结构，<strong style="color:#e2e4f0">标签</strong>则实现跨结构的多维分类。一篇笔记只能在一个文件夹里，但可以贴无数个标签。</p>
+
+  <h3>标签使用方式</h3>
+  <pre><code><span class="code-comment"># 方式 1：正文中直接添加（推荐）</span>
+这是关于神经网络的学习笔记 <span class="code-tag">#AI</span> <span class="code-tag">#深度学习</span> <span class="code-tag">#进行中</span>
+
+<span class="code-comment"># 方式 2：通过 Front Matter 添加（可被 Dataview 查询）</span>
+<span class="code-comment">---</span>
+<span class="code-key">tags</span>:
+  - <span class="code-val">AI</span>
+  - <span class="code-val">深度学习</span>
+  - <span class="code-val">进行中</span>
+<span class="code-comment">---</span>
+
+<span class="code-comment"># 嵌套标签（创建层级）</span>
+<span class="code-tag">#学习/机器学习</span>
+<span class="code-tag">#学习/深度学习</span>
+<span class="code-tag">#状态/草稿</span>
+<span class="code-tag">#状态/完成</span></code></pre>
+
+  <h3>标签面板与搜索</h3>
+  <div class="card">
+    <p>在左侧面板点击「标签」图标，可以看到所有标签及其使用数量。点击任意标签，会在搜索框中自动填入 <code>tag:#标签名</code> 并显示所有包含该标签的笔记。</p>
+    <p>在搜索框中也可以使用高级标签搜索：</p>
+    <table>
+      <tr><td><code>tag:#AI</code></td><td>所有含 #AI 标签的笔记</td></tr>
+      <tr><td><code>tag:#学习/机器学习</code></td><td>含嵌套标签的笔记</td></tr>
+      <tr><td><code>tag:#AI tag:#进行中</code></td><td>同时含两个标签（AND 关系）</td></tr>
+    </table>
+  </div>
+
+  <h3>链接 vs 标签 vs 文件夹：如何选择？</h3>
+  <div class="card-grid">
+    <div class="feature-card">
+      <div class="icon">📁</div>
+      <div class="title">文件夹：用于物理分类</div>
+      <div class="desc">项目、领域等有明确归属的笔记。层级不宜超过 3 层</div>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🏷️</div>
+      <div class="title">标签：用于状态与属性</div>
+      <div class="desc">笔记状态（#草稿 #完成）、类型（#概念 #教程）、话题（#AI #读书）</div>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔗</div>
+      <div class="title">链接：用于语义关联</div>
+      <div class="desc">有内容关联的笔记之间。「机器学习依赖[[线性代数]]」这种有意义的连接</div>
+    </div>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">💡 推荐的标签体系</div>
+    建立一套简洁一致的标签系统，例如：
+    <br>• <code>#状态/草稿</code> <code>#状态/完成</code> <code>#状态/归档</code>
+    <br>• <code>#类型/概念</code> <code>#类型/项目</code> <code>#类型/日记</code>
+    <br>• <code>#话题/AI</code> <code>#话题/编程</code> <code>#话题/读书</code>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('links')">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('graph')">下一步：图谱视图 →</button>
+  </div>
+</div>
+
+<!-- =================== SECTION: GRAPH =================== -->
+<div id="sec-graph" class="section">
+  <h2><span class="section-icon">🔭</span>图谱视图</h2>
+  <div class="section-meta">
+    <span class="badge level-mid">进阶功能</span>
+    <span>可视化你的整个知识库，发现知识结构</span>
+  </div>
+
+  <p>图谱视图（Graph View）将每篇笔记渲染为一个节点，笔记之间的链接渲染为边，形成一张可交互的知识地图。笔记越多被链接，节点越大。</p>
+
+  <h3>图谱演示</h3>
+  <div class="diagram-wrap" style="background:#0d0e10;">
+    <svg width="100%" viewBox="0 0 680 360" role="img">
+      <title>Obsidian 图谱视图模拟</title>
+      <!-- Background subtle grid -->
+      <!-- Edges -->
+      <line x1="340" y1="180" x2="180" y2="100" stroke="#7c6af0" stroke-width="1.2" opacity="0.4"/>
+      <line x1="340" y1="180" x2="500" y2="100" stroke="#7c6af0" stroke-width="1.2" opacity="0.4"/>
+      <line x1="340" y1="180" x2="180" y2="260" stroke="#7c6af0" stroke-width="1.2" opacity="0.4"/>
+      <line x1="340" y1="180" x2="500" y2="260" stroke="#7c6af0" stroke-width="1.2" opacity="0.4"/>
+      <line x1="340" y1="180" x2="340" y2="60" stroke="#4ecdc4" stroke-width="1" opacity="0.3"/>
+      <line x1="180" y1="100" x2="80" y2="60" stroke="#4ecdc4" stroke-width="0.8" opacity="0.3"/>
+      <line x1="500" y1="100" x2="600" y2="60" stroke="#4ecdc4" stroke-width="0.8" opacity="0.3"/>
+      <line x1="180" y1="260" x2="80" y2="310" stroke="#4ecdc4" stroke-width="0.8" opacity="0.3"/>
+      <line x1="500" y1="260" x2="600" y2="310" stroke="#4ecdc4" stroke-width="0.8" opacity="0.3"/>
+      <line x1="180" y1="100" x2="500" y2="260" stroke="#5a5e72" stroke-width="0.6" opacity="0.2"/>
+      <line x1="500" y1="100" x2="180" y2="260" stroke="#5a5e72" stroke-width="0.6" opacity="0.2"/>
+      <!-- Satellite-2 nodes -->
+      <circle cx="80" cy="60" r="8" fill="#252830" stroke="#4ecdc4" stroke-width="1" opacity="0.7"/>
+      <text x="80" y="44" text-anchor="middle" font-family="Noto Sans SC" font-size="9" fill="#5a5e72">线性代数</text>
+      <circle cx="600" cy="60" r="8" fill="#252830" stroke="#4ecdc4" stroke-width="1" opacity="0.7"/>
+      <text x="600" y="44" text-anchor="middle" font-family="Noto Sans SC" font-size="9" fill="#5a5e72">统计学</text>
+      <circle cx="80" cy="310" r="8" fill="#252830" stroke="#4ecdc4" stroke-width="1" opacity="0.7"/>
+      <text x="80" y="328" text-anchor="middle" font-family="Noto Sans SC" font-size="9" fill="#5a5e72">2024-01-15</text>
+      <circle cx="600" cy="310" r="8" fill="#252830" stroke="#4ecdc4" stroke-width="1" opacity="0.7"/>
+      <text x="600" y="328" text-anchor="middle" font-family="Noto Sans SC" font-size="9" fill="#5a5e72">项目计划</text>
+      <!-- Satellite-1 nodes -->
+      <circle cx="180" cy="100" r="18" fill="#1e2128" stroke="#4ecdc4" stroke-width="1.2"/>
+      <text x="180" y="104" text-anchor="middle" font-family="Noto Sans SC" font-size="11" fill="#4ecdc4">神经网络</text>
+      <circle cx="500" cy="100" r="16" fill="#1e2128" stroke="#e8c96d" stroke-width="1.2"/>
+      <text x="500" y="104" text-anchor="middle" font-family="Noto Sans SC" font-size="11" fill="#e8c96d">Python</text>
+      <circle cx="180" cy="260" r="14" fill="#1e2128" stroke="#ff6b6b" stroke-width="1"/>
+      <text x="180" y="264" text-anchor="middle" font-family="Noto Sans SC" font-size="11" fill="#ff6b6b">数学基础</text>
+      <circle cx="500" cy="260" r="14" fill="#1e2128" stroke="#c06af0" stroke-width="1"/>
+      <text x="500" y="264" text-anchor="middle" font-family="Noto Sans SC" font-size="11" fill="#c06af0">读书笔记</text>
+      <!-- Top connector -->
+      <circle cx="340" cy="60" r="10" fill="#1e2128" stroke="#4ecdc4" stroke-width="1"/>
+      <text x="340" y="64" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#4ecdc4">数据集</text>
+      <!-- Center node (large) -->
+      <circle cx="340" cy="180" r="36" fill="#1e2128" stroke="#7c6af0" stroke-width="2"/>
+      <circle cx="340" cy="180" r="30" fill="#1e2128" stroke="#7c6af0" stroke-width="0.5" opacity="0.4"/>
+      <text x="340" y="176" text-anchor="middle" font-family="Noto Serif SC" font-size="13" fill="#9d8df5" font-weight="700">机器学习</text>
+      <text x="340" y="194" text-anchor="middle" font-family="Noto Sans SC" font-size="9" fill="#5a5e72">核心笔记（高链接数）</text>
+    </svg>
+  </div>
+  <p class="diagram-caption">图：图谱视图中，节点大小代表被链接的次数</p>
+
+  <h3>图谱视图的使用技巧</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">打开图谱视图：左侧 Ribbon 点击图谱图标，或使用命令面板</div>
+        <div class="step-desc">快捷键：<kbd>Ctrl</kbd>+<kbd>G</kbd>（Windows）或 <kbd>⌘G</kbd>（Mac）</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">在右上角过滤器中按标签/文件夹筛选</div>
+        <div class="step-desc">通过 <code>tag:#AI</code> 只显示 AI 相关笔记的子图，避免全局图过于密集</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">调整「局部图谱」深度</div>
+        <div class="step-desc">在单篇笔记的右侧面板可开启「局部图谱」，只展示该笔记周围 1-3 跳的节点</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">通过颜色区分群组</div>
+        <div class="step-desc">在图谱设置中，可以按照路径、标签等条件为不同类型的节点设置颜色</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="callout-title">⚠️ 避免误区</div>
+    图谱视图最大的价值不是「好看」，而是<strong style="color:#e2e4f0">发现孤立笔记</strong>——那些没有任何链接的孤点，往往是被遗忘的宝贵内容。定期看一看图谱，找出孤点并尝试将它们与其他笔记连接起来。
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('tags')">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('templates')">下一步：模板系统 →</button>
+  </div>
+</div>
+
+<!-- =================== SECTION: TEMPLATES =================== -->
+<div id="sec-templates" class="section">
+  <h2><span class="section-icon">📋</span>模板系统</h2>
+  <div class="section-meta">
+    <span class="badge level-mid">进阶功能</span>
+    <span>通过模板实现标准化笔记结构</span>
+  </div>
+
+  <p>模板（Templates）让你在创建新笔记时，一键填入预设的结构和内容，避免重复劳动。Obsidian 内置模板功能，社区插件 Templater 提供了更强大的能力。</p>
+
+  <h3>启用内置模板插件</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">设置 → 核心插件 → 开启「模板」</div>
+        <div class="step-desc">Obsidian 的模板功能是核心插件，默认可能未开启</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">在「模板」插件设置中，指定模板文件夹</div>
+        <div class="step-desc">建议新建一个 <code>Templates/</code> 文件夹，将所有模板文件放入其中</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">创建新笔记后，命令面板（Ctrl+P）搜索「插入模板」</div>
+        <div class="step-desc">也可以为「插入模板」命令自定义一个快捷键，如 <kbd>Ctrl</kbd>+<kbd>T</kbd></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>常用模板示例</h3>
+  
+  <h4>每日笔记模板</h4>
+  <pre><code><span class="code-comment">---</span>
+<span class="code-key">date</span>: <span class="code-val">{{date:YYYY-MM-DD}}</span>
+<span class="code-key">week</span>: <span class="code-val">{{date:YYYY-[W]WW}}</span>
+<span class="code-key">tags</span>: <span class="code-val">[日记]</span>
+<span class="code-comment">---</span>
+
+<span class="code-head"># 📅 {{date:YYYY年MM月DD日}}</span>
+
+<span class="code-head">## 🎯 今日目标</span>
+- [ ] 
+- [ ] 
+- [ ] 
+
+<span class="code-head">## 📝 笔记与思考</span>
+
+
+<span class="code-head">## 💡 今日学到</span>
+
+
+<span class="code-head">## 🔗 相关笔记</span>
+- [[{{date:YYYY-MM-DD, -1 days}}|昨天]]
+- [[{{date:YYYY-MM-DD, 1 days}}|明天]]</code></pre>
+
+  <h4>读书笔记模板</h4>
+  <pre><code><span class="code-comment">---</span>
+<span class="code-key">书名</span>: <span class="code-val"></span>
+<span class="code-key">作者</span>: <span class="code-val"></span>
+<span class="code-key">阅读日期</span>: <span class="code-val">{{date:YYYY-MM-DD}}</span>
+<span class="code-key">评分</span>: <span class="code-val">⭐⭐⭐⭐⭐</span>
+<span class="code-key">tags</span>: <span class="code-val">[读书笔记]</span>
+<span class="code-key">status</span>: <span class="code-val">reading</span>
+<span class="code-comment">---</span>
+
+<span class="code-head"># 📖 书名</span>
+
+<span class="code-head">## 一句话总结</span>
+
+
+<span class="code-head">## 核心观点</span>
+1. 
+2. 
+
+<span class="code-head">## 精彩摘录</span>
+> 
+
+<span class="code-head">## 行动启示</span>
+- 
+
+<span class="code-head">## 相关笔记</span>
+</code></pre>
+
+  <h3>内置模板变量</h3>
+  <table>
+    <thead><tr><th>变量</th><th>含义</th></tr></thead>
+    <tbody>
+      <tr><td><code>{{date}}</code></td><td>当前日期（默认 YYYY-MM-DD 格式）</td></tr>
+      <tr><td><code>{{date:YYYY年MM月DD日}}</code></td><td>自定义日期格式</td></tr>
+      <tr><td><code>{{time}}</code></td><td>当前时间（HH:mm）</td></tr>
+      <tr><td><code>{{title}}</code></td><td>当前笔记标题</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-info">
+    <div class="callout-title">🚀 进阶：使用 Templater 插件</div>
+    社区插件 <strong style="color:#e2e4f0">Templater</strong> 提供了更强大的模板功能，支持 JavaScript 逻辑、弹出输入框、自动创建笔记等。下一节「插件生态」中会详细介绍。
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('graph')">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('plugins')">下一步：插件生态 →</button>
+  </div>
+</div>
+
+<!-- =================== SECTION: PLUGINS =================== -->
+<div id="sec-plugins" class="section">
+  <h2><span class="section-icon">🔌</span>插件生态</h2>
+  <div class="section-meta">
+    <span class="badge level-adv">高级功能</span>
+    <span>核心插件与社区插件的安装与使用</span>
+  </div>
+
+  <h3>核心插件（内置，设置开启）</h3>
+  <div class="plugin-card">
+    <div class="plugin-icon">📅</div>
+    <div class="plugin-body">
+      <div class="name">Daily Notes（每日笔记）</div>
+      <div class="info">一键创建/打开今天的日记文件，配合模板使用非常高效。可设置自动在启动 Obsidian 时打开。</div>
+      <div class="plugin-tags"><span class="plugin-tag">日常使用</span><span class="plugin-tag">必开</span></div>
+    </div>
+  </div>
+  <div class="plugin-card">
+    <div class="plugin-icon">🔍</div>
+    <div class="plugin-body">
+      <div class="name">Search（搜索）</div>
+      <div class="info">强大的全文搜索，支持正则表达式、标签过滤、路径过滤。快捷键 Ctrl+Shift+F。</div>
+      <div class="plugin-tags"><span class="plugin-tag">内置</span><span class="plugin-tag">必开</span></div>
+    </div>
+  </div>
+  <div class="plugin-card">
+    <div class="plugin-icon">⭐</div>
+    <div class="plugin-body">
+      <div class="name">Starred（收藏）</div>
+      <div class="info">将常用笔记和搜索条件加入收藏，在左侧面板快速访问。适合固定的项目笔记或常查文档。</div>
+      <div class="plugin-tags"><span class="plugin-tag">内置</span></div>
+    </div>
+  </div>
+  <div class="plugin-card">
+    <div class="plugin-icon">📊</div>
+    <div class="plugin-body">
+      <div class="name">Canvas（画布）</div>
+      <div class="info">无限白板功能，可在画布上放置笔记卡片、图片、链接，自由拖拽排列，适合头脑风暴和项目规划。</div>
+      <div class="plugin-tags"><span class="plugin-tag">内置</span><span class="plugin-tag">新功能</span></div>
+    </div>
+  </div>
+
+  <h3>必装社区插件</h3>
+  <p>在「设置 → 社区插件」中，关闭安全模式后即可搜索并安装以下插件：</p>
+  
+  <div class="plugin-card">
+    <div class="plugin-icon">📅</div>
+    <div class="plugin-body">
+      <div class="name">Calendar</div>
+      <div class="info">在右侧面板显示日历视图，点击日期快速导航到对应的每日笔记。支持显示当天是否有笔记的视觉提示。</div>
+      <div class="plugin-tags"><span class="plugin-tag">日常</span><span class="plugin-tag">推荐</span></div>
+    </div>
+  </div>
+  <div class="plugin-card">
+    <div class="plugin-icon">⚡</div>
+    <div class="plugin-body">
+      <div class="name">Templater</div>
+      <div class="info">内置模板的增强版。支持 JavaScript 脚本、运行时变量输入、自动在创建时执行模板。例如创建新笔记时自动弹出标题输入框。</div>
+      <div class="plugin-tags"><span class="plugin-tag">模板</span><span class="plugin-tag">必装</span></div>
+    </div>
+  </div>
+  <div class="plugin-card">
+    <div class="plugin-icon">🗃️</div>
+    <div class="plugin-body">
+      <div class="name">Dataview</div>
+      <div class="info">将笔记当作数据库查询！通过 DQL 语句动态生成表格、列表、任务视图。下一节详细讲解。</div>
+      <div class="plugin-tags"><span class="plugin-tag">查询</span><span class="plugin-tag">必装</span></div>
+    </div>
+  </div>
+  <div class="plugin-card">
+    <div class="plugin-icon">✅</div>
+    <div class="plugin-body">
+      <div class="name">Tasks</div>
+      <div class="info">增强的任务管理插件，支持截止日期、重复任务、全局任务视图。与 Dataview 配合使用效果极佳。</div>
+      <div class="plugin-tags"><span class="plugin-tag">任务管理</span><span class="plugin-tag">推荐</span></div>
+    </div>
+  </div>
+  <div class="plugin-card">
+    <div class="plugin-icon">🎨</div>
+    <div class="plugin-body">
+      <div class="name">Excalidraw</div>
+      <div class="info">在 Obsidian 中直接绘制手绘风格的白板图，并将图中的文字自动转为可链接的笔记节点。</div>
+      <div class="plugin-tags"><span class="plugin-tag">绘图</span><span class="plugin-tag">推荐</span></div>
+    </div>
+  </div>
+  <div class="plugin-card">
+    <div class="plugin-icon">🔄</div>
+    <div class="plugin-body">
+      <div class="name">Git / Obsidian Git</div>
+      <div class="info">自动将 Vault 提交到 Git 仓库，实现版本历史和跨设备同步（配合 GitHub 使用）。免费同步方案首选。</div>
+      <div class="plugin-tags"><span class="plugin-tag">同步</span><span class="plugin-tag">备份</span></div>
+    </div>
+  </div>
+
+  <h3>安装社区插件步骤</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">设置 → 社区插件 → 关闭受限模式</div>
+        <div class="step-desc">确认风险提示后，才能安装第三方插件</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">点击「浏览」，搜索插件名称</div>
+        <div class="step-desc">也可通过插件 ID 精确搜索，如 <code>dataview</code>、<code>templater-obsidian</code></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">点击插件卡片 → 「安装」→ 「启用」</div>
+        <div class="step-desc">安装后记得回到插件列表手动启用（蓝色开关）</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">在插件选项页做基础配置</div>
+        <div class="step-desc">每个插件安装后在设置左侧会出现对应的配置项</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('templates')">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('dataview')">下一步：Dataview →</button>
+  </div>
+</div>
+
+<!-- =================== SECTION: DATAVIEW =================== -->
+<div id="sec-dataview" class="section">
+  <h2><span class="section-icon">🗃️</span>Dataview：把笔记当数据库</h2>
+  <div class="section-meta">
+    <span class="badge level-adv">高级功能</span>
+    <span>用 DQL 查询语言动态生成笔记视图</span>
+  </div>
+
+  <p>Dataview 插件让你用类 SQL 语言查询所有笔记的元数据，动态生成表格和列表。知识库越大，Dataview 越有价值。</p>
+
+  <h3>Dataview 基础语法</h3>
+  <p>在笔记中创建一个代码块，语言类型写 <code>dataview</code>，即可执行查询：</p>
+
+  <pre><code><span class="code-comment">```dataview</span>
+<span class="code-comment"># 示例 1：列出所有标签含 #AI 的笔记</span>
+LIST
+FROM <span class="code-val">#AI</span>
+SORT file.ctime DESC
+
+<span class="code-comment">```</span></code></pre>
+
+  <pre><code><span class="code-comment">```dataview</span>
+<span class="code-comment"># 示例 2：显示所有读书笔记的表格</span>
+TABLE <span class="code-key">书名</span>, <span class="code-key">作者</span>, <span class="code-key">评分</span>, <span class="code-key">阅读日期</span>
+FROM <span class="code-val">"03-Resources/读书笔记"</span>
+WHERE <span class="code-key">status</span> = <span class="code-val">"finished"</span>
+SORT <span class="code-key">阅读日期</span> DESC
+<span class="code-comment">```</span></code></pre>
+
+  <pre><code><span class="code-comment">```dataview</span>
+<span class="code-comment"># 示例 3：显示本周未完成的任务</span>
+TASK
+FROM <span class="code-val">"01-Projects"</span>
+WHERE <span class="code-key">!completed</span>
+SORT file.mtime DESC
+<span class="code-comment">```</span></code></pre>
+
+  <pre><code><span class="code-comment">```dataview</span>
+<span class="code-comment"># 示例 4：最近 7 天修改的笔记</span>
+LIST file.mtime
+FROM <span class="code-val">""</span>
+WHERE date(today) - file.mtime &lt;= dur(7 days)
+SORT file.mtime DESC
+<span class="code-comment">```</span></code></pre>
+
+  <h3>常用字段参考</h3>
+  <table>
+    <thead><tr><th>字段</th><th>含义</th></tr></thead>
+    <tbody>
+      <tr><td><code>file.name</code></td><td>笔记文件名（不含扩展名）</td></tr>
+      <tr><td><code>file.path</code></td><td>笔记的完整路径</td></tr>
+      <tr><td><code>file.ctime</code></td><td>创建时间</td></tr>
+      <tr><td><code>file.mtime</code></td><td>最后修改时间</td></tr>
+      <tr><td><code>file.tags</code></td><td>笔记所有标签</td></tr>
+      <tr><td><code>file.inlinks</code></td><td>所有指向此笔记的链接</td></tr>
+      <tr><td><code>file.outlinks</code></td><td>此笔记指向的所有链接</td></tr>
+      <tr><td><code>任意 Front Matter key</code></td><td>如 <code>status</code>、<code>评分</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>实用查询：构建「每日回顾」页</h3>
+  <pre><code><span class="code-head"># 每日回顾 Dashboard</span>
+
+<span class="code-head">## 今日创建的笔记</span>
+<span class="code-comment">```dataview</span>
+LIST
+FROM <span class="code-val">""</span>
+WHERE file.ctime >= date(today)
+<span class="code-comment">```</span>
+
+<span class="code-head">## 进行中的项目</span>
+<span class="code-comment">```dataview</span>
+TABLE <span class="code-key">status</span>, file.mtime <span class="code-key">AS</span> <span class="code-val">"最后更新"</span>
+FROM <span class="code-val">"01-Projects"</span>
+WHERE <span class="code-key">status</span> != <span class="code-val">"archived"</span>
+<span class="code-comment">```</span>
+
+<span class="code-head">## 最近读完的书</span>
+<span class="code-comment">```dataview</span>
+TABLE <span class="code-key">书名</span>, <span class="code-key">评分</span>
+FROM <span class="code-val">#读书笔记</span>
+WHERE <span class="code-key">status</span> = <span class="code-val">"finished"</span>
+SORT <span class="code-key">阅读日期</span> DESC
+LIMIT 5
+<span class="code-comment">```</span></code></pre>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">💡 Dataview 使用前提</div>
+    Dataview 依赖 Front Matter 中的元数据。笔记元数据越丰富（日期、状态、标签、评分等），能执行的查询就越强大。从现在开始养成填写 Front Matter 的习惯！
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('plugins')">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('workflow')">最后：工作流建议 →</button>
+  </div>
+</div>
+
+<!-- =================== SECTION: WORKFLOW =================== -->
+<div id="sec-workflow" class="section">
+  <h2><span class="section-icon">🚀</span>工作流与最佳实践</h2>
+  <div class="section-meta">
+    <span class="badge level-adv">高级应用</span>
+    <span>把零散功能整合为高效的日常工作流</span>
+  </div>
+
+  <h3>推荐工作流：CAPTURE → ORGANIZE → REVIEW</h3>
+  <div class="diagram-wrap">
+    <svg width="100%" viewBox="0 0 680 180" role="img">
+      <title>Obsidian 三阶段工作流：捕获、整理、回顾</title>
+      <defs>
+        <marker id="arr4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Step 1 -->
+      <rect x="40" y="40" width="170" height="100" rx="10" fill="#1e2128" stroke="#4ecdc4" stroke-width="1.2"/>
+      <text x="125" y="72" text-anchor="middle" font-size="22">📥</text>
+      <text x="125" y="98" text-anchor="middle" font-family="Noto Serif SC" font-size="14" fill="#4ecdc4" font-weight="700">1. 捕获</text>
+      <text x="125" y="118" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">快速记录到 Inbox</text>
+      <text x="125" y="132" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">不纠结格式和分类</text>
+      <!-- Arrow 1->2 -->
+      <path d="M210 90 L250 90" fill="none" stroke="#7c6af0" stroke-width="1.5" marker-end="url(#arr4)"/>
+      <text x="230" y="80" text-anchor="middle" font-family="Noto Sans SC" font-size="9" fill="#5a5e72">每天</text>
+      <!-- Step 2 -->
+      <rect x="255" y="40" width="170" height="100" rx="10" fill="#1e2128" stroke="#7c6af0" stroke-width="1.2"/>
+      <text x="340" y="72" text-anchor="middle" font-size="22">🗂️</text>
+      <text x="340" y="98" text-anchor="middle" font-family="Noto Serif SC" font-size="14" fill="#9d8df5" font-weight="700">2. 整理</text>
+      <text x="340" y="118" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">处理 Inbox，补充链接</text>
+      <text x="340" y="132" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">归类到对应文件夹</text>
+      <!-- Arrow 2->3 -->
+      <path d="M425 90 L465 90" fill="none" stroke="#7c6af0" stroke-width="1.5" marker-end="url(#arr4)"/>
+      <text x="445" y="80" text-anchor="middle" font-family="Noto Sans SC" font-size="9" fill="#5a5e72">每周</text>
+      <!-- Step 3 -->
+      <rect x="470" y="40" width="170" height="100" rx="10" fill="#1e2128" stroke="#e8c96d" stroke-width="1.2"/>
+      <text x="555" y="72" text-anchor="middle" font-size="22">🔭</text>
+      <text x="555" y="98" text-anchor="middle" font-family="Noto Serif SC" font-size="14" fill="#e8c96d" font-weight="700">3. 回顾</text>
+      <text x="555" y="118" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">查看图谱，发现联系</text>
+      <text x="555" y="132" text-anchor="middle" font-family="Noto Sans SC" font-size="10" fill="#5a5e72">更新 Dashboard</text>
+    </svg>
+  </div>
+
+  <h3>日常使用清单</h3>
+  <div class="card">
+    <h4>⏰ 每日（5 分钟）</h4>
+    <ul style="padding-left:20px;color:var(--text2);font-size:14px;line-height:2;">
+      <li>用模板创建今天的每日笔记</li>
+      <li>快速记录当天要做的事、学到的内容</li>
+      <li>遇到关键词时，随手加上 <code>[[链接]]</code></li>
+    </ul>
+    <h4>📆 每周（30 分钟）</h4>
+    <ul style="padding-left:20px;color:var(--text2);font-size:14px;line-height:2;">
+      <li>清空 Inbox——将笔记归类或删除</li>
+      <li>检查未解析链接，为孤立笔记建立连接</li>
+      <li>打开图谱视图，寻找知识空白区</li>
+      <li>更新项目笔记的进展状态</li>
+    </ul>
+    <h4>🗓️ 每月（1 小时）</h4>
+    <ul style="padding-left:20px;color:var(--text2);font-size:14px;line-height:2;">
+      <li>归档已完成的项目到 Archive 文件夹</li>
+      <li>回顾该月的每日笔记，提炼关键洞见</li>
+      <li>更新 README/Dashboard 笔记</li>
+    </ul>
+  </div>
+
+  <h3>构建个人 Dashboard</h3>
+  <p>新建一个「首页.md」作为你的知识库入口，综合运用内部链接、Dataview 查询和 Callout：</p>
+  <pre><code><span class="code-comment">---</span>
+<span class="code-key">tags</span>: <span class="code-val">[dashboard]</span>
+<span class="code-comment">---</span>
+
+<span class="code-head"># 🏠 我的知识库首页</span>
+
+<span class="code-head">## 🎯 进行中的项目</span>
+<span class="code-comment">```dataview</span>
+TABLE <span class="code-key">status</span>
+FROM <span class="code-val">"01-Projects"</span>
+WHERE <span class="code-key">status</span> = <span class="code-val">"active"</span>
+<span class="code-comment">```</span>
+
+<span class="code-head">## 📚 最近读完的书</span>
+<span class="code-comment">```dataview</span>
+LIST <span class="code-key">评分</span>
+FROM <span class="code-val">#读书笔记</span>
+SORT file.mtime DESC
+LIMIT 5
+<span class="code-comment">```</span>
+
+<span class="code-head">## 🔖 常用快速入口</span>
+- [[每日工作模板]]
+- [[项目跟踪]]
+- [[学习路线图]]
+
+<span class="code-head">## 📊 知识库统计</span>
+<span class="code-comment">```dataview</span>
+TABLE length(rows) <span class="code-key">AS</span> <span class="code-val">"笔记数"</span>
+FROM <span class="code-val">""</span>
+GROUP BY <span class="code-key">split(file.path, "/")[0]</span> <span class="code-key">AS</span> <span class="code-val">"文件夹"</span>
+<span class="code-comment">```</span></code></pre>
+
+  <h3>新手常见误区</h3>
+  <div class="card">
+    <table>
+      <thead><tr><th>误区</th><th>正确做法</th></tr></thead>
+      <tbody>
+        <tr><td>过度设计文件夹结构，纠结分类</td><td>先放 Inbox，后整理；结构跟随需求成长</td></tr>
+        <tr><td>笔记太短（每条一两句），没有语境</td><td>笔记要「原子化」但有自含义，最少一段话</td></tr>
+        <tr><td>链接用太少，知识孤立</td><td>写完每篇笔记后，问「这和哪几篇笔记有关？」</td></tr>
+        <tr><td>安装太多插件，反而分心</td><td>先精通核心功能，再按需添加 1-2 个插件</td></tr>
+        <tr><td>追求「完美系统」，迟迟不开始</td><td>今天就建 Vault，开始写第一篇笔记</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">🎓 学习路线总结</div>
+    <strong style="color:#e2e4f0">第一周</strong>：安装 → 创建 Vault → 写每日笔记 → 熟悉 Markdown<br>
+    <strong style="color:#e2e4f0">第一个月</strong>：建立文件夹结构 → 使用双向链接 → 创建常用模板<br>
+    <strong style="color:#e2e4f0">第三个月</strong>：安装 Dataview/Templater → 构建 Dashboard → 形成稳定工作流<br>
+    <strong style="color:#e2e4f0">长期</strong>：知识网络自然生长，Obsidian 成为你思考的延伸
+  </div>
+
+  <div class="card" style="margin-top:32px;border-color:var(--accent);background:var(--accent-glow);">
+    <p style="color:#9d8df5;font-size:14px;margin:0;text-align:center;line-height:1.9;">
+      🎉 <strong style="color:#e2e4f0">恭喜你完成了完整的 Obsidian 学习指南！</strong><br>
+      记住：最好的知识管理系统，是你真正愿意长期坚持使用的那一个。<br>
+      现在就打开 Obsidian，写下你今天的第一篇笔记吧。
+    </p>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn" onclick="show('dataview')">← 上一节</button>
+    <button class="nav-btn primary" onclick="show('intro')">↩ 回到开始</button>
+  </div>
+</div>
+
+</div>
+</main>
+
+<script>
+const sections = ['intro','install','markdown','notes','links','tags','graph','templates','plugins','dataview','workflow'];
+function show(id) {
+  sections.forEach(s => {
+    const sec = document.getElementById('sec-'+s);
+    const btn = document.querySelector(`button[onclick="show('${s}')"]`);
+    if (sec) sec.classList.toggle('active', s === id);
+    if (btn) btn.classList.toggle('active', s === id);
+  });
+  document.querySelector('.main').scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
