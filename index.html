@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Easy Courses · 工具学习指南</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Noto+Sans+SC:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+/* ─── Reset & Base ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --bg:        #0c0d10;
+  --bg2:       #13141a;
+  --bg3:       #1a1c24;
+  --surface:   #1e2130;
+  --border:    rgba(255,255,255,.07);
+  --border2:   rgba(255,255,255,.12);
+  --text:      #c8cdd8;
+  --text2:     #6e7585;
+  --text3:     #3d4150;
+  --bright:    #ecedf2;
+
+  /* Card accent colors */
+  --obsidian:  #7c6af0;
+  --notion:    #e8e5dc;
+  --zotero:    #14a37a;
+  --pycharm:   #cf8ef4;
+
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'Noto Sans SC', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── Ambient background ─── */
+.ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.18;
+}
+.orb-1 { width: 600px; height: 600px; background: #7c6af0; top: -200px; left: -150px; animation: drift1 18s ease-in-out infinite; }
+.orb-2 { width: 500px; height: 500px; background: #14a37a; bottom: -100px; right: -100px; animation: drift2 22s ease-in-out infinite; }
+.orb-3 { width: 400px; height: 400px; background: #cf8ef4; top: 40%; left: 40%; animation: drift3 26s ease-in-out infinite; opacity: 0.1; }
+
+@keyframes drift1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(60px,40px); } }
+@keyframes drift2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-50px,-30px); } }
+@keyframes drift3 { 0%,100% { transform: translate(0,0); } 33% { transform: translate(30px,-40px); } 66% { transform: translate(-20px,30px); } }
+
+/* Noise overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── Layout wrapper ─── */
+.wrapper {
+  position: relative;
+  z-index: 2;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ─── Header / Nav bar ─── */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(12,13,16,.75);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.brand-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #7c6af0, #cf8ef4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--bright);
+  letter-spacing: -.01em;
+}
+.brand-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: .08em;
+  margin-top: 1px;
+}
+.nav-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: .06em;
+}
+.nav-count span {
+  color: var(--text2);
+}
+
+/* ─── Hero ─── */
+.hero {
+  padding: 100px 0 72px;
+  text-align: center;
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  padding: 5px 14px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(255,255,255,.02);
+  animation: fadeUp .6s ease both;
+}
+.eyebrow-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--obsidian);
+  animation: pulse 2.5s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.3;} }
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(42px, 7vw, 78px);
+  font-weight: 800;
+  color: var(--bright);
+  line-height: 1.05;
+  letter-spacing: -.04em;
+  margin-bottom: 22px;
+  animation: fadeUp .7s .1s ease both;
+}
+.hero-title .line2 {
+  background: linear-gradient(90deg, #7c6af0, #cf8ef4, #14a37a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: 16px;
+  color: var(--text2);
+  max-width: 520px;
+  margin: 0 auto 48px;
+  line-height: 1.75;
+  animation: fadeUp .7s .2s ease both;
+}
+.hero-sub strong { color: var(--text); font-weight: 500; }
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  animation: fadeUp .7s .3s ease both;
+}
+.stat {
+  text-align: center;
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--bright);
+  letter-spacing: -.03em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Section divider ─── */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding-top: 20px;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  white-space: nowrap;
+}
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border2), transparent);
+}
+
+/* ─── Cards Grid ─── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 80px;
+}
+
+.card {
+  position: relative;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+  transition: transform .3s cubic-bezier(.23,1,.32,1), border-color .3s, box-shadow .3s;
+  animation: fadeUp .7s ease both;
+}
+.card:nth-child(1) { animation-delay: .1s; }
+.card:nth-child(2) { animation-delay: .18s; }
+.card:nth-child(3) { animation-delay: .26s; }
+.card:nth-child(4) { animation-delay: .34s; }
+
+.card:hover {
+  transform: translateY(-6px) scale(1.01);
+  border-color: var(--border2);
+}
+.card:active { transform: translateY(-2px) scale(1.005); }
+
+/* Glow on hover (per-card color) */
+.card-obsidian:hover { box-shadow: 0 20px 60px rgba(124,106,240,.18), 0 4px 16px rgba(0,0,0,.4); }
+.card-notion:hover   { box-shadow: 0 20px 60px rgba(232,229,220,.1),  0 4px 16px rgba(0,0,0,.4); }
+.card-zotero:hover   { box-shadow: 0 20px 60px rgba(20,163,122,.18),  0 4px 16px rgba(0,0,0,.4); }
+.card-pycharm:hover  { box-shadow: 0 20px 60px rgba(207,142,244,.18), 0 4px 16px rgba(0,0,0,.4); }
+
+/* Top color strip */
+.card-strip {
+  height: 3px;
+  width: 100%;
+}
+.card-obsidian .card-strip { background: linear-gradient(90deg, #7c6af0, #9d8df5); }
+.card-notion   .card-strip { background: linear-gradient(90deg, #ccc9bc, #e8e5dc); }
+.card-zotero   .card-strip { background: linear-gradient(90deg, #1a7a5e, #14a37a); }
+.card-pycharm  .card-strip { background: linear-gradient(90deg, #cf8ef4, #8b78ff); }
+
+/* Card inner glow */
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 60%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .3s;
+  border-radius: 16px 16px 0 0;
+}
+.card-obsidian::after { background: radial-gradient(ellipse at 50% 0%, rgba(124,106,240,.08), transparent 70%); }
+.card-notion::after   { background: radial-gradient(ellipse at 50% 0%, rgba(232,229,220,.05), transparent 70%); }
+.card-zotero::after   { background: radial-gradient(ellipse at 50% 0%, rgba(20,163,122,.08), transparent 70%); }
+.card-pycharm::after  { background: radial-gradient(ellipse at 50% 0%, rgba(207,142,244,.08), transparent 70%); }
+.card:hover::after { opacity: 1; }
+
+.card-body {
+  padding: 28px 30px 30px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Icon */
+.card-icon {
+  width: 52px; height: 52px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  margin-bottom: 18px;
+  transition: transform .3s cubic-bezier(.23,1,.32,1);
+  background: var(--bg3);
+}
+.card:hover .card-icon { transform: scale(1.08) rotate(-3deg); }
+
+/* Tags row */
+.card-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  border: 1px solid transparent;
+}
+.tag-obsidian { background: rgba(124,106,240,.12); color: #9d8df5; border-color: rgba(124,106,240,.2); }
+.tag-notion   { background: rgba(232,229,220,.08); color: #ccc9bc; border-color: rgba(232,229,220,.15); }
+.tag-zotero   { background: rgba(20,163,122,.12);  color: #4ecdc4; border-color: rgba(20,163,122,.2); }
+.tag-pycharm  { background: rgba(207,142,244,.12); color: #cf8ef4; border-color: rgba(207,142,244,.2); }
+.tag-free     { background: rgba(106,171,115,.10); color: #6aab73; border-color: rgba(106,171,115,.18); }
+.tag-new      { background: rgba(80,184,200,.10);  color: #50b8c8; border-color: rgba(80,184,200,.18); }
+
+/* Title */
+.card-title {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--bright);
+  letter-spacing: -.02em;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.card-version {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+/* Desc */
+.card-desc {
+  font-size: 13.5px;
+  color: var(--text2);
+  line-height: 1.68;
+  margin-bottom: 22px;
+}
+
+/* Chapters preview */
+.card-chapters {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 22px;
+}
+.chapter-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text3);
+  line-height: 1.5;
+}
+.chapter-dot {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-obsidian { background: #7c6af0; }
+.dot-notion   { background: #ccc9bc; }
+.dot-zotero   { background: #14a37a; }
+.dot-pycharm  { background: #cf8ef4; }
+
+/* CTA button */
+.card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  background: rgba(255,255,255,.03);
+  transition: all .25s;
+}
+.card:hover .card-cta {
+  background: rgba(255,255,255,.07);
+  color: var(--bright);
+  border-color: rgba(255,255,255,.18);
+}
+.card-cta svg {
+  width: 13px; height: 13px;
+  transition: transform .25s;
+}
+.card:hover .card-cta svg { transform: translateX(3px); }
+
+/* ─── Chapter count badge ─── */
+.card-meta {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: .06em;
+}
+.meta-num {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  line-height: 1;
+}
+
+/* ─── Bottom info bar ─── */
+.info-bar {
+  border-top: 1px solid var(--border);
+  padding: 32px 0 40px;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  animation: fadeUp .7s .5s ease both;
+}
+.info-left {
+  font-size: 13px;
+  color: var(--text3);
+  line-height: 1.7;
+}
+.info-left strong { color: var(--text2); font-weight: 500; }
+.info-left a { color: var(--text2); text-decoration: none; border-bottom: 1px solid var(--border2); transition: color .2s; }
+.info-left a:hover { color: var(--bright); }
+.info-right {
+  display: flex;
+  gap: 10px;
+}
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text3);
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.02);
+  letter-spacing: .05em;
+}
+.chip-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+}
+
+/* ─── Hover line effect on cards ─── */
+.card-hover-line {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .4s cubic-bezier(.23,1,.32,1);
+}
+.card-obsidian .card-hover-line { background: linear-gradient(90deg, #7c6af0, transparent); }
+.card-notion   .card-hover-line { background: linear-gradient(90deg, #ccc9bc, transparent); }
+.card-zotero   .card-hover-line { background: linear-gradient(90deg, #14a37a, transparent); }
+.card-pycharm  .card-hover-line { background: linear-gradient(90deg, #cf8ef4, transparent); }
+.card:hover .card-hover-line { transform: scaleX(1); }
+
+/* ─── Responsive ─── */
+@media (max-width: 700px) {
+  .wrapper { padding: 0 18px; }
+  .nav-inner { padding: 0 18px; }
+  .hero { padding: 70px 0 52px; }
+  .hero-stats { gap: 24px; }
+  .cards { grid-template-columns: 1fr; }
+  .card-body { padding: 22px 22px 24px; }
+  .info-bar { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .info-right { flex-wrap: wrap; }
+}
+
+@media (max-width: 480px) {
+  .hero-title { font-size: 38px; }
+  .hero-stats { gap: 16px; }
+  .stat-num { font-size: 24px; }
+}
+
+/* ─── Scroll indicator ─── */
+.scroll-hint {
+  text-align: center;
+  padding: 0 0 60px;
+  animation: fadeUp .7s .4s ease both;
+}
+.scroll-line {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  opacity: .35;
+}
+.scroll-text {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+}
+.scroll-bar {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--text3), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%,100% { opacity: .3; transform: scaleY(1); }
+  50%  { opacity: .7; transform: scaleY(.7); }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Ambient background -->
+<div class="ambient">
+  <div class="ambient-orb orb-1"></div>
+  <div class="ambient-orb orb-2"></div>
+  <div class="ambient-orb orb-3"></div>
+</div>
+
+<!-- ─── Navigation Bar ─── -->
+<header>
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">
+      <div class="brand-icon">📚</div>
+      <div>
+        <div class="brand-name">Easy Courses</div>
+        <div class="brand-tag">TOOL · GUIDE · 2026</div>
+      </div>
+    </a>
+    <div class="nav-count">共 <span>4</span> 份教程</div>
+  </div>
+</header>
+
+<!-- ─── Hero ─── -->
+<div class="wrapper">
+  <section class="hero">
+    <div class="hero-eyebrow">
+      <span class="eyebrow-dot"></span>
+      CURATED GUIDES · 精选工具学习指南
+    </div>
+
+    <h1 class="hero-title">
+      掌握最好的<br>
+      <span class="line2">生产力工具</span>
+    </h1>
+
+    <p class="hero-sub">
+      四份<strong>深度教程</strong>，覆盖知识管理、文献研究与专业编程开发。<br>
+      由浅入深，图文并茂，持续更新至 <strong>2026 最新版本</strong>。
+    </p>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">4</div>
+        <div class="stat-label">工具教程</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">40+</div>
+        <div class="stat-label">章节内容</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">2026</div>
+        <div class="stat-label">最新版本</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Section Label ─── -->
+  <div class="section-header">
+    <span class="section-label">全部教程</span>
+    <div class="section-line"></div>
+  </div>
+
+  <!-- ─── Cards ─── -->
+  <div class="cards">
+
+    <!-- ── Obsidian ── -->
+    <a class="card card-obsidian" href="obsidian-tutorial.html">
+      <div class="card-strip"></div>
+      <div class="card-hover-line"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="meta-num">11</span>
+          <span>章节</span>
+        </div>
+
+        <div class="card-icon">💎</div>
+
+        <div class="card-tags">
+          <span class="tag tag-obsidian">知识管理</span>
+          <span class="tag tag-free">免费工具</span>
+          <span class="tag tag-new">本地优先</span>
+        </div>
+
+        <div class="card-title">Obsidian</div>
+        <div class="card-version">完全学习指南 · 2024</div>
+
+        <p class="card-desc">
+          基于本地 Markdown 的第二大脑工具。掌握双向链接、图谱视图、Dataview 数据库，构建永久属于你的知识网络。
+        </p>
+
+        <div class="card-chapters">
+          <div class="chapter-item"><span class="chapter-dot dot-obsidian"></span>Markdown 语法 · 双向链接 · 图谱视图</div>
+          <div class="chapter-item"><span class="chapter-dot dot-obsidian"></span>模板系统 · 插件生态 · Dataview</div>
+          <div class="chapter-item"><span class="chapter-dot dot-obsidian"></span>GTD 工作流 · PARA 组织方法</div>
+        </div>
+
+        <div class="card-cta">
+          进入教程
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </div>
+      </div>
+    </a>
+
+    <!-- ── Notion ── -->
+    <a class="card card-notion" href="notion-tutorial.html">
+      <div class="card-strip"></div>
+      <div class="card-hover-line"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="meta-num">11</span>
+          <span>章节</span>
+        </div>
+
+        <div class="card-icon">📋</div>
+
+        <div class="card-tags">
+          <span class="tag tag-notion">All-in-One</span>
+          <span class="tag tag-free">个人免费</span>
+          <span class="tag tag-new">数据库</span>
+        </div>
+
+        <div class="card-title">Notion</div>
+        <div class="card-version">完全学习指南 · 2024</div>
+
+        <p class="card-desc">
+          笔记 + 数据库 + 任务管理 + 团队 Wiki 的全能工作台。六种视图、关联汇总、公式计算，搭建你的个人操作系统。
+        </p>
+
+        <div class="card-chapters">
+          <div class="chapter-item"><span class="chapter-dot dot-notion"></span>Block 编辑器 · 页面层级 · 数据库核心</div>
+          <div class="chapter-item"><span class="chapter-dot dot-notion"></span>六种视图 · 过滤排序 · Relation 关联</div>
+          <div class="chapter-item"><span class="chapter-dot dot-notion"></span>公式系统 · 模板 · Dashboard 实战</div>
+        </div>
+
+        <div class="card-cta">
+          进入教程
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </div>
+      </div>
+    </a>
+
+    <!-- ── Zotero ── -->
+    <a class="card card-zotero" href="zotero-tutorial-2026.html">
+      <div class="card-strip"></div>
+      <div class="card-hover-line"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="meta-num">11</span>
+          <span>章节</span>
+        </div>
+
+        <div class="card-icon">🔬</div>
+
+        <div class="card-tags">
+          <span class="tag tag-zotero">学术研究</span>
+          <span class="tag tag-free">开源免费</span>
+          <span class="tag tag-new">v9 · 2026</span>
+        </div>
+
+        <div class="card-title">Zotero 9</div>
+        <div class="card-version">完全学习指南 · 2026 最新版</div>
+
+        <p class="card-desc">
+          全球最受欢迎的开源文献管理工具。从一键抓取到自动生成引用，全面覆盖 Zotero 9 的 Read Aloud、新阅读主题等 2026 最新特性。
+        </p>
+
+        <div class="card-chapters">
+          <div class="chapter-item"><span class="chapter-dot dot-zotero"></span>文献收集 · 文库整理 · 内置阅读器</div>
+          <div class="chapter-item"><span class="chapter-dot dot-zotero"></span>标注系统 · Word 引用 · WebDAV 同步</div>
+          <div class="chapter-item"><span class="chapter-dot dot-zotero"></span>插件生态 · v8/v9 新功能 · 科研工作流</div>
+        </div>
+
+        <div class="card-cta">
+          进入教程
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </div>
+      </div>
+    </a>
+
+    <!-- ── PyCharm ── -->
+    <a class="card card-pycharm" href="pycharm-tutorial-2026.html">
+      <div class="card-strip"></div>
+      <div class="card-hover-line"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="meta-num">13</span>
+          <span>章节</span>
+        </div>
+
+        <div class="card-icon">🐍</div>
+
+        <div class="card-tags">
+          <span class="tag tag-pycharm">Python IDE</span>
+          <span class="tag tag-free">核心免费</span>
+          <span class="tag tag-new">2026.1</span>
+        </div>
+
+        <div class="card-title">PyCharm 2026</div>
+        <div class="card-version">完全学习指南 · 2026.1 最新版</div>
+
+        <p class="card-desc">
+          JetBrains 出品的 Python 专属 IDE，AI 原生开发平台。涵盖 debugpy 新引擎、Next Edit Suggestions、Junie+Claude 双 Agent、Jupyter 免费支持等全部 2026 新特性。
+        </p>
+
+        <div class="card-chapters">
+          <div class="chapter-item"><span class="chapter-dot dot-pycharm"></span>界面解析 · 项目配置 · uv 包管理</div>
+          <div class="chapter-item"><span class="chapter-dot dot-pycharm"></span>智能编辑 · debugpy 调试 · 测试覆盖率</div>
+          <div class="chapter-item"><span class="chapter-dot dot-pycharm"></span>AI 全解 · Jupyter + Colab · 2026.1 新特性</div>
+        </div>
+
+        <div class="card-cta">
+          进入教程
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </div>
+      </div>
+    </a>
+
+  </div><!-- /cards -->
+
+  <!-- ─── Info Bar ─── -->
+  <div class="info-bar">
+    <div class="info-left">
+      托管于 <a href="https://fleetsnowfluff-ann.github.io/easy-courses/" target="_blank">GitHub Pages</a> · 所有教程均为 HTML 单文件，无需网络加载 · 内容持续更新中
+    </div>
+    <div class="info-right">
+      <div class="chip"><span class="chip-dot" style="background:#7c6af0"></span>Obsidian</div>
+      <div class="chip"><span class="chip-dot" style="background:#ccc9bc"></span>Notion</div>
+      <div class="chip"><span class="chip-dot" style="background:#14a37a"></span>Zotero</div>
+      <div class="chip"><span class="chip-dot" style="background:#cf8ef4"></span>PyCharm</div>
+    </div>
+  </div>
+
+</div><!-- /wrapper -->
+
+</body>
+</html>
