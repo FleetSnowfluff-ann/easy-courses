@@ -1,5 +1,56 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+  <!-- 返回首页按钮 -->
+<style>
+.back-home-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: 100px;
+  background: rgba(18, 19, 26, 0.88);
+  border: 1px solid rgba(255, 255, 255, .13);
+  color: rgba(255, 255, 255, .78);
+  font-family: 'Noto Sans SC', -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  letter-spacing: .02em;
+  transition: all .25s cubic-bezier(.23, 1, .32, 1);
+  box-shadow: 0 4px 24px rgba(0,0,0,.55), 0 1px 6px rgba(0,0,0,.3);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.back-home-btn:hover {
+  background: rgba(28, 30, 42, 0.96);
+  color: #fff;
+  border-color: rgba(255, 255, 255, .24);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 36px rgba(0,0,0,.55), 0 2px 8px rgba(0,0,0,.3);
+}
+.back-home-btn:active {
+  transform: translateY(-1px);
+}
+.back-home-btn svg {
+  flex-shrink: 0;
+  opacity: .75;
+  transition: opacity .2s, transform .25s;
+}
+.back-home-btn:hover svg {
+  opacity: 1;
+  transform: translateX(-2px);
+}
+@media (max-width: 600px) {
+  .back-home-btn { bottom: 18px; right: 18px; padding: 11px 14px; }
+  .back-home-btn span { display: none; }
+}
+</style>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
